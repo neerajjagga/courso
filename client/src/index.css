@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.btn-primary {
+    @apply text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 text-center;
+}
+
+.text-bg-primary {
+    @apply bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent
+}
+
+.input-primary {
+    @apply bg-gray-800 border border-gray-600 rounded-md shadow-sm
+    placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm
+}
