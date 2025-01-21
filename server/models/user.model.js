@@ -48,11 +48,19 @@ const userSchema = new mongoose.Schema({
     },
     bio : {
         type : String,
-        maxLength : [300, "Bio should be maximum 300 characters long"],
+        maxLength : [100, "Bio should be maximum 100 characters long"],
         trim : true,
+        default : "",
     },
     socialLinks : {
-        type : [String]
+        type : [{
+            name : {
+                type : String,
+            },
+            url : {
+                type : String,
+            }
+        }]
     },
     enrolledIn : {
         type : [{

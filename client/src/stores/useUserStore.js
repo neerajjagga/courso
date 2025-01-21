@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 export const useUserStore = create((set, get) => ({
     user: null,
     loading: false,
+    checkingAuthLoader : false,
 
     signUp: async ({ fullname, email, password, confirmPassword }) => {
         console.log(fullname);
@@ -15,6 +16,11 @@ export const useUserStore = create((set, get) => ({
         if (password !== confirmPassword) {
             set({ loading: false });
             return toast.error("Password do not match");
+        }
+
+        if(fullname.length > 20) {
+            set({ loading: false });
+            return toast.error("Name should be maximum 20 characters");
         }
 
         try {
@@ -53,14 +59,14 @@ export const useUserStore = create((set, get) => ({
     },
 
     checkAuth: async () => {
-        set({ loading: true })
+        set({ checkingAuthLoader: true })
         try {
-            const res = await axios.get('/auth/profile');
-            set({ user: res.data.user, loading: false });
-
+            const res = await axios.get('/user/profile');
+            set({ user: res.data.user, checkingAuthLoader: false });
+            
         } catch (error) {
             console.log(error);
-            set({ loading: false })
+            set({ checkingAuthLoader: false })
             toast.error(error.response?.data?.message || "An error occurred while checking auth")
         }
     },
@@ -70,10 +76,10 @@ export const useUserStore = create((set, get) => ({
 
         try {
             const res = await axios.post('/auth/logout');
-            set({ loading: false });
+            set({ user : null, loading: false });
             toast.success(res.data.message || "User loggedOut successfully");
         } catch (error) {
-              console.log(error);
+            console.log(error);
             set({ loading: false })
             toast.error(error.response?.data?.message || "An error occurred while logout")
         }

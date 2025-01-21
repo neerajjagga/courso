@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import jwt from 'jsonwebtoken';
-import { userValidationSchema } from '../validators/user.validator.js';
+import { signupValidationSchema, loginValidationSchema } from '../validators/user.validator.js';
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -45,13 +45,26 @@ export const checkAuth = async (req, res, next) => {
     }
 }
 
-export const validateSignUpUser = async(req, res, next) => {
-    const { error } = userValidationSchema.validate(req.body);
+export const validateSignUpData = async (req, res, next) => {
+    const { error } = signupValidationSchema.validate(req.body);
 
-    if(error) {
+    if (error) {
         return res.status(400).json({
-            success : false,
-            error : error.details[0].message,
+            success: false,
+            error: error.details[0].message,
+        })
+    }
+
+    next();
+}
+
+export const validateEditProfileData = async (req, res, next) => {
+    const { error } = loginValidationSchema.validate(req.body);
+
+    if (error) {
+        return res.status(400).json({
+            success: false,
+            error: error.details[0].message,
         })
     }
 

@@ -15,3 +15,8 @@
     @apply bg-gray-800 border border-gray-600 rounded-md shadow-sm
     placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm
 }
+
+.input-profile-primary {
+    @apply bg-gray-800 border border-gray-600 shadow-sm
+    placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm
+}

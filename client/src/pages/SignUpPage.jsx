@@ -63,6 +63,7 @@ const SignUpPage = () => {
                     <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
                         <div className="">
                             <input
+                                value={formData.fullname}
                                 onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
                                 type="text"
                                 className="w-full input-primary px-4 py-2" placeholder="Full Name"
@@ -72,6 +73,7 @@ const SignUpPage = () => {
 
                         <div>
                             <input
+                                value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                 type="email"
                                 className="w-full input-primary px-4 py-2" placeholder="Email"
@@ -82,6 +84,7 @@ const SignUpPage = () => {
                         <div className="flex gap-2">
                             <div className="relative">
                                 <input
+                                    value={formData.password}
                                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                                     type={hidePassword ? "password" : "text"}
                                     className="input-primary px-4 py-2 pr-10" placeholder="Password"
@@ -101,6 +104,7 @@ const SignUpPage = () => {
 
                             <div className="relative">
                                 <input
+                                    value={formData.confirmPassword}
                                     onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                                     type={hideConfirmPassword ? "password" : "text"}
                                     className="input-primary px-4 py-2 pr-10"
