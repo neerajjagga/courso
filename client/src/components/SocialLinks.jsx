@@ -14,7 +14,7 @@ const SocialLinks = ({ formData, setFormData }) => {
                             onChange={(e) => {
                                 setFormData({ ...formData, twitterUrl: e.target.value });
                             }}
-                            type="url"
+                            type="text"
                             className="w-full rounded-r-md input-profile-primary px-4 py-2 sm:w-96" placeholder="Twitter Profile"
                         />
                     </div>
@@ -29,7 +29,7 @@ const SocialLinks = ({ formData, setFormData }) => {
                             onChange={(e) => {
                                 setFormData({ ...formData, linkedInUrl: e.target.value });
                             }}
-                            type="url"
+                            type="text"
                             className="w-full rounded-r-md input-profile-primary px-4 py-2 sm:w-96" placeholder="LinkedIn Profile"
                         />
                     </div>
@@ -47,7 +47,7 @@ const SocialLinks = ({ formData, setFormData }) => {
                             onChange={(e) => {
                                 setFormData({ ...formData, facebookUrl: e.target.value });
                             }}
-                            type="url"
+                            type="text"
                             className="w-full rounded-r-md input-profile-primary px-4 py-2 sm:w-96" placeholder="Facebook Profile"
                         />
                     </div>

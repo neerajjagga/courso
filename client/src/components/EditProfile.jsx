@@ -4,41 +4,52 @@ import { useUserStore } from './../stores/useUserStore';
 import toast from "react-hot-toast";
 
 const EditProfile = () => {
-    const {user} = useUserStore();
+    const { user, editProfile } = useUserStore();
     const [formData, setFormData] = useState({
         fullname: user.fullname || "",
-        bio: "",
-        twitterUrl: "",
-        facebookUrl: "",
-        instagramUrl: "",
-        linkedInUrl: "",
+        bio: user.bio || "",
+        twitterUrl: user.socialLinks.find(link => link.name === "Twitter")?.url?.split('com/')[1] || "",
+        facebookUrl: user.socialLinks.find(link => link.name === "Facebook")?.url?.split('com/')[1] || "",
+        linkedInUrl: user.socialLinks.find(link => link.name === "LinkedIn")?.url?.split('com/')[1] || "",
     })
     const [textareaCount, setTextareaCount] = useState(0);
     const [fullNameCount, setFullNameCount] = useState(user.fullname.length || 0);
 
     function handleEditProfileSubmit(e) {
         e.preventDefault();
-        if(user.fullname === formData.fullname) {
-            return toast.error("Full name cannot be same as previous one");        
+        let dataToBeUpdated = {}
+        if (user.fullname !== formData.fullname.trim() && formData.fullname.trim() !== '') {
+            dataToBeUpdated["fullname"] = formData.fullname;
         }
         let socialLinksArray = [];
-        if(twitterUrl) {
+        if (formData.twitterUrl) {
             socialLinksArray.push({
-                name : "Twitter",
-                url : formData.twitterUrl
+                name: "Twitter",
+                url: `http://twitter.com/${formData.twitterUrl}`
             })
         }
-        if(facebookUrl) {
+        if (formData.facebookUrl) {
             socialLinksArray.push({
-                name : "Facebook",
-                url : formData.facebookUrl
+                name: "Facebook",
+                url: `http://facebook.com/${formData.facebookUrl}`
             })
         }
-        if(twitterUrl) {
+        if (formData.linkedInUrl) {
             socialLinksArray.push({
-                name : "LinkedIn",
-                url : formData.linkedInUrl
+                name: "LinkedIn",
+                url: `http://linkedin.com/${formData.linkedInUrl}`
             })
+        }
+        if (socialLinksArray.length > 0) {
+            dataToBeUpdated["socialLinks"] = socialLinksArray
+        }
+        if (user.bio !== formData.bio.trim() && formData.bio.trim() !== '') {
+            dataToBeUpdated["bio"] = formData.bio;
+        }
+        if (Object.keys(dataToBeUpdated).length > 0) {
+            editProfile(dataToBeUpdated);
+        } else {
+            toast.error("No changes detected.");
         }
     }
 

@@ -21,9 +21,16 @@ export const getUserProfile = async (req, res) => {
 export const editUserProfile = async (req, res) => {
     try {
         const user = req.user;
-        const {fullname, bio, socialLinks} = req.body;
-        console.log(fullname, bio, socialLinks);
-        res.send("Hello from edit profile controller");
+        const {updatedData} = req.body;
+        
+        const updatedUser = await User.findByIdAndUpdate(user._id, {
+            $set : updatedData
+        }, {new : true})
+
+        res.json({
+            user: updatedUser,
+            message : "Profile update successfully",
+        });
     } catch (error) {
         console.log("Error while editing profile" + error.message);
         res.status(500).json({

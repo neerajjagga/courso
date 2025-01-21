@@ -11,6 +11,6 @@ import {
 const userRouter = express.Router();
 
 userRouter.get('/profile', checkAuth, getUserProfile);
-userRouter.patch('/edit', checkAuth, validateEditProfileData, editUserProfile);
+userRouter.patch('/profile', checkAuth, validateEditProfileData, editUserProfile);
 
 export default userRouter;

@@ -99,28 +99,46 @@ export const signupValidationSchema = Joi.object({
 export const loginValidationSchema = Joi.object({
   fullname: Joi.string()
     .min(3)
+    .trim()
     .max(20)
     .messages({
       'string.base': 'Fullname must be a string.',
-      'string.empty': 'Fullname is required.',
+      'string.empty': 'Fullname cannot be empty.',
       'string.max': 'Fullname should be maximum 20 characters.',
       'string.min': 'Fullname should be minimum 3 characters.',
-      'any.required': 'Fullname is required.'
     }),
 
   socialLinks: Joi.array()
-    .items(Joi.string().uri())
+    .items(
+      Joi.object({
+        name: Joi.string()
+          .required()
+          .messages({
+            'string.base': 'Social link name must be a string.',
+            'string.empty': 'Social link name is required.',
+            'any.required': 'Social link name is required.',
+          }),
+        url: Joi.string()
+          .uri()
+          .required()
+          .messages({
+            'string.base': 'Social link URL must be a string.',
+            'string.uri': 'Social link URL must be a valid URL.',
+            'string.empty': 'Social link URL is required.',
+            'any.required': 'Social link URL is required.',
+          }),
+      })
+    )
     .messages({
-      'array.base': 'Social Links must be an array.',
-      'string.uri': 'Each social link must be a valid URL.'
+      'array.base': 'Social Links must be an array of objects.',
     }),
 
   bio: Joi.string()
     .max(100)
     .trim()
+    .allow('')
     .messages({
       'string.base': 'Bio must be a string.',
-      'string.empty': 'Bio should not be empty.',
       'string.max': 'Bio should be a maximum of 100 characters long.'
     }),
 

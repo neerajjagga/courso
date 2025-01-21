@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 export const useUserStore = create((set, get) => ({
     user: null,
     loading: false,
-    checkingAuthLoader : false,
+    checkingAuthLoader: false,
 
     signUp: async ({ fullname, email, password, confirmPassword }) => {
         console.log(fullname);
@@ -18,7 +18,7 @@ export const useUserStore = create((set, get) => ({
             return toast.error("Password do not match");
         }
 
-        if(fullname.length > 20) {
+        if (fullname.length > 20) {
             set({ loading: false });
             return toast.error("Name should be maximum 20 characters");
         }
@@ -63,7 +63,7 @@ export const useUserStore = create((set, get) => ({
         try {
             const res = await axios.get('/user/profile');
             set({ user: res.data.user, checkingAuthLoader: false });
-            
+
         } catch (error) {
             console.log(error);
             set({ checkingAuthLoader: false })
@@ -71,17 +71,33 @@ export const useUserStore = create((set, get) => ({
         }
     },
 
-    logout : async () => {
+    logout: async () => {
         set({ loading: true })
 
         try {
             const res = await axios.post('/auth/logout');
-            set({ user : null, loading: false });
+            set({ user: null, loading: false });
             toast.success(res.data.message || "User loggedOut successfully");
         } catch (error) {
             console.log(error);
             set({ loading: false })
             toast.error(error.response?.data?.message || "An error occurred while logout")
+        }
+    },
+
+    editProfile: async (updatedData) => {
+        set({ loading: true });
+        console.log(updatedData);
+        try {
+            const res = await axios.patch('/user/profile', {
+                updatedData
+            })
+            set({ user: res.data.user, loading: false });
+            toast.success("Profile updated successfully!");
+        } catch (error) {
+            console.log(error);
+            set({ loading: false })
+            toast.error(error.response?.data?.error || "An error occurred while editing profile")
         }
     }
 }))

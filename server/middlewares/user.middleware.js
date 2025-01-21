@@ -59,7 +59,7 @@ export const validateSignUpData = async (req, res, next) => {
 }
 
 export const validateEditProfileData = async (req, res, next) => {
-    const { error } = loginValidationSchema.validate(req.body);
+    const { error } = loginValidationSchema.validate(req.body.updatedData);
 
     if (error) {
         return res.status(400).json({
