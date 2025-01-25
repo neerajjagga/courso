@@ -114,7 +114,6 @@ export const loginValidationSchema = Joi.object({
         name: Joi.string()
           .required()
           .messages({
-            'string.base': 'Social link name must be a string.',
             'string.empty': 'Social link name is required.',
             'any.required': 'Social link name is required.',
           }),
@@ -160,4 +159,4 @@ export const loginValidationSchema = Joi.object({
   //   }),
 
 
-}).options({ allowUnknown: false });
+}).options({ allowUnknown: true });

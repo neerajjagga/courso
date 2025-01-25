@@ -25,7 +25,7 @@ const PORT = process.env.PORT || 3000;
 // app.use(limiter);
 app.use(helmet());
 app.use(morgan('combined'));
-app.use(express.json());
+app.use(express.json({ limit : "5MB" }));
 app.use(cookieParser());
 app.use(cors({
     origin : "http://localhost:5173",

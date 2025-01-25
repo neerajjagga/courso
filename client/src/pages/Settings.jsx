@@ -1,9 +1,8 @@
 import EditProfile from '../components/EditProfile';
 import EditPhoto from '../components/EditPhoto';
-import ViewProfile from '../components/ViewProfile';
+import ViewPublicProfile from '../components/ViewPublicProfile';
 import CloseAccount from '../components/CloseAccount';
 import SettingsMenu from '../components/SettingsMenu';
-import { Link } from 'react-router-dom';
 import { useUserStore } from '../stores/useUserStore';
 import { useState } from 'react';
 
@@ -12,12 +11,13 @@ const Settings = () => {
     const [activeTab, setActiveTab] = useState('edit-profile');
 
     return (
-        <div className="flex w-[95%] sm:w-[80%] min-h-screen mt-10 bg-gray-800 border-2">
+        <div className="flex w-[95%] lg:w-[80%] min-h-screen mt-10 bg-gray-800 border-2 border-gray-600 rounded-md">
+            
             <section className="flex flex-col gap-3 items-center w-[25%] bg-gray-700 min-h-screen pt-10">
                 <div>
                     {user.profileImageUrl ? (
                         <img
-                            className="h-36 w-36 rounded-full object-cover hover:brightness-75 transition-all ease shadow-md shadow-black"
+                            className="h-36 w-36 rounded-full object-cover transition-all ease shadow-md shadow-black"
                             src={user.profileImageUrl}
                             alt={user.fullname}
                         />
@@ -42,7 +42,7 @@ const Settings = () => {
 
             <section className='mt-10 w-[75%] '>
                 {activeTab === "edit-profile" && <EditProfile />}
-                {activeTab === "view-profile" && <ViewProfile />}
+                {activeTab === "view-profile" && <ViewPublicProfile />}
                 {activeTab === "photo" && <EditPhoto />}
                 {activeTab === "close-account" && <CloseAccount />}
             </section>

@@ -1,62 +1,65 @@
 
 const SocialLinks = ({ formData, setFormData }) => {
+    
+    const socialLinksData = [
+        {
+            label: "Twitter",
+            prefix: "https://twitter.com/",
+            value: formData.twitterUrl,
+            placeholder: "Twitter Profile",
+            hint: "Add your Twitter username (e.g. johnsmith).",
+            field: "twitterUrl",
+        },
+        {
+            label: "LinkedIn",
+            prefix: "https://www.linkedin.com/",
+            value: formData.linkedInUrl,
+            placeholder: "LinkedIn Profile",
+            hint: "Input your LinkedIn resource id (e.g. in/johnsmith).",
+            field: "linkedInUrl",
+        },
+        {
+            label: "Facebook",
+            prefix: "https://www.facebook.com/",
+            value: formData.facebookUrl,
+            placeholder: "Facebook Profile",
+            hint: "Input your Facebook username (e.g. johnsmith).",
+            field: "facebookUrl",
+        },
+        {
+            label: "Github",
+            prefix: "https://www.github.com/",
+            value: formData.githubUrl,
+            placeholder: "Github Profile",
+            hint: "Input your Github username (e.g. johnsmith123).",
+            field: "githubUrl",
+        },
+    ];
+
     return (
         <>
             <label className="text-xl text-gray-400">Social Links:</label>
-
             <div className="mt-4 flex flex-col gap-5">
-
-                <div className="flex flex-col gap-1">
-                    <div className="flex">
-                        <span className="bg-gray-600 px-4 py-2 rounded-l-md">http://twitter.com/</span>
-                        <input
-                            value={formData.twitterUrl}
-                            onChange={(e) => {
-                                setFormData({ ...formData, twitterUrl: e.target.value });
-                            }}
-                            type="text"
-                            className="w-full rounded-r-md input-profile-primary px-4 py-2 sm:w-96" placeholder="Twitter Profile"
-                        />
+                {socialLinksData.map((link, index) => (
+                    <div key={index} className="flex flex-col gap-1">
+                        <div className="flex">
+                            <span className="bg-gray-600 px-4 py-2 rounded-l-md">{link.prefix}</span>
+                            <input
+                                value={link.value}
+                                onChange={(e) =>
+                                    setFormData({ ...formData, [link.field]: e.target.value })
+                                }
+                                type="text"
+                                className="w-full rounded-r-md input-profile-primary px-4 py-2 sm:w-96"
+                                placeholder={link.placeholder}
+                            />
+                        </div>
+                        <span className="text-sm text-gray-400">{link.hint}</span>
                     </div>
-                    <span className="text-sm text-gray-400">Add your Twitter username (e.g. johnsmith).</span>
-                </div>
-
-                <div className="flex flex-col gap-1">
-                    <div className="flex">
-                        <span className="bg-gray-600 px-4 py-2 rounded-l-md">http://www.linkedin.com/</span>
-                        <input
-                            value={formData.linkedInUrl}
-                            onChange={(e) => {
-                                setFormData({ ...formData, linkedInUrl: e.target.value });
-                            }}
-                            type="text"
-                            className="w-full rounded-r-md input-profile-primary px-4 py-2 sm:w-96" placeholder="LinkedIn Profile"
-                        />
-                    </div>
-                    <span className="text-sm text-gray-400">Input your LinkedIn resource id (e.g. in/johnsmith).
-                    </span>
-                </div>
-
-
-                <div className="flex flex-col gap-1">
-                    <div className="flex">
-                        <span className="bg-gray-600 px-4 py-2 rounded-l-md">http://www.facebook.com/
-                        </span>
-                        <input
-                            value={formData.facebookUrl}
-                            onChange={(e) => {
-                                setFormData({ ...formData, facebookUrl: e.target.value });
-                            }}
-                            type="text"
-                            className="w-full rounded-r-md input-profile-primary px-4 py-2 sm:w-96" placeholder="Facebook Profile"
-                        />
-                    </div>
-                    <span className="text-sm text-gray-400">Input your Facebook username (e.g. johnsmith).
-                    </span>
-                </div>
+                ))}
             </div>
         </>
-    )
-}
+    );
+};
 
-export default SocialLinks
+export default SocialLinks;

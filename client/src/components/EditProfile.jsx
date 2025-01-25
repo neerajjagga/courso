@@ -5,45 +5,58 @@ import toast from "react-hot-toast";
 
 const EditProfile = () => {
     const { user, editProfile } = useUserStore();
+    
     const [formData, setFormData] = useState({
         fullname: user.fullname || "",
         bio: user.bio || "",
         twitterUrl: user.socialLinks.find(link => link.name === "Twitter")?.url?.split('com/')[1] || "",
         facebookUrl: user.socialLinks.find(link => link.name === "Facebook")?.url?.split('com/')[1] || "",
         linkedInUrl: user.socialLinks.find(link => link.name === "LinkedIn")?.url?.split('com/')[1] || "",
+        githubUrl: user.socialLinks.find(link => link.name === "Github")?.url?.split('com/')[1] || "",
     })
-    const [textareaCount, setTextareaCount] = useState(0);
+    const [textareaCount, setTextareaCount] = useState(user.bio.length || 0);
     const [fullNameCount, setFullNameCount] = useState(user.fullname.length || 0);
 
     function handleEditProfileSubmit(e) {
         e.preventDefault();
+
+        const trimmedFullname = formData.fullname.trim();
+        const trimmedBio = formData.bio.trim();
+
+        if (trimmedFullname === '') {
+            toast.error("Fullname cannot be empty");
+            return;
+        }
+
         let dataToBeUpdated = {}
-        if (user.fullname !== formData.fullname.trim() && formData.fullname.trim() !== '') {
-            dataToBeUpdated["fullname"] = formData.fullname;
+
+        if (user.fullname !== trimmedFullname) {
+            dataToBeUpdated["fullname"] = trimmedFullname;
         }
-        let socialLinksArray = [];
-        if (formData.twitterUrl) {
-            socialLinksArray.push({
-                name: "Twitter",
-                url: `http://twitter.com/${formData.twitterUrl}`
-            })
+
+        if (user.bio !== trimmedBio) {
+            dataToBeUpdated["bio"] = trimmedBio;
         }
-        if (formData.facebookUrl) {
-            socialLinksArray.push({
-                name: "Facebook",
-                url: `http://facebook.com/${formData.facebookUrl}`
-            })
+
+        const socialLinksArray = [
+            createSocialLink("Twitter", "http://twitter.com", formData.twitterUrl),
+            createSocialLink("Facebook", "http://facebook.com", formData.facebookUrl),
+            createSocialLink("LinkedIn", "http://linkedin.com", formData.linkedInUrl),
+            createSocialLink("Github", "http://github.com", formData.githubUrl),
+        ].filter(Boolean);
+
+        function createSocialLink(urlName, baseUrl, username) {
+            const trimmedUsername = username.trim();
+            return {
+                name: urlName.trim(),
+                url: trimmedUsername ? `${baseUrl}/${trimmedUsername}` : baseUrl,
+            }
         }
-        if (formData.linkedInUrl) {
-            socialLinksArray.push({
-                name: "LinkedIn",
-                url: `http://linkedin.com/${formData.linkedInUrl}`
-            })
-        }
+
         if (socialLinksArray.length > 0) {
             dataToBeUpdated["socialLinks"] = socialLinksArray
         }
-        if (user.bio !== formData.bio.trim() && formData.bio.trim() !== '') {
+        if (user.bio !== formData.bio.trim()) {
             dataToBeUpdated["bio"] = formData.bio;
         }
         if (Object.keys(dataToBeUpdated).length > 0) {

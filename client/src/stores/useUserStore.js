@@ -42,7 +42,7 @@ export const useUserStore = create((set, get) => ({
 
     login: async ({ email, password }) => {
         set({ loading: true });
-
+        console.log(email, password);
         try {
             const res = await axios.post('/auth/login', {
                 email,
@@ -87,7 +87,7 @@ export const useUserStore = create((set, get) => ({
 
     editProfile: async (updatedData) => {
         set({ loading: true });
-        console.log(updatedData);
+       
         try {
             const res = await axios.patch('/user/profile', {
                 updatedData
@@ -98,6 +98,21 @@ export const useUserStore = create((set, get) => ({
             console.log(error);
             set({ loading: false })
             toast.error(error.response?.data?.error || "An error occurred while editing profile")
+        }
+    },
+
+    editPhoto : async (updatedData) => {
+        set({ loading : true });
+        try {
+            const res = await axios.patch("/user/profile", {
+                updatedData
+            })
+            set({ user: res.data.user, loading: false });
+            toast.success("Profile image updated successfully!");
+        } catch (error) {
+            console.log(error);
+            set({ loading: false })
+            toast.error(error.response?.data?.error || "An error occurred while updating profile image")
         }
     }
 }))

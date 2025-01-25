@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { Redis } from "../lib/redis.js"
 import dotenv from "dotenv";
 import { generateTokens, setCookies, storeRefreshToken } from '../utils/user.utils.js';
+import bcrypt from 'bcryptjs';
 dotenv.config();
 
 export const signUpUser = async (req, res) => {
@@ -13,14 +14,14 @@ export const signUpUser = async (req, res) => {
 
         if (isUserAlreadyPresent) {
             return res.status(409).json({
-                success : false,
+                success: false,
                 message: "User already present with these credentials"
             })
         }
 
         const user = new User({
-            fullname, email, password
-        })
+            fullname, email, password, 
+        });
 
         await user.save();
 
@@ -47,19 +48,18 @@ export const signUpUser = async (req, res) => {
 export const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
-        
-        // find the user first
-        const user = await User.findOne({ email });        
 
-        if (!user) return res.status(400).json({ 
+        // find the user first
+        const user = await User.findOne({ email });
+
+        if (!user) return res.status(400).json({
             message: "Invalid credentials",
-            success : false, 
+            success: false,
         })
 
-        // match the password
-        const isPasswordValid = user.comparePassword(password);
+        const isPasswordValid = await user.comparePassword(password);
 
-        if (!isPasswordValid) return res.status(400).json({ message: "Invalid credentials" })
+        if (!isPasswordValid) return res.status(400).json({ message: "Invalid credentials 12" })
 
         // generate tokens
         const { accessToken, refreshToken } = generateTokens(user._id);
@@ -100,9 +100,9 @@ export const logoutUser = async (req, res) => {
 
         res.clearCookie("access_token");
         res.clearCookie("refresh_token");
-        res.json({ 
-            success : true,
-            message: "Logged out successfully" 
+        res.json({
+            success: true,
+            message: "Logged out successfully"
         });
 
     } catch (error) {

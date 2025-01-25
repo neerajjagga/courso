@@ -1,7 +1,6 @@
 import SocialLinks from "./SocialLinks";
 
 const EditProfileForm = ({ handleEditProfileSubmit, fullNameCount, setFullNameCount, textareaCount, setTextareaCount, formData, setFormData }) => {
-    const isDisabled = Object.values(formData).every(value => !value);
 
     return (
         <>
@@ -51,7 +50,7 @@ const EditProfileForm = ({ handleEditProfileSubmit, fullNameCount, setFullNameCo
                         />
                     </div>
 
-                    <div className="w-[60%]">
+                    <div className="lg:w-[60%]">
                         <SocialLinks formData={formData} setFormData={setFormData} />
                     </div>
 
@@ -59,11 +58,8 @@ const EditProfileForm = ({ handleEditProfileSubmit, fullNameCount, setFullNameCo
                     <div className="text-center">
                         <button
                             type="submit"
-                            disabled={isDisabled}
                             className={
-                                `py-1 px-4 text-lg font-semibold rounded-md  transition-all ease 
-                                ${isDisabled ? "bg-gray-400 text-lg font-semibold rounded-md"
-                                    : "bg-green-600 hover:bg-green-700"}`
+                                "py-1 px-4 text-lg font-semibold rounded-md  transition-all ease bg-green-600 hover:bg-green-700"
                             }>
                             Update
                         </button>
