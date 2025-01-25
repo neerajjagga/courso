@@ -5,7 +5,7 @@ import { testimonialsImages } from '../data/testimonialsImages';
 
 const IndexPage = () => {
   return (
-    <div className='z-9 max-w-7xl mx-auto flex-col flex pt-20 px-5 overflow-hidden'>
+    <div className='z-9 max-w-7xl mx-auto flex-col flex pt-36 px-5 overflow-hidden'>
       <div className='flex'>
         <section className='max-w-3xl flex flex-col gap-4'>
           <div className='flex flex-col gap-1 text-7xl font-bold'>

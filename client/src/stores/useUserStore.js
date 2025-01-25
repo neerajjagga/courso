@@ -63,10 +63,9 @@ export const useUserStore = create((set, get) => ({
         try {
             const res = await axios.get('/user/profile');
             set({ user: res.data.user, checkingAuthLoader: false });
-
         } catch (error) {
             console.log(error);
-            set({ checkingAuthLoader: false })
+            set({ user : null, checkingAuthLoader: false })
             toast.error(error.response?.data?.message || "An error occurred while checking auth")
         }
     },

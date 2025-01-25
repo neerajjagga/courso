@@ -31,8 +31,8 @@ const LoginPage = () => {
     }
 
     return (
-        <div className="mt-10 shadow-white shadow-sm">
-            <div className="bg-gray-800 bg-opacity-35 flex flex-col gap-2 py-10 px-10">
+        <div className="flex justify-center items-center pt-20 mt-10">
+            <div className="bg-gray-800 bg-opacity-35 flex flex-col gap-2 py-10 px-10 rounded-md">
                 <motion.div
                     className="sm:mx-auto sm:w-full sm:max-w-md text-center"
                     initial={{ opacity: 0, y: -20 }}

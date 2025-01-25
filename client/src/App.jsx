@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import IndexPage from './pages/IndexPage';
 import SignUpPage from './pages/SignUpPage';
@@ -11,24 +11,30 @@ import { Toaster } from 'react-hot-toast';
 import { useUserStore } from "./stores/useUserStore";
 import { useEffect } from "react";
 import Settings from "./pages/Settings";
+import UserDashboard from "./pages/Dashboard/UserDashboard";
+import ActiveCourses from "./pages/Dashboard/ActiveCourses";
+import Bookmarks from "./pages/Dashboard/Bookmarks";
 
 function App() {
 
   const { user, checkAuth, checkingAuthLoader } = useUserStore();
+  const location = useLocation();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth])
 
-  if(checkingAuthLoader) {
+  if (checkingAuthLoader) {
     return <Loader />
   }
+
+  const isDashboardRoute = location.pathname.startsWith("/dashboard");
 
   return (
     <div className="min-h-screen bg-gray-950 text-white relative overflow-hidden pb-10">
 
-      <div className='relative z-50 pt-20 flex flex-col items-center'>
-        <Navbar />
+      <div className='relative z-50'>
+        {!isDashboardRoute && <Navbar />}
         <Routes>
           <Route path="/" element={<IndexPage />} />
           <Route path="/signup" element={user ? <Navigate to={'/'} /> : <SignUpPage />} />
@@ -37,6 +43,11 @@ function App() {
           <Route path="/courses" element={<CoursesPage />} />
           <Route path="/contact-us" element={<ContactUsPage />} />
           <Route path="/s" element={user ? <Settings /> : <Navigate to={'/'} />} />
+          <Route path="/dashboard" element={user ? <UserDashboard /> : <Navigate to={'/'} />} />
+          <Route path="/dashboard" element={user ? <UserDashboard /> : <Navigate to={'/'} />}>
+            <Route path="active-courses" element={<ActiveCourses />} />
+            <Route path="bookmarks" element={<Bookmarks />} />
+          </Route>
         </Routes>
       </div>
 

@@ -43,7 +43,7 @@ const SignUpPage = () => {
     }
 
     return (
-        <div className="mt-10 shadow-white shadow-sm">
+        <div className="mt-10 flex justify-center items-center pt-20 ">
             <div className="bg-gray-800 bg-opacity-35 flex flex-col gap-2 py-10 px-10">
                 <motion.div
                     className="sm:mx-auto sm:w-full sm:max-w-md text-center"
