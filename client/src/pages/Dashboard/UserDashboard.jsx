@@ -10,8 +10,15 @@ const UserDashboard = () => {
     const navigators = location.pathname.split('/').filter(item => item !== '');
     const [isSidebarActive, setIsSidebarActive] = useState(true);
 
+    const { logout, loading } = useUserStore();
+
+
     const toggleSidebar = () => {
         setIsSidebarActive((prev) => !prev);
+    }
+
+    function handleLogout() {
+        logout();
     }
 
     return (
@@ -19,7 +26,7 @@ const UserDashboard = () => {
             {
                 // sidebar
             }
-            <section className={`pt-4 py-2 px-2 bg-gray-800 transition-all ease-in ${isSidebarActive ? "max-w-56" : "max-w-16"}`}>
+            <section className={`pt-4 py-2 px-2 bg-gray-800 transition-all duration-300 ease-linear ${isSidebarActive ? "min-w-56" : "max-w-16"}`}>
                 <div className="flex flex-col justify-between min-h-full">
                     <div className="flex flex-col gap-6 items-center">
                         <div>
@@ -56,7 +63,7 @@ const UserDashboard = () => {
 
                     <div className="flex flex-col gap-3 border-t pt-5 border-gray-700">
                         <div className="flex gap-2 items-center">
-                            <div>
+                            <div className={`${!isSidebarActive ? "flex justify-center min-w-full pb-2" : ""}`}>
                                 {user.profileImageUrl ? (
                                     <img
                                         className="max-h-10 max-w-10 rounded-full object-cover transition-all ease"
@@ -75,7 +82,7 @@ const UserDashboard = () => {
                             </div>
                         </div>
                         {isSidebarActive && (
-                            <button className="py-2 px-4 bg-red-600 rounded-sm hover:bg-red-800 transition-all ease">Logout</button>
+                            <button disabled={loading} onClick={handleLogout} className="py-2 px-4 bg-red-600 rounded-sm hover:bg-red-800 transition-all ease">Logout</button>
                         )}
                     </div>
                 </div>

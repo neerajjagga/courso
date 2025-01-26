@@ -15,7 +15,7 @@ const SignUpPage = () => {
     const [hidePassword, setHidePassword] = useState(true);
     const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
 
-    const { signUp, loading } = useUserStore();
+    const { user, signUp, loading } = useUserStore();
 
     function handleSubmit(e) {
         e.preventDefault();

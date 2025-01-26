@@ -75,16 +75,16 @@ const Navbar = () => {
                                     </div>
                                 )}
                             </div>
-                            <ProfileDropdown profileDropdown={profileDropdown} user={user} />
+                            <ProfileDropdown profileDropdown={profileDropdown} user={user} setProfileDropdown={setProfileDropdown} />
                         </div>
                     </div>
                 ) : (
                     <div className="flex items-center gap-4">
                         <Link
-                            to={'/signup'}
+                            to={'/become-instructor'}
                             className="btn-primary font-medium rounded-lg text-[15px] px-5 py-2.5"
                         >
-                            SignUp
+                            Teach on Courso
                         </Link>
                         <Link
                             to={'/login'}

@@ -1,25 +1,35 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 const SettingsMenu = ({ activeTab, setActiveTab }) => {
+    // Define the menu items
+    const menuItems = [
+        { path: "/s/view-profile", label: "View public profile" },
+        { path: "/s/edit-profile", label: "Edit profile" },
+        { path: "/s/edit-photo", label: "Photo" },
+        { path: "/s/close-account", label: "Close Account", isDanger: true },
+    ];
+
     return (
-        <ul className="flex flex-col gap-0 border-y border-gray-600">
-            <li onClick={() => setActiveTab('view-profile')} className={activeTab === 'view-profile' ? "hover:bg-slate-600 bg-slate-800 py-2 px-4 border-b border-gray-600 last:border-none" : "hover:bg-slate-600 py-2 px-4 border-b border-gray-600 last:border-none cursor-pointer"}>
-                <Link>View public profile</Link>
-            </li>
+        <div className="flex flex-col gap-0 border-y border-gray-600">
+            {menuItems.map((item, index) => (
+                <Link
+                    to={item.path}
+                    onClick={() => setActiveTab(item.path)}
+                    key={index}
+                    className={`py-2 px-4 border-b border-gray-600 last:border-none ${activeTab === item.path
+                        ? "bg-slate-800 hover:bg-slate-600"
+                        : "hover:bg-slate-600 cursor-pointer"
+                        }`}
+                >
+                    <span
+                        className={`${item.isDanger ? "text-red-500" : ""}`}
+                    >
+                        {item.label}
+                    </span>
+                </Link>
+            ))}
+        </div>
+    );
+};
 
-            <li onClick={() => setActiveTab('edit-profile')} className={activeTab === 'edit-profile' ? "hover:bg-slate-600 bg-slate-800 py-2 px-4 border-b border-gray-600 last:border-none" : "hover:bg-slate-600 py-2 px-4 border-b border-gray-600 last:border-none cursor-pointer"}>
-                <Link>Edit profile</Link>
-            </li>
-
-            <li onClick={() => setActiveTab('photo')} className={activeTab === 'photo' ? "hover:bg-slate-600 bg-slate-800 py-2 px-4 border-b border-gray-600 last:border-none" : "hover:bg-slate-600 py-2 px-4 border-b border-gray-600 last:border-none cursor-pointer"}>
-                <Link>Photo</Link>
-            </li>
-
-            <li onClick={() => setActiveTab('close-account')} className={activeTab === 'close-account' ? "hover:bg-slate-600 bg-slate-800 py-2 px-4 border-b border-gray-600 last:border-none" : "hover:bg-slate-600 py-2 px-4 border-b border-gray-600 last:border-none cursor-pointer"}>
-                <Link className='text-red-500'>Close Account</Link>
-            </li>
-        </ul>
-    )
-}
-
-export default SettingsMenu
+export default SettingsMenu;

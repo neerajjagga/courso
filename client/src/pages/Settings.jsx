@@ -1,14 +1,12 @@
-import EditProfile from '../components/EditProfile';
-import EditPhoto from '../components/EditPhoto';
-import ViewPublicProfile from '../components/ViewPublicProfile';
-import CloseAccount from '../components/CloseAccount';
+import { useState } from 'react';
 import SettingsMenu from '../components/SettingsMenu';
 import { useUserStore } from '../stores/useUserStore';
-import { useState } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 
 const Settings = () => {
-    const { user } = useUserStore();  
-    const [activeTab, setActiveTab] = useState('edit-profile');
+    const { user } = useUserStore();
+    const [activeTab, setActiveTab] = useState('');
+    const location = useLocation();
 
     return (
         <div className='flex justify-center pt-28'>
@@ -42,10 +40,15 @@ const Settings = () => {
                 </section>
 
                 <section className='mt-10 w-[75%] '>
-                    {activeTab === "edit-profile" && <EditProfile />}
-                    {activeTab === "view-profile" && <ViewPublicProfile />}
-                    {activeTab === "photo" && <EditPhoto />}
-                    {activeTab === "close-account" && <CloseAccount />}
+                    {location.pathname === '/s' ? (
+                        <div className='h-full w-full flex justify-center'>
+                            <span className='text-5xl font-semibold'>
+                                Settings
+                            </span>
+                        </div>
+                    ) : (
+                        <Outlet />
+                    )}
                 </section>
             </div>
         </div>

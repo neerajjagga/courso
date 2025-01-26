@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom"
 import { useUserStore } from "../stores/useUserStore"
 
-const ProfileDropdown = ({ profileDropdown, user }) => {
+const ProfileDropdown = ({ profileDropdown, user, setProfileDropdown }) => {
     const { logout, loading } = useUserStore();
 
     function handleLogout() {
         logout();
+        setProfileDropdown(false);
     }
 
     return (
@@ -13,7 +14,7 @@ const ProfileDropdown = ({ profileDropdown, user }) => {
             {profileDropdown && (
                 <ul className="bg-gray-700 absolute right-0 menu menu-sm dropdown-content flex flex-col gap-2 items-center rounded-box mt-2 w-60 shadow overflow-hidden">
                     <li className="w-full bg-gray-800 rounded-box py-1 shadow-sm shadow-black truncate">
-                        <a>
+                        <Link onClick={() => setProfileDropdown(false)} to={'/s/view-profile'}>
                             <div className="flex items-center gap-3">
                                 {user.profileImageUrl ? (
                                     <img
@@ -31,10 +32,10 @@ const ProfileDropdown = ({ profileDropdown, user }) => {
                                     <span className="text-gray-400">{user.email}</span>
                                 </div>
                             </div>
-                        </a>
+                        </Link>
                     </li>
                     <li className="shadow-sm shadow-black w-full bg-gray-800 rounded-box py-1">
-                        <Link to={'/s'} className="text-green-500 font-semibold">Edit Profile</Link>
+                        <Link onClick={() => setProfileDropdown(false)} to={'/s/edit-profile'} className="text-green-500 font-semibold">Edit Profile</Link>
                     </li>
                     {user.role === "admin" ? (
                         <li className="shadow-sm shadow-black w-full bg-gray-800 rounded-box py-1">

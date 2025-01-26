@@ -1,6 +1,18 @@
 import SocialLinks from "./SocialLinks";
+import { useUserStore } from "../stores/useUserStore";
+import { Shield, ShieldCheck } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const EditProfileForm = ({ handleEditProfileSubmit, fullNameCount, setFullNameCount, textareaCount, setTextareaCount, formData, setFormData }) => {
+
+    const { user, sendVerificationCode, loading } = useUserStore();
+    const navigate = useNavigate();
+
+    const handleVerifyEmail = async (e) => {
+        e.preventDefault();
+        await sendVerificationCode();
+        navigate('/verify-email');
+    }
 
     return (
         <>
@@ -48,6 +60,37 @@ const EditProfileForm = ({ handleEditProfileSubmit, fullNameCount, setFullNameCo
                             className="w-full input-primary px-4 py-2 sm:w-96" placeholder="Remote Software Engineer"
                             rows={4}
                         />
+                    </div>
+
+                    <div className="flex flex-col gap-1 relative">
+                        <div className="flex gap-10">
+                            <label>Email:</label>
+                        </div>
+                        <div className="flex gap-2">
+                            <input
+                                disabled={true}
+                                value={user?.email}
+                                type="text"
+                                className="w-full px-4 py-2 sm:w-96 bg-gray-700 rounded-md font-semibold"
+                            />
+                            {user?.isEmailVerified ? (
+                                <button
+                                    className="flex items-center gap-2 border border-green-500 py-2 px-4 bg-black rounded-md"
+                                    disabled={true}
+                                >
+                                    <ShieldCheck size={18} />
+                                    <span className="text-green-500 font-semibold">Verified</span>
+                                </button>
+                            ) : (
+                                <button
+                                    disabled={loading}
+                                    onClick={handleVerifyEmail}
+                                    className={`flex items-center gap-2 border py-2 px-4 bg-black rounded-md ${loading ? "border-red-400" : "border-red-500"}`}>
+                                    <Shield size={18} />
+                                    <span className={` font-semibold ${loading ? "text-red-400" : "text-red-500"}`}>Verify</span>
+                                </button>
+                            )}
+                        </div>
                     </div>
 
                     <div className="lg:w-[60%]">

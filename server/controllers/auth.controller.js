@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { Redis } from "../lib/redis.js"
 import dotenv from "dotenv";
 import { generateTokens, setCookies, storeRefreshToken } from '../utils/user.utils.js';
-import bcrypt from 'bcryptjs';
+import { sendVerificationEmail } from './../lib/nodemailer.js';
 dotenv.config();
 
 export const signUpUser = async (req, res) => {
@@ -20,7 +20,7 @@ export const signUpUser = async (req, res) => {
         }
 
         const user = new User({
-            fullname, email, password, 
+            fullname, email, password,
         });
 
         await user.save();
@@ -41,6 +41,66 @@ export const signUpUser = async (req, res) => {
 
     } catch (error) {
         console.log("Error coming while signup" + error.message);
+        res.status(500).json({ message: error.message })
+    }
+}
+
+export const sendVerificationCode = async (req, res) => {
+    try {
+        const user = req.user;
+        const code = Math.floor(100000 + Math.random() * 900000);
+
+        await sendVerificationEmail(user.email, code);
+
+        // store verification code in redis along with userId
+        await Redis.set(`verification_code/${user._id.toString()}`, code, "EX", 2 * 60);
+
+        res.json({
+            success: true,
+            message: "Verification code send successfully",
+        });
+    } catch (error) {
+        console.log("Error coming while sending verification code to user" + error.message);
+        res.status(500).json({ message: error.message })
+    }
+}
+
+export const verifyVerificationCode = async (req, res) => {
+    try {
+        const user = req.user;
+        const { code: verificationCode } = req.body;
+        console.log(verificationCode);
+
+        // store verification code in redis along with userId
+        const redisCode = await Redis.get(`verification_code/${user._id.toString()}`);
+
+        if (!redisCode) {
+            return res.status(400).json({
+                success: false,
+                message: "Please resend verification code",
+            });
+        }
+
+        if (verificationCode !== redisCode) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid OTP",
+            });
+        }
+
+        // delete the code from redis as well
+        await Redis.del(`verification_code/${user._id.toString()}`);
+
+        // update the email verification status
+        user.isEmailVerified = true;
+        await user.save();
+
+        res.json({
+            success: true,
+            message: "Email verified successfully",
+        });
+    } catch (error) {
+        console.log("Error coming while sending verification code to user" + error.message);
         res.status(500).json({ message: error.message })
     }
 }

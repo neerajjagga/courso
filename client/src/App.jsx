@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import IndexPage from './pages/IndexPage';
 import SignUpPage from './pages/SignUpPage';
@@ -14,6 +14,12 @@ import Settings from "./pages/Settings";
 import UserDashboard from "./pages/Dashboard/UserDashboard";
 import ActiveCourses from "./pages/Dashboard/ActiveCourses";
 import Bookmarks from "./pages/Dashboard/Bookmarks";
+import ViewPublicProfile from "./components/ViewPublicProfile";
+import EditProfile from "./components/EditProfile";
+import EditPhoto from "./components/EditPhoto";
+import CloseAccount from "./components/CloseAccount";
+import BecomeTeacher from "./pages/BecomeTeacher";
+import VerifyEmail from "./pages/VerifyEmail";
 
 function App() {
 
@@ -22,7 +28,7 @@ function App() {
 
   useEffect(() => {
     checkAuth();
-  }, [checkAuth])
+  }, [checkAuth]);
 
   if (checkingAuthLoader) {
     return <Loader />
@@ -39,15 +45,21 @@ function App() {
           <Route path="/" element={<IndexPage />} />
           <Route path="/signup" element={user ? <Navigate to={'/'} /> : <SignUpPage />} />
           <Route path="/login" element={user ? <Navigate to={'/'} /> : <LoginPage />} />
+          <Route path="/verify-email" element={(user?.isEmailVerified || !user) ? <Navigate to={'/'} /> : <VerifyEmail />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/courses" element={<CoursesPage />} />
           <Route path="/contact-us" element={<ContactUsPage />} />
-          <Route path="/s" element={user ? <Settings /> : <Navigate to={'/'} />} />
-          <Route path="/dashboard" element={user ? <UserDashboard /> : <Navigate to={'/'} />} />
+          <Route path="/s" element={user ? <Settings /> : <Navigate to={'/'} />}>
+            <Route path="view-profile" element={<ViewPublicProfile />} />
+            <Route path="edit-profile" element={<EditProfile />} />
+            <Route path="edit-photo" element={<EditPhoto />} />
+            <Route path="close-account" element={<CloseAccount />} />
+          </Route>
           <Route path="/dashboard" element={user ? <UserDashboard /> : <Navigate to={'/'} />}>
             <Route path="active-courses" element={<ActiveCourses />} />
             <Route path="bookmarks" element={<Bookmarks />} />
           </Route>
+          <Route path="/become-instructor" element={<BecomeTeacher />} />
         </Routes>
       </div>
 
