@@ -33,67 +33,79 @@ export const signupValidationSchema = Joi.object({
       'any.required': 'Password is required.'
     }),
 
-  // username: Joi.string()
-  //   .min(3)
-  //   .required()
-  //   .trim()
-  //   .messages({
-  //     'string.base': 'Username must be a string.',
-  //     'string.empty': 'Username is required.',
-  //     'string.min': 'Username must be at least 3 characters long.',
-  //     'any.required': 'Username is required.'
-  //   }),
+  username: Joi.string()
+    .min(3)
+    .trim()
+    .messages({
+      'string.base': 'Username must be a string.',
+      'string.empty': 'Username should not be empty.',
+      'string.min': 'Username must be at least 3 characters long.'
+    }),
 
-  // role: Joi.string()
-  //   .valid('user', 'admin')
-  //   .default('user')
-  //   .messages({
-  //     'string.base': 'Role must be a string.',
-  //     'any.only': 'Role must be one of "user" or "admin".'
-  //   }),
+  role: Joi.string()
+    .valid('user', 'instructor')
+    .default('user')
+    .messages({
+      'string.base': 'Role must be a string.',
+      'any.only': 'Role must be one of "user" or "instructor".'
+    }),
 
-  // interestedInField: Joi.string()
-  //   .trim()
-  //   .messages({
-  //     'string.base': 'Interested In Field must be a string.',
-  //     'string.empty': 'Please select at least one field.',
-  //     'any.required': 'Please select at least one field.'
-  //   }),
+  interestedInField: Joi.string()
+    .trim()
+    .messages({
+      'string.base': 'Interested In Field must be a string.',
+      'string.empty': 'Interested In Field should not be empty.'
+    }),
 
-  // interestedInSkills: Joi.array()
-  //   .items(Joi.string())
-  //   .min(1)
-  //   .messages({
-  //     'array.base': 'Interested In Skills must be an array of strings.',
-  //     'array.min': 'Please select at least one skill.',
-  //     'any.required': 'Please select at least one skill.'
-  //   }),
+  interestedInSkills: Joi.array()
+    .items(Joi.string())
+    .min(1)
+    .messages({
+      'array.base': 'Interested In Skills must be an array of strings.',
+      'array.min': 'Please select at least one skill.'
+    }),
 
-  // bio: Joi.string()
-  //   .max(300)
-  //   .trim()
-  //   .messages({
-  //     'string.base': 'Bio must be a string.',
-  //     'string.empty': 'Bio should not be empty.',
-  //     'string.max': 'Bio should be a maximum of 300 characters long.'
-  // //   }),
+  socialLinks: Joi.array()
+    .items(Joi.string().uri())
+    .messages({
+      'array.base': 'Social Links must be an array.',
+      'string.uri': 'Each social link must be a valid URL.'
+    }),
 
-  // socialLinks: Joi.array()
-  //   .items(Joi.string().uri())
-  //   .messages({
-  //     'array.base': 'Social Links must be an array.',
-  //     'string.uri': 'Each social link must be a valid URL.'
-  //   }),
+  enrolledIn: Joi.array()
+    .items(Joi.string().hex().length(24))
+    .messages({
+      'array.base': 'Enrolled In must be an array of ObjectIds.',
+      'string.hex': 'Each course ID must be a valid ObjectId.',
+      'string.length': 'Course ID must have a length of 24 hexadecimal characters.'
+    }),
 
-  // enrolledIn: Joi.array()
-  //   .items(Joi.string().hex().length(24))
-  //   .messages({
-  //     'array.base': 'Enrolled In must be an array of ObjectIds.',
-  //     'string.hex': 'Each course ID must be a valid ObjectId.',
-  //     'string.length': 'Course ID must have a length of 24 hexadecimal characters.'
-  //   }),
+  headline: Joi.string()
+    .max(60)
+    .trim()
+    .allow('')
+    .messages({
+      'string.base': 'Headline must be a string.',
+      'string.max': 'Headline should be a maximum of 60 characters long.'
+    }),
 
-}).options({ allowUnknown: false });
+  biography: Joi.string()
+    .max(1000)
+    .trim()
+    .allow('')
+    .messages({
+      'string.base': 'Biography must be a string.',
+      'string.max': 'Biography should be a maximum of 1000 characters long.'
+    }),
+
+  category: Joi.string()
+    .trim()
+    .allow('')
+    .messages({
+      'string.base': 'Category must be a string.',
+    })
+
+}).options({ allowUnknown: true });
 
 
 export const loginValidationSchema = Joi.object({

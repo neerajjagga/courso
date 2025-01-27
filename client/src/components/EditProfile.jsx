@@ -5,23 +5,23 @@ import toast from "react-hot-toast";
 
 const EditProfile = () => {
     const { user, editProfile } = useUserStore();
-    
+
     const [formData, setFormData] = useState({
         fullname: user.fullname || "",
-        bio: user.bio || "",
-        twitterUrl: user.socialLinks.find(link => link.name === "Twitter")?.url?.split('com/')[1] || "",
-        facebookUrl: user.socialLinks.find(link => link.name === "Facebook")?.url?.split('com/')[1] || "",
-        linkedInUrl: user.socialLinks.find(link => link.name === "LinkedIn")?.url?.split('com/')[1] || "",
-        githubUrl: user.socialLinks.find(link => link.name === "Github")?.url?.split('com/')[1] || "",
+        headline: user.headline || "",
+        biography: user.biography || "",
+        twitterUrl: user.socialLinks.find(link => link.name === "Twitter")?.username || "",
+        facebookUrl: user.socialLinks.find(link => link.name === "Facebook")?.username || "",
+        linkedInUrl: user.socialLinks.find(link => link.name === "LinkedIn")?.username || "",
+        githubUrl: user.socialLinks.find(link => link.name === "Github")?.username || "",
     })
-    const [textareaCount, setTextareaCount] = useState(user.bio.length || 0);
-    const [fullNameCount, setFullNameCount] = useState(user.fullname.length || 0);
 
     function handleEditProfileSubmit(e) {
         e.preventDefault();
 
         const trimmedFullname = formData.fullname.trim();
-        const trimmedBio = formData.bio.trim();
+        const trimmedHeadline = formData.headline.trim();
+        const trimmedBiography = formData.biography.trim();
 
         if (trimmedFullname === '') {
             toast.error("Fullname cannot be empty");
@@ -34,8 +34,12 @@ const EditProfile = () => {
             dataToBeUpdated["fullname"] = trimmedFullname;
         }
 
-        if (user.bio !== trimmedBio) {
-            dataToBeUpdated["bio"] = trimmedBio;
+        if (user.headline !== trimmedHeadline) {
+            dataToBeUpdated["headline"] = trimmedHeadline;
+        }
+
+        if (user.biography !== trimmedBiography) {
+            dataToBeUpdated["biography"] = trimmedBiography;
         }
 
         const socialLinksArray = [
@@ -49,16 +53,15 @@ const EditProfile = () => {
             const trimmedUsername = username.trim();
             return {
                 name: urlName.trim(),
-                url: trimmedUsername ? `${baseUrl}/${trimmedUsername}` : baseUrl,
+                url: baseUrl,
+                username: trimmedUsername,
             }
         }
 
         if (socialLinksArray.length > 0) {
             dataToBeUpdated["socialLinks"] = socialLinksArray
         }
-        if (user.bio !== formData.bio.trim()) {
-            dataToBeUpdated["bio"] = formData.bio;
-        }
+
         if (Object.keys(dataToBeUpdated).length > 0) {
             editProfile(dataToBeUpdated);
         } else {
@@ -75,7 +78,7 @@ const EditProfile = () => {
             </div>
 
             <div className="mt-10">
-                <EditProfileForm handleEditProfileSubmit={handleEditProfileSubmit} fullNameCount={fullNameCount} setFullNameCount={setFullNameCount} textareaCount={textareaCount} setTextareaCount={setTextareaCount} formData={formData} setFormData={setFormData} />
+                <EditProfileForm handleEditProfileSubmit={handleEditProfileSubmit} formData={formData} setFormData={setFormData} />
             </div>
         </div>
     )

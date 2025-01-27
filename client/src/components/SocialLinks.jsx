@@ -1,6 +1,6 @@
 
 const SocialLinks = ({ formData, setFormData }) => {
-    
+
     const socialLinksData = [
         {
             label: "Twitter",

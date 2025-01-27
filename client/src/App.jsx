@@ -18,8 +18,8 @@ import ViewPublicProfile from "./components/ViewPublicProfile";
 import EditProfile from "./components/EditProfile";
 import EditPhoto from "./components/EditPhoto";
 import CloseAccount from "./components/CloseAccount";
-import BecomeTeacher from "./pages/BecomeTeacher";
-import VerifyEmail from "./pages/VerifyEmail";
+import BecomeTeacherPage from "./pages/BecomeTeacherPage";
+import VerifyEmailPage from "./pages/VerifyEmailPage";
 
 function App() {
 
@@ -45,7 +45,7 @@ function App() {
           <Route path="/" element={<IndexPage />} />
           <Route path="/signup" element={user ? <Navigate to={'/'} /> : <SignUpPage />} />
           <Route path="/login" element={user ? <Navigate to={'/'} /> : <LoginPage />} />
-          <Route path="/verify-email" element={(user?.isEmailVerified || !user) ? <Navigate to={'/'} /> : <VerifyEmail />} />
+          <Route path="/verify-email" element={(user?.isEmailVerified || !user) ? <Navigate to={'/'} /> : <VerifyEmailPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/courses" element={<CoursesPage />} />
           <Route path="/contact-us" element={<ContactUsPage />} />
@@ -59,7 +59,7 @@ function App() {
             <Route path="active-courses" element={<ActiveCourses />} />
             <Route path="bookmarks" element={<Bookmarks />} />
           </Route>
-          <Route path="/become-instructor" element={<BecomeTeacher />} />
+          <Route path="/become-instructor" element={user ? <Navigate to={'/'} /> : <BecomeTeacherPage />} />
         </Routes>
       </div>
 

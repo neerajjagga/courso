@@ -32,7 +32,7 @@ const LoginPage = () => {
 
     return (
         <div className="flex justify-center items-center pt-20 mt-10">
-            <div className="bg-gray-800 bg-opacity-35 flex flex-col gap-2 py-10 px-10 rounded-md">
+            <div className="bg-gradient-to-b from-blue-950 to-black-900 flex flex-col gap-2 py-10 px-10 rounded-md border-b border-r">
                 <motion.div
                     className="sm:mx-auto sm:w-full sm:max-w-md text-center"
                     initial={{ opacity: 0, y: -20 }}

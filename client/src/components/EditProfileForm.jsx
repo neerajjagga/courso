@@ -3,7 +3,7 @@ import { useUserStore } from "../stores/useUserStore";
 import { Shield, ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const EditProfileForm = ({ handleEditProfileSubmit, fullNameCount, setFullNameCount, textareaCount, setTextareaCount, formData, setFormData }) => {
+const EditProfileForm = ({ handleEditProfileSubmit, formData, setFormData }) => {
 
     const { user, sendVerificationCode, loading } = useUserStore();
     const navigate = useNavigate();
@@ -22,45 +22,68 @@ const EditProfileForm = ({ handleEditProfileSubmit, fullNameCount, setFullNameCo
 
             <div className="mt-4">
                 <form onSubmit={handleEditProfileSubmit} className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-1 relative">
+                    <div className="flex flex-col gap-1">
                         <div className="flex gap-10">
                             <label>Full Name:</label>
-                            <div className="absolute left-80">
-                                <span className={fullNameCount > 20 ? "text-red-600" : null}>{fullNameCount}</span>
-                                /20
-                            </div>
                         </div>
-                        <input
-                            value={formData.fullname}
-                            onChange={(e) => {
-                                setFullNameCount(e.target.value.length);
-                                setFormData({ ...formData, fullname: e.target.value });
-                            }}
-                            type="text"
-                            className="w-full input-primary px-4 py-2 sm:w-96" placeholder="John Doe"
-                        />
+                        <div className="relative">
+                            <input
+                                value={formData.fullname}
+                                onChange={(e) => {
+                                    if (e.target.value.length <= 20) {
+                                        setFormData({ ...formData, fullname: e.target.value });
+                                    }
+                                }}
+                                type="text"
+                                className="w-full input-primary px-4 py-2" placeholder="John Doe"
+                            />
+                            <span className={`absolute right-3 top-1 text-lg ${formData.fullname.length > 20 ? "text-red-500 " : "text-gray-300 "}`}>
+                                {20 - formData.fullname.length}
+                            </span>
+                        </div>
                     </div>
 
                     <div className="flex flex-col gap-1 relative">
-                        <div className="flex gap-10">
-                            <label>Short Bio:</label>
-                            <div className="absolute left-80">
-                                <span className={textareaCount > 100 ? "text-red-600" : null}>{textareaCount}</span>
-                                /100
+                        <label>Headline:</label>
+                        <div className="relative">
+                            <input
+                                value={formData.headline}
+                                onChange={(e) => {
+                                    if (e.target.value.length <= 60) {
+                                        setFormData({ ...formData, headline: e.target.value })
+                                    }
+                                }}
+                                type="text"
+                                className="w-full input-primary px-4 py-2 pr-10" placeholder="Developer and Lead Instructor"
+                            />
+                            <span className={`absolute right-3 top-1 text-lg ${formData.headline.length > 60 ? "text-red-500 " : "text-gray-300 "}`}>
+                                {60 - formData.headline.length}
+                            </span>
+                        </div>
+                    </div>
+
+                    {user.role === "instructor" && (
+                        <div className="flex flex-col gap-1 relative">
+                            <label>Biography:</label>
+                            <div className="relative">
+                                <textarea
+                                    value={formData.biography}
+                                    onChange={(e) => {
+                                        if (e.target.value.length <= 1000) {
+                                            setFormData({ ...formData, biography: e.target.value })
+                                        }
+                                    }}
+                                    type="text"
+                                    className="w-full input-primary px-4 py-2 pr-11 text-xl" placeholder="Developer and Lead Instructor"
+                                    rows={10}
+                                    cols={56}
+                                />
+                                <span className={`absolute right-3 top-1 text-lg ${formData.biography.length > 1000 ? "text-red-500 " : "text-gray-300 "}`}>
+                                    {1000 - formData.biography.length}
+                                </span>
                             </div>
                         </div>
-
-                        <textarea
-                            value={formData.bio}
-                            onChange={(e) => {
-                                setTextareaCount(e.target.value.length);
-                                setFormData({ ...formData, bio: e.target.value });
-                            }}
-                            type="text"
-                            className="w-full input-primary px-4 py-2 sm:w-96" placeholder="Remote Software Engineer"
-                            rows={4}
-                        />
-                    </div>
+                    )}
 
                     <div className="flex flex-col gap-1 relative">
                         <div className="flex gap-10">
@@ -71,7 +94,7 @@ const EditProfileForm = ({ handleEditProfileSubmit, fullNameCount, setFullNameCo
                                 disabled={true}
                                 value={user?.email}
                                 type="text"
-                                className="w-full px-4 py-2 sm:w-96 bg-gray-700 rounded-md font-semibold"
+                                className="w-full px-4 py-2 sm:w-96 bg-gray-700 rounded-md font-semibold text-gray-400"
                             />
                             {user?.isEmailVerified ? (
                                 <button
@@ -92,6 +115,7 @@ const EditProfileForm = ({ handleEditProfileSubmit, fullNameCount, setFullNameCo
                             )}
                         </div>
                     </div>
+
 
                     <div className="lg:w-[60%]">
                         <SocialLinks formData={formData} setFormData={setFormData} />

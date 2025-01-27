@@ -8,20 +8,20 @@ dotenv.config();
 
 export const signUpUser = async (req, res) => {
     try {
-        const { fullname, email, password } = req.body;
+        const { data } = req.body;
 
-        const isUserAlreadyPresent = await User.findOne({ email });
+        const isUserAlreadyPresent = await User.findOne({
+            email : data.email,
+        });
 
         if (isUserAlreadyPresent) {
             return res.status(409).json({
                 success: false,
-                message: "User already present with these credentials"
+                message: "Credentials are already in use"
             })
         }
 
-        const user = new User({
-            fullname, email, password,
-        });
+        const user = new User(data);
 
         await user.save();
 

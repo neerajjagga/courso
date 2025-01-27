@@ -15,11 +15,14 @@ const Settings = () => {
                 <section className="flex flex-col gap-3 items-center w-[25%] bg-gray-700 min-h-screen pt-10">
                     <div>
                         {user.profileImageUrl ? (
-                            <img
-                                className="h-36 w-36 rounded-full object-cover transition-all ease shadow-md shadow-black"
-                                src={user.profileImageUrl}
-                                alt={user.fullname}
-                            />
+                            <div className='relative'>
+                                <img
+                                    className="h-36 w-36 rounded-full object-cover transition-all ease shadow-md shadow-black"
+                                    src={user.profileImageUrl}
+                                    alt={user.fullname}
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent rounded-full"></div>
+                            </div>
                         ) : (
                             <div className="h-36 w-36 bg-blue-950 text-5xl text-white rounded-full flex items-center justify-center font-semibold hover:brightness-75 transition-all ease shadow-md shadow-black">
                                 {user.fullname.charAt(0).toUpperCase()}
@@ -29,8 +32,8 @@ const Settings = () => {
 
                     <div className='flex flex-col items-center'>
                         <span className='text-xl font-bold text-white'>{user.fullname}</span>
-                        {user.bio && (
-                            <span className='text-lg italic text-black text-center'>{user.bio}</span>
+                        {user.headline && (
+                            <span className='text-lg italic text-black text-center'>{user.headline}</span>
                         )}
                     </div>
 

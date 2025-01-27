@@ -4,16 +4,16 @@ import bcrypt from "bcryptjs";
 const userSchema = new mongoose.Schema({
     fullname: {
         type: String,
-        maxLength: [20, "Name should be maximum 20 characters "],
+        maxLength: [20, "Name should be maximum 20 characters"],
         required: [true, "Fullname is required"],
         trim: true,
     },
     email: {
         type: String,
         required: [true, "Email is required"],
-        trim: true,
         unique: true,
         lowercase: true,
+        trim: true,
     },
     password: {
         type: String,
@@ -21,53 +21,33 @@ const userSchema = new mongoose.Schema({
         required: [true, "Password is required"],
         trim: true,
     },
+    role: {
+        type: String,
+        enum: ['user', 'instructor'],
+        default: 'user',
+    },
     profileImageUrl: {
         type: String,
         default: "",
         trim: true,
     },
-    // username : {
-    //     type : String,
-    //     minLength : [3, "Username must be at least 6 characters long"],
-    //     required : [true, "Username is required"],
-    //     unique : true,
-    //     trim : true,
-    // },
-    role: {
-        type: String,
-        enum: ["user", "admin"],
-        default: "user"
-    },
-    interestedInField: {
-        type: String,
-        default: "",
-        trim: true,
-    },
-    interestedInSkills: {
-        type: [String],
-    },
-    bio: {
-        type: String,
-        maxLength: [100, "Bio should be maximum 100 characters long"],
-        trim: true,
-        default: "",
-    },
-    socialLinks: {
-        type: [{
-            name: {
+    socialLinks: [
+        {
+            name: String,
+            url: String,
+            username: {
                 type: String,
+                default: "",
             },
-            url: {
-                type: String,
-            }
-        }]
-    },
-    enrolledIn: {
-        type: [{
+            _id: false,
+        },
+    ],
+    enrolledIn: [
+        {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Course'
-        }]
-    },
+            ref: 'Course',
+        },
+    ],
     isEmailVerified: {
         type: Boolean,
         default: false,
@@ -76,9 +56,30 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    courses: [ // admin
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Course',
+        },
+    ],
+    category: { // admin
+        type: String,
+        trim: true,
+    },
+    biography: { // admin
+        type: String,
+        maxLength: [1000, "Biography should be maximum 1000 characters long"],
+        default: "",
+    },
+    headline: { // admin
+        type: String,
+        maxLength: [60, "Headline should be maximum 60 characters long"],
+        trim: true,
+        default: "",
+    },
 }, {
     timestamps: true,
-})
+});
 
 userSchema.pre('save', async function () {
     if (!this.isModified('password')) {
@@ -88,8 +89,8 @@ userSchema.pre('save', async function () {
 });
 
 userSchema.methods.comparePassword = async function (password) {
-    return await bcrypt.compare(password, this.password)
-}
+    return await bcrypt.compare(password, this.password);
+};
 
 userSchema.set('toJSON', {
     versionKey: false,
@@ -98,10 +99,14 @@ userSchema.set('toJSON', {
         delete ret._id;
         delete ret.password;
 
-        // ret.email = ret.email.replace(/(.{2})(.*)(@.*)/, '$1****$3');
-    }
+        if (ret.role === "user") {
+            delete ret.courses;
+            delete ret.headline;
+            delete ret.biography;
+        }
+    },
 });
 
-const userModel = mongoose.model('User', userSchema);
+const UserModel = mongoose.model('User', userSchema);
 
-export default userModel;
+export default UserModel;

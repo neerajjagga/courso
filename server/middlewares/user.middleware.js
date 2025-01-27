@@ -46,12 +46,12 @@ export const checkAuth = async (req, res, next) => {
 }
 
 export const validateSignUpData = async (req, res, next) => {
-    const { error } = signupValidationSchema.validate(req.body);
+    const { error } = signupValidationSchema.validate(req.body.data);
 
     if (error) {
         return res.status(400).json({
             success: false,
-            error: error.details[0].message,
+            message: error.details[0].message,
         })
     }
 
