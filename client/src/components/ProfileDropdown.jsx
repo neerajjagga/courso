@@ -37,7 +37,7 @@ const ProfileDropdown = ({ profileDropdown, user, setProfileDropdown }) => {
                     <li className="shadow-sm shadow-black w-full bg-gray-800 rounded-box py-1">
                         <Link onClick={() => setProfileDropdown(false)} to={'/s/edit-profile'} className="text-green-500 font-semibold">Edit Profile</Link>
                     </li>
-                    {user.role === "admin" ? (
+                    {user.role === "instructor" ? (
                         <li className="shadow-sm shadow-black w-full bg-gray-800 rounded-box py-1">
                             <Link to={'/edit-profile'} className="text-orange-400 font-semibold">My Courses</Link>
                         </li>

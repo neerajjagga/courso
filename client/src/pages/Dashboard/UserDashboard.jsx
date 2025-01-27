@@ -1,7 +1,8 @@
 import { GraduationCap, PanelLeft, PanelRight } from "lucide-react"
 import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom"
-import { dashboardMenu } from "../../data/dashboardMenuItems";
+import { UserDashboardMenu } from "../../data/UserDashboardMenuItems";
+import { InstructorDashboardMenu } from "../../data/AdminDashboardMenuItems";
 import { useUserStore } from "../../stores/useUserStore";
 
 const UserDashboard = () => {
@@ -26,7 +27,7 @@ const UserDashboard = () => {
             {
                 // sidebar
             }
-            <section className={`pt-4 py-2 px-2 bg-gray-800 transition-all duration-300 ease-linear ${isSidebarActive ? "min-w-56" : "max-w-16"}`}>
+            <section className={`fixed h-full pt-4 py-2 px-2 bg-gray-800 transition-all ease-in ${isSidebarActive ? "min-w-56" : "max-w-16"}`}>
                 <div className="flex flex-col justify-between min-h-full">
                     <div className="flex flex-col gap-6 items-center">
                         <div>
@@ -46,17 +47,31 @@ const UserDashboard = () => {
 
                         <div className="w-full">
                             <div className={`flex flex-col gap-2 px-2 ${!isSidebarActive && "items-center"}`}>
-                                {dashboardMenu.map((item, index) => {
-                                    let ItemComponent = item.icon;
-                                    return (
-                                        <Link key={index} to={item.url} className="flex gap-2 items-center py-2 px-2 rounded-md hover:bg-gray-900 transition-all ease">
-                                            <ItemComponent size={"22"} />
-                                            {isSidebarActive && (
-                                                <span className="text-md font-semibold">{item.name}</span>
-                                            )}
-                                        </Link>
-                                    )
-                                })}
+                                {user.role === "user" ? (
+                                    UserDashboardMenu.map((item, index) => {
+                                        let ItemComponent = item.icon;
+                                        return (
+                                            <Link key={index} to={item.url} className="flex gap-2 items-center py-2 px-2 rounded-md hover:bg-gray-900 transition-all ease">
+                                                <ItemComponent size={"22"} />
+                                                {isSidebarActive && (
+                                                    <span className="text-md font-semibold">{item.name}</span>
+                                                )}
+                                            </Link>
+                                        )
+                                    })
+                                ) : (
+                                    InstructorDashboardMenu.map((item, index) => {
+                                        let ItemComponent = item.icon;
+                                        return (
+                                            <Link key={index} to={item.url} className="flex gap-2 items-center py-2 px-2 rounded-md hover:bg-gray-900 transition-all ease">
+                                                <ItemComponent size={"22"} />
+                                                {isSidebarActive && (
+                                                    <span className="text-md font-semibold">{item.name}</span>
+                                                )}
+                                            </Link>
+                                        )
+                                    })
+                                )}
                             </div>
                         </div>
                     </div>
@@ -65,11 +80,13 @@ const UserDashboard = () => {
                         <div className="flex gap-2 items-center">
                             <div className={`${!isSidebarActive ? "flex justify-center min-w-full pb-2" : ""}`}>
                                 {user.profileImageUrl ? (
-                                    <img
-                                        className="max-h-10 max-w-10 rounded-full object-cover transition-all ease"
-                                        src={user.profileImageUrl}
-                                        alt={user.fullname}
-                                    />
+                                    <Link to={'/s/view-profile'}>
+                                        <img
+                                            className="max-h-10 max-w-10 rounded-full object-cover transition-all ease shadow-xl"
+                                            src={user.profileImageUrl}
+                                            alt={user.fullname}
+                                        />
+                                    </Link>
                                 ) : (
                                     <div className="h-10 w-10 bg-blue-950 text-white rounded-full flex items-center justify-center font-semibold hover:brightness-75 transition-all ease">
                                         {user.fullname.charAt(0).toUpperCase()}
@@ -78,7 +95,7 @@ const UserDashboard = () => {
                             </div>
                             <div className="flex flex-col gap-0 truncate">
                                 <span>{user.fullname}</span>
-                                <span className="text-sm text-gray-400">{user?.bio}</span>
+                                <span className="text-sm text-gray-400">{user?.headline}</span>
                             </div>
                         </div>
                         {isSidebarActive && (
@@ -89,11 +106,12 @@ const UserDashboard = () => {
             </section>
 
 
-            <section className="w-full">
+            <section className={`transition-all z-20 ease-in ${isSidebarActive ? "ml-56" : "ml-16"
+                } w-full`}>
                 {
                     // navBar
                 }
-                <div className="flex items-center gap-4 py-3 px-6 border-b  border-blue-950">
+                <nav className="fixed w-full z-10 flex items-center gap-4 py-3 px-6 border-b border-blue-950 backdrop-blur-sm">
                     <div onClick={toggleSidebar} className="p-1 hover:bg-gray-800 rounded-lg transition-all ease cursor-pointer">
                         {isSidebarActive ? <PanelRight /> : <PanelLeft />}
                     </div>
@@ -111,12 +129,11 @@ const UserDashboard = () => {
                             })
                         )}
                     </div>
-                </div>
+                </nav>
 
-                {
-                    // main
-                }
-                <Outlet />
+                <main>
+                    <Outlet />
+                </main>
             </section>
         </div>
     )

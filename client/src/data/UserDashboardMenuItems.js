@@ -1,6 +1,6 @@
 import { House, SquareLibrary, LibraryBig, Bookmark, History } from "lucide-react";
 
-export const dashboardMenu = [
+export const UserDashboardMenu = [
     {
         icon: House,
         name: "Home",

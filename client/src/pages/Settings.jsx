@@ -5,8 +5,8 @@ import { Outlet, useLocation } from 'react-router-dom';
 
 const Settings = () => {
     const { user } = useUserStore();
-    const [activeTab, setActiveTab] = useState('');
     const location = useLocation();
+    const [activeTab, setActiveTab] = useState(location.pathname);    
 
     return (
         <div className='flex justify-center pt-28'>

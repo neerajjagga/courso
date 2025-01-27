@@ -1,4 +1,7 @@
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Toaster } from 'react-hot-toast';
+import { useUserStore } from "./stores/useUserStore";
+import { useEffect } from "react";
 import Navbar from "./components/Navbar";
 import IndexPage from './pages/IndexPage';
 import SignUpPage from './pages/SignUpPage';
@@ -7,9 +10,6 @@ import ContactUsPage from "./pages/ContactUsPage";
 import CoursesPage from "./pages/CoursesPage";
 import AboutPage from "./pages/AboutPage";
 import Loader from "./components/Loader";
-import { Toaster } from 'react-hot-toast';
-import { useUserStore } from "./stores/useUserStore";
-import { useEffect } from "react";
 import Settings from "./pages/Settings";
 import UserDashboard from "./pages/Dashboard/UserDashboard";
 import ActiveCourses from "./pages/Dashboard/ActiveCourses";
@@ -20,6 +20,8 @@ import EditPhoto from "./components/EditPhoto";
 import CloseAccount from "./components/CloseAccount";
 import BecomeTeacherPage from "./pages/BecomeTeacherPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
+import NewCourse from "./pages/Dashboard/NewCourse";
+import MyCourses from "./pages/Dashboard/MyCourses";
 
 function App() {
 
@@ -58,6 +60,8 @@ function App() {
           <Route path="/dashboard" element={user ? <UserDashboard /> : <Navigate to={'/'} />}>
             <Route path="active-courses" element={<ActiveCourses />} />
             <Route path="bookmarks" element={<Bookmarks />} />
+            <Route path="my-courses" element={<MyCourses />} />
+            <Route path="new-course" element={<NewCourse />} />
           </Route>
           <Route path="/become-instructor" element={user ? <Navigate to={'/'} /> : <BecomeTeacherPage />} />
         </Routes>

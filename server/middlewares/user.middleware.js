@@ -45,6 +45,25 @@ export const checkAuth = async (req, res, next) => {
     }
 }
 
+export const checkInstructor = async(req, res, next) => {
+    try {
+        const user = req.user;
+        if(user.role !== "instructor") {
+            return res.status(400).json({
+                success : false,
+                message : "Unauthorized, you are not a instructor"
+            })
+        }
+
+        next();
+    } catch (error) {
+        console.error("Error in checkInstructor middleware:", error.stack);
+        return res.status(500).json({
+            message: "Try again later",
+        });
+    }
+}
+
 export const validateSignUpData = async (req, res, next) => {
     const { error } = signupValidationSchema.validate(req.body.data);
 
