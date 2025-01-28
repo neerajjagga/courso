@@ -1,8 +1,7 @@
 import { Loader, Pencil } from "lucide-react";
 import { useUserStore } from "../stores/useUserStore"
 import { useState } from "react";
-import toast from "react-hot-toast";
-import imageCompression from "browser-image-compression";
+import { handleFileChange } from "../utils/handleFileChange";
 
 const EditPhoto = () => {
   const { user, editPhoto, loading } = useUserStore();
@@ -19,49 +18,6 @@ const EditPhoto = () => {
     setIsSelectedImage(false);
     if (isDeletingImage) setIsDeletingImage(false);
   };
-
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-
-      const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
-
-      if (!validImageTypes.includes(file.type)) {
-        setIsSelectedImage(false);
-        toast.error("Please upload a valid image file (JPEG, PNG, GIF)");
-        return;
-      }
-
-      if (file.size > 10 * 1024 * 1024) {
-        setIsSelectedImage(false);
-        toast.error("Image is too large. Max allowed 10MB");
-        return;
-      }
-
-      setIsSelectedImage(true);
-      setIsCompressingImage(true);
-      try {
-        const options = {
-          maxSizeMB: 1,
-          maxWidthOrHeight: 500,
-          useWebWorker: true,
-        };
-        const compressedFile = await imageCompression(file, options);
-
-        const reader = new FileReader();
-        reader.onload = () => {
-          console.log(reader.result);
-          setProfileImage(reader.result);
-          setIsCompressingImage(false);
-        };
-        reader.readAsDataURL(compressedFile);
-
-      } catch (error) {
-        setIsCompressingImage(false);
-        toast.error("Error compressing image, try another image");
-      }
-    }
-  }
 
   return (
     <div className="h-full flex flex-col items-center">
@@ -108,7 +64,7 @@ const EditPhoto = () => {
                   className="hidden"
                   accept="image/*"
                   onChange={(e) => {
-                    handleFileChange(e)
+                    handleFileChange(e, setIsSelectedImage, setIsCompressingImage, setProfileImage, profileImage);
                   }}
                 />
                 <Pencil size={24} />

@@ -15,10 +15,17 @@ export default {
       animation: {
         'scroll-left': 'scroll-left 20s linear infinite',
       },
+      textStrokeWidth: {
+        DEFAULT: '1px',
+        sm: '0.5px',
+        md: '2px',
+        lg: '4px',
+      },
     },
   },
   plugins: [
     require('daisyui'),
+    require('@tailwindcss/typography'),
   ],
 }
 

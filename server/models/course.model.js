@@ -35,10 +35,20 @@ const courseSchema = new mongoose.Schema({
         trim: true,
     },
     price: {
-        type: Number,
-        min: 0,
-        required: true,
-        trim: true,
+        amount: {
+            type: Number,
+            min: 0,
+            required: true,
+            trim: true,
+        },
+        currencyCode: {
+            type: String,
+            default: "inr"
+        },
+        currencySymbol: {
+            type: String,
+            default: "₹",
+        },
     },
     // lectures: [
     //     {

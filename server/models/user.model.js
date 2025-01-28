@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
@@ -56,12 +56,12 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    courses: [ // admin
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Course',
-        },
-    ],
+    courses: {
+        type : [{
+            type : mongoose.Schema.Types.ObjectId,
+            ref : 'User'
+        }]
+    },
     category: { // admin
         type: String,
         trim: true,

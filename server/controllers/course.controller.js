@@ -9,11 +9,9 @@ export const createCourse = async (req, res) => {
         // if we have the course image then save it in cloudinary
         if (data.courseImageUrl) {
             try {
-                const res = await cloudinary.uploader.upload(updatedData.profileImageUrl, {
+                const res = await cloudinary.uploader.upload(data.courseImageUrl, {
                     transformation: [
                         {
-                            width: 1920,
-                            height: 1080,
                             crop: 'fill',
                             gravity: 'auto',
                             quality: "auto",
@@ -29,10 +27,10 @@ export const createCourse = async (req, res) => {
 
         // add instructor id into data
         data["instructor"] = user._id;
-        const course = Course.create(data);
+        const course = await Course.create(data);
 
         user.courses.push(course._id);
-        await user.save();
+        await user.save();    
 
         res.json({
             course,

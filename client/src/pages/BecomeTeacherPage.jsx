@@ -56,7 +56,7 @@ const BecomeTeacherPage = () => {
 
     return (
         <div className="mt-10 flex justify-center items-center pt-20">
-            <div className="bg-gradient-to-b from-blue-950 to-black-900 flex flex-col gap-2 py-10 px-10 rounded-md border-b border-r">
+            <div className="bg-[url('https://res.cloudinary.com/dabywmj68/image/upload/v1738048982/SignupLoginGradient_ije0ql.png')] bg-bottom bg-cover flex flex-col gap-2 py-10 px-10 rounded-md border-b border-r">
                 <motion.div
                     className="sm:mx-auto sm:w-full sm:max-w-md text-center flex flex-col gap-2"
                     initial={{ opacity: 0, y: -20 }}

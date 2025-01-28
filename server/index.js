@@ -44,7 +44,7 @@ import courseRouter from './routes/course.route.js';
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
-app.use('/api/course', courseRouter);
+app.use('/api/courses', courseRouter);
 
 app.listen(PORT , async() => {
     console.log(`Server is listening on port ${PORT}`);

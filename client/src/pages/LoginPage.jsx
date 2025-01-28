@@ -32,7 +32,7 @@ const LoginPage = () => {
 
     return (
         <div className="flex justify-center items-center pt-20 mt-10">
-            <div className="bg-gradient-to-b from-blue-950 to-black-900 flex flex-col gap-2 py-10 px-10 rounded-md border-b border-r">
+            <div className="bg-[url('https://res.cloudinary.com/dabywmj68/image/upload/v1738048982/SignupLoginGradient_ije0ql.png')] bg-bottom bg-cover flex flex-col gap-2 py-10 px-10 rounded-md border-b border-r">
                 <motion.div
                     className="sm:mx-auto sm:w-full sm:max-w-md text-center"
                     initial={{ opacity: 0, y: -20 }}
@@ -79,7 +79,7 @@ const LoginPage = () => {
                             </div>
                         </div>
                         <div>
-                            <p className="text-sm text-gray-400 mt-1">Don't have an account. <Link to={'/signup'} className="text-blue-500 underline">Create now</Link></p>
+                            <p className="text-sm text-gray-300 mt-1">Don't have an account. <Link to={'/signup'} className="text-blue-200 underline font-semibold">Create now</Link></p>
                         </div>
                         <button disabled={loading} type="submit" className="btn-primary py-2 rounded-md mt-2 font-semibold flex items-center justify-center gap-2">
                             {loading && <span className="loading loading-dots loading-md"></span>}

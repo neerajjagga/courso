@@ -11,7 +11,7 @@ export const courseValidationSchema = Joi.object({
       'string.empty': 'Title is required.',
       'any.required': 'Title is required.',
     }),
-  
+
   subtitle: Joi.string()
     .max(200)
     .trim()
@@ -24,7 +24,7 @@ export const courseValidationSchema = Joi.object({
   description: Joi.string()
     .max(3000)
     .trim()
-    .allow()
+    .allow('')
     .messages({
       'string.base': 'Description must be a string.',
       'string.max': 'Description should be a maximum of 3000 characters.',
@@ -57,14 +57,16 @@ export const courseValidationSchema = Joi.object({
       'string.uri': 'Course Image URL must be a valid URI.',
     }),
 
-  price: Joi.number()
-    .min(0)
-    .required()
-    .messages({
-      'number.base': 'Price must be a number.',
-      'number.min': 'Price must be at least 0.',
-      'any.required': 'Price is required.',
-    }),
+  price: Joi.object({
+    amount: Joi.number()
+      .min(0)
+      .required()
+      .messages({
+        'number.base': 'Amount must be a number.',
+        'number.min': 'Amount must be at least 0.',
+        'any.required': 'Amount is required.',
+      }),
+  }),
 
   category: Joi.string()
     .trim()
@@ -86,13 +88,5 @@ export const courseValidationSchema = Joi.object({
       'array.base': 'Reviews must be an array of ObjectIds.',
       'string.pattern.base': 'Each review ID must be a valid ObjectId.',
     }),
-
-  instructor: Joi.string()
-    .regex(/^[0-9a-fA-F]{24}$/)
-    .required()
-    .messages({
-      'string.base': 'Instructor must be a valid ObjectId.',
-      'string.pattern.base': 'Instructor must be a valid ObjectId.',
-      'any.required': 'Instructor is required.',
-    }),
+    
 }).options({ allowUnknown: true });
