@@ -14,9 +14,9 @@ export const useUserStore = create((set, get) => ({
 
         try {
             const res = await axios.post('/auth/signup', {
-                data : {
+                data: {
                     ...formData,
-                    confirmPassword : undefined,
+                    confirmPassword: undefined,
                 }
             })
             console.log(res);
@@ -52,8 +52,10 @@ export const useUserStore = create((set, get) => ({
         try {
             const res = await axios.get('/user/profile');
             set({ user: res.data.user, checkingAuthLoader: false });
+            return true;
         } catch (error) {
-            set({ user: null, checkingAuthLoader: false })
+            set({ user: null, checkingAuthLoader: false });
+            return false;
         }
     },
 

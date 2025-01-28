@@ -30,7 +30,7 @@ export const createCourse = async (req, res) => {
         const course = await Course.create(data);
 
         user.courses.push(course._id);
-        await user.save();    
+        await user.save();
 
         res.json({
             course,
@@ -60,6 +60,34 @@ export const updateCourse = async (req, res) => {
 
     } catch (error) {
         console.log("Error while creating course" + error.message);
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+export const getMyCourses = async (req, res) => {
+    try {
+        const user = req.user;
+        const courses = await Course.find({ instructor: user._id });
+
+        if (courses.length === 0) {
+            return res.json({
+                success: true,
+                message: "No courses found",
+                courses,
+            })
+        }
+
+        res.json({
+            success: true,
+            message: "Courses fetched successfully",
+            courses,
+        })
+
+    } catch (error) {
+        console.log("Error while getting my courses" + error.message);
         res.status(500).json({
             success: false,
             message: error.message

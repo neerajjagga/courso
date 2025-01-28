@@ -30,6 +30,24 @@ export const useCourseStore = create((set, get) => ({
             set({ loading: false })
             toast.error(error.response?.data?.message || "An error occurred while creating course")
         }
+    },
+
+    getCourses: async () => {
+        set({ loading: true });
+        try {
+            const res = await axios.get('/courses/me');
+            console.log(res);
+            set({
+                courses: res.data.courses,
+                loading: false,
+            });
+            console.log(get().courses);
+            console.log(res?.data?.message);
+        } catch (error) {
+            console.log(error);
+            set({ loading: false })
+            toast.error(error.response?.data?.message || "An error occurred while getting courses")
+        }
     }
 }));
 

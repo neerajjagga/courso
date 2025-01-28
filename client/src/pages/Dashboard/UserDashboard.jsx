@@ -1,9 +1,10 @@
 import { GraduationCap, PanelLeft, PanelRight } from "lucide-react"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom"
 import { UserDashboardMenu } from "../../data/UserDashboardMenuItems";
 import { InstructorDashboardMenu } from "../../data/AdminDashboardMenuItems";
 import { useUserStore } from "../../stores/useUserStore";
+import { useCourseStore } from "../../stores/useCourseStore";
 
 const UserDashboard = () => {
     const location = useLocation();
@@ -11,8 +12,12 @@ const UserDashboard = () => {
     const navigators = location.pathname.split('/').filter(item => item !== '');
     const [isSidebarActive, setIsSidebarActive] = useState(true);
 
+    const { getCourses } = useCourseStore();
     const { logout, loading } = useUserStore();
 
+    useEffect(() => {
+        getCourses();
+    }, [getCourses])
 
     const toggleSidebar = () => {
         setIsSidebarActive((prev) => !prev);
