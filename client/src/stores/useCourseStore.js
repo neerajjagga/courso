@@ -5,11 +5,18 @@ import axios from '../lib/axios';
 export const useCourseStore = create((set, get) => ({
     allCourses : [],
     myCourses: [],
+    selectedCourse : null,
     loading: false,
     success: false,
 
     setSuccess: (bool) => {
         set({ success: bool });
+    },
+
+    setSelectedCourse: (course) => {
+        set({ selectedCourse: course });
+        console.log(get().selectedCourse);
+        console.log("Inside setselectedcourse");
     },
 
     createCourse: async (formData) => {

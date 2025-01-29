@@ -7,6 +7,11 @@ const courseSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
+    titleSlug: {
+        type: String,
+        trim: true,
+        unique: true,
+    },
     subtitle: {
         type: String,
         maxLength: [200, "Subtitle should be maximum 200 characters"],

@@ -1,26 +1,22 @@
 import { useEffect } from "react";
 import { useCourseStore } from "../stores/useCourseStore";
-import MyCoursesShimmer from "../components/Shimmers/MyCoursesShimmer";
 import AllCourseCard from "../components/AllCourseCard";
+import AllCoursesShimmer from "../components/Shimmers/AllCoursesShimmer";
 
 const CoursesPage = () => {
 
-  const { allCourses, getAllCourses, loading } = useCourseStore();
-
-  useEffect(() => {
-    getAllCourses();
-  }, [getAllCourses])
+  const { allCourses, loading } = useCourseStore();
 
   return (
-    <div className="mt-28 min-h-screen px-8">
+    <div className="mt-28 min-h-screen sm:px-8">
       <div className="text-3xl font-bold text-center">
         <span>What would you like to <span className="text-blue-500">learn?</span></span>
       </div>
 
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-3 px-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-3 sm:px-5">
           {Array(6).fill(0).map((_, index) => (
-            <MyCoursesShimmer key={index} />
+            <AllCoursesShimmer key={index} />
           ))}
         </div>
       ) : (

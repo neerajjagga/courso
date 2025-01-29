@@ -3,7 +3,7 @@ const MyCoursesCard = ({ course }) => {
     return (
         <div className='flex flex-col gap-4 w-full h-full'>
             <div className='relative flex justify-center'>
-                <img className='' src={course.courseImageUrl} alt={course.title} />
+                <img className='' src={course.courseImageUrl || "https://res.cloudinary.com/dabywmj68/image/upload/v1738051049/placeholder_pg74id.webp"} alt={course.title} />
                 <span className='text-black absolute top-2 left-2 text-sm font-bold bg-gradient-to-b from-amber-200 to-yellow-400 py-1 px-2 rounded-2xl'>{course.category.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (str) => str.toUpperCase())}</span>
                 <div className="absolute inset-0 bg-black bg-opacity-5"></div>
             </div>

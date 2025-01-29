@@ -1,5 +1,5 @@
 import { GraduationCap, Rocket } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useUserStore } from '../stores/useUserStore';
 import { useState, useEffect, useRef } from 'react';
 import ProfileDropdown from './ProfileDropdown';
@@ -8,6 +8,7 @@ const Navbar = () => {
     const { user } = useUserStore();
     const [profileDropdown, setProfileDropdown] = useState(false);
     const dropdownRef = useRef(null);
+    const location = useLocation();
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -32,16 +33,16 @@ const Navbar = () => {
 
             <div className="font-semibold">
                 <ul className="flex gap-8 text-xl">
-                    <li className="hover:text-gray-300 transition-all">
+                    <li className={`hover:text-blue-500 transition-all`}>
                         <Link to={'/'}>Home</Link>
                     </li>
-                    <li className="hover:text-gray-300 transition-all">
+                    <li className={`hover:text-blue-500 transition-all ${location.pathname === '/courses' && "text-blue-500"}`}>
                         <Link to={'/courses'}>Courses</Link>
                     </li>
-                    <li className="hover:text-gray-300 transition-all">
+                    <li className={`hover:text-blue-500 transition-all ${location.pathname === '/about' && "text-blue-500"}`}>
                         <Link to={'/about'}>About</Link>
                     </li>
-                    <li className="hover:text-gray-300 transition-all">
+                    <li className={`hover:text-blue-500 transition-all ${location.pathname === '/contact-us' && "text-blue-500"}`}>
                         <Link to={'/contact-us'}>Contact Us</Link>
                     </li>
                 </ul>

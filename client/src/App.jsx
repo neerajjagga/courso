@@ -22,15 +22,22 @@ import BecomeTeacherPage from "./pages/BecomeTeacherPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import NewCourse from "./pages/Dashboard/NewCourse";
 import MyCourses from "./pages/Dashboard/MyCourses";
+import CourseDetailPage from "./pages/CourseDetailPage";
+import { useCourseStore } from "./stores/useCourseStore";
 
 function App() {
 
   const { user, checkAuth, checkingAuthLoader } = useUserStore();
+  const { getAllCourses } = useCourseStore();
   const location = useLocation();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
+  useEffect(() => {
+    getAllCourses();
+  }, [getAllCourses])
 
   if (checkingAuthLoader) {
     return <Loader />
@@ -50,6 +57,7 @@ function App() {
           <Route path="/verify-email" element={(user?.isEmailVerified || !user) ? <Navigate to={'/'} /> : <VerifyEmailPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/courses" element={<CoursesPage />} />
+          <Route path="/courses/:titleSlug" element={<CourseDetailPage />}/>
           <Route path="/contact-us" element={<ContactUsPage />} />
           <Route path="/s" element={user ? <Settings /> : <Navigate to={'/'} />}>
             <Route path="view-profile" element={<ViewPublicProfile />} />
