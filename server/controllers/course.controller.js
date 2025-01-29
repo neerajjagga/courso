@@ -94,3 +94,28 @@ export const getMyCourses = async (req, res) => {
         })
     }
 }
+
+export const getAllCourses = async (req, res) => {
+    try {
+        const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl";
+
+        const allCourses = await Course.find({})
+            .sort({ createdAt: -1 })
+            .populate('instructor', INSTRUCTOR_SAFE_DATA);
+
+        if (allCourses.length === 0) {
+            return res.json({
+                success: true,
+                courses: [],
+            })
+        }
+
+        return res.json({ success: true, courses: allCourses });
+    } catch (error) {
+        console.log("Error while getting all courses" + error.message);
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+};

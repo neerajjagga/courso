@@ -101,7 +101,6 @@ userSchema.set('toJSON', {
 
         if (ret.role === "user") {
             delete ret.courses;
-            delete ret.headline;
             delete ret.biography;
         }
     },

@@ -51,7 +51,7 @@ const Navbar = () => {
                 {user ? (
                     <div className="flex items-center gap-4">
                         <Link
-                            to={'/dashboard'}
+                            to={'/dashboard/my-courses'}
                             className="flex gap-2 border-2 bg-white bg-opacity-95 text-black border-blue-600 font-semibold rounded-lg px-3 py-2"
                         >
                             <span className='text-[16px] font-bold'>Dashboard</span>

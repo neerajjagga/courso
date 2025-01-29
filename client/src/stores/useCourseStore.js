@@ -3,7 +3,8 @@ import toast from 'react-hot-toast';
 import axios from '../lib/axios';
 
 export const useCourseStore = create((set, get) => ({
-    courses: [],
+    allCourses : [],
+    myCourses: [],
     loading: false,
     success: false,
 
@@ -20,7 +21,7 @@ export const useCourseStore = create((set, get) => ({
                 data: { ...formData }
             });
             set((prev) => ({
-                courses: [...prev.courses, res.data.course],
+                myCourses: [res.data.course, ...prev.myCourses],
                 loading: false,
                 success: true,
             }))
@@ -28,25 +29,41 @@ export const useCourseStore = create((set, get) => ({
         } catch (error) {
             console.log(error);
             set({ loading: false })
-            toast.error(error.response?.data?.message || "An error occurred while creating course")
+            toast.error(error.response?.data?.message || "An error occurred while creating myCourses")
         }
     },
 
-    getCourses: async () => {
+    getMyCourses: async () => {
         set({ loading: true });
         try {
             const res = await axios.get('/courses/me');
             console.log(res);
             set({
-                courses: res.data.courses,
+                myCourses: res.data.courses,
                 loading: false,
             });
-            console.log(get().courses);
+            console.log(get().myCourses);
             console.log(res?.data?.message);
         } catch (error) {
             console.log(error);
             set({ loading: false })
-            toast.error(error.response?.data?.message || "An error occurred while getting courses")
+            toast.error(error.response?.data?.message || "An error occurred while getting myCourses");
+        }
+    },
+
+    getAllCourses : async () => {
+        set({ loading: true });
+        try {
+            const res = await axios.get('/courses');
+            console.log(res);
+            set({
+                allCourses : res.data.courses,
+                loading : false,
+            });
+        } catch (error) {
+            console.log(error);
+            set({ loading: false })
+            toast.error(error.response?.data?.message || "An error occurred while getting myCourses");
         }
     }
 }));

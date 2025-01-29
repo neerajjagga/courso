@@ -4,7 +4,7 @@ export const InstructorDashboardMenu = [
     {
         icon: House,
         name: "Home",
-        url: "/"
+        url: "/",
     },
     {
         icon: LibraryBig,

@@ -6,12 +6,14 @@ import {
 import { 
     createCourse,
     getMyCourses,
+    getAllCourses,
 } from './../controllers/course.controller.js';
 import { validateCourseData } from './../middlewares/course.middleware.js';
 
 const courseRouter = express.Router();
 
 courseRouter.post('/', checkAuth, checkInstructor, validateCourseData, createCourse);
+courseRouter.get('/', checkAuth, getAllCourses);
 courseRouter.get('/me', checkAuth, checkInstructor, getMyCourses);
 
 // courseRouter.patch('/', checkAuth, checkInstructor, editCourse);

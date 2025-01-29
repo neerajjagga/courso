@@ -12,12 +12,14 @@ const UserDashboard = () => {
     const navigators = location.pathname.split('/').filter(item => item !== '');
     const [isSidebarActive, setIsSidebarActive] = useState(true);
 
-    const { getCourses } = useCourseStore();
+    const { getMyCourses } = useCourseStore();
     const { logout, loading } = useUserStore();
 
     useEffect(() => {
-        getCourses();
-    }, [getCourses])
+        if (user.role === "instructor") {
+            getMyCourses();
+        }
+    }, [getMyCourses])
 
     const toggleSidebar = () => {
         setIsSidebarActive((prev) => !prev);
@@ -69,7 +71,7 @@ const UserDashboard = () => {
                                         let ItemComponent = item.icon;
                                         return (
                                             <Link key={index} to={item.url} className="flex gap-2 items-center py-2 px-2 rounded-md hover:bg-gray-900 transition-all ease">
-                                                <ItemComponent size={"22"} />
+                                                <ItemComponent size={"22"} className={`${location.pathname === item.url && "text-blue-500"}`} />
                                                 {isSidebarActive && (
                                                     <span className="text-md font-semibold">{item.name}</span>
                                                 )}
