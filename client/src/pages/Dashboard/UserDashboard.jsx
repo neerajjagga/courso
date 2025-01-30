@@ -34,7 +34,7 @@ const UserDashboard = () => {
             {
                 // sidebar
             }
-            <section className={`fixed h-full pt-4 py-2 px-2 bg-gray-800 transition-all ease-in ${isSidebarActive ? "max-w-56" : "max-w-16"}`}>
+            <section className={`fixed h-full pt-4 py-2 px-2 bg-gray-800 transition-all ease-in ${isSidebarActive ? "w-56" : "max-w-16"}`}>
                 <div className="flex flex-col justify-between min-h-full">
                     <div className="flex flex-col gap-6 items-center">
                         <div>
@@ -59,7 +59,7 @@ const UserDashboard = () => {
                                         let ItemComponent = item.icon;
                                         return (
                                             <Link key={index} to={item.url} className="flex gap-2 items-center py-2 px-2 rounded-md hover:bg-gray-900 transition-all ease">
-                                                <ItemComponent size={"22"} />
+                                                <ItemComponent size={"22"} className={`${location.pathname === item.url && "text-blue-500"}`} />
                                                 {isSidebarActive && (
                                                     <span className="text-md font-semibold">{item.name}</span>
                                                 )}
@@ -126,7 +126,7 @@ const UserDashboard = () => {
                         {navigators.length > 0 && (
                             navigators.map((item, index) => {
                                 return (
-                                    <div key={index} className="flex items-center gap-2">
+                                    <div key={index} className="flex items-center gap-2 truncate">
                                         <span>{index !== 0 && '>'}</span>
                                         <Link className={`hover:text-blue-500 transition-all ease ${index === 0 && "text-gray-400"}`}>
                                             {item.charAt(0).toUpperCase() + item.slice(1)}

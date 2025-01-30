@@ -1,20 +1,21 @@
 
 import { Youtube, ChevronRight, Star, Users, Globe, Gauge, BadgeInfo, CalendarDays } from 'lucide-react';
 import { useCourseStore } from './../stores/useCourseStore';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ViewInstructorCard from '../components/ViewInstructorCard';
 import { motion } from 'motion/react';
 import { useUserStore } from '../stores/useUserStore';
 import toast from 'react-hot-toast';
-import Loader from '../components/Loader';
 import CourseDetailShimmer from '../components/Shimmers/CourseDetailShimmer';
 
 const CourseDetailPage = () => {
 
   const [showFullDesc, setShowFullDesc] = useState(false);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const callFromDashboard = location.pathname.startsWith('/dashboard');
   const { titleSlug } = useParams();
 
   const { selectedCourse, getACourse } = useCourseStore();
@@ -34,26 +35,37 @@ const CourseDetailPage = () => {
   }
 
   useEffect(() => {
+    setLoading(true);
+
     const fetchACourse = async () => {
       await getACourse(titleSlug);
-      setLoading(false);
-    }
+    };
+
     fetchACourse();
-  }, [titleSlug])
+
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [titleSlug]);
+
 
   return (
-    <div className='min-h-screen w-full mt-16'>
+    <div className={`min-h-screen w-full ${callFromDashboard ? 'mt-14' : 'mt-16'}`}>
       {!loading ? (
         selectedCourse ? (
           <div className='flex flex-col'>
-            <div
-              className="bg-[#1c1f27] flex items-center gap-1 font-semibold text-gray-300 truncate pt-8 px-10">
-              <Link to="/" className="underline">Home</Link>
-              <ChevronRight size={20} />
-              <Link to="/courses" className="underline">Courses</Link>
-              <ChevronRight size={20} />
-              <span>{selectedCourse?.title}</span>
-            </div>
+            {!callFromDashboard && (
+              <div
+                className="bg-[#1c1f27] flex items-center gap-1 font-semibold text-gray-300 truncate pt-8 px-10">
+                <Link to="/" className="underline">Home</Link>
+                <ChevronRight size={20} />
+                <Link to="/courses" className="underline">Courses</Link>
+                <ChevronRight size={20} />
+                <span>{selectedCourse?.title}</span>
+              </div>
+            )}
             <div className='flex flex-col'>
               <section className="bg-[#1c1f27] px-4 md:px-10 md:pb-10 pb-5 flex flex-col md:gap-10 gap-2 lg:flex-row lg:justify-between">
                 <motion.div
@@ -104,7 +116,7 @@ const CourseDetailPage = () => {
                   initial={{ opacity: 0, x: 40 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
-                  className="border-2 border-neutral-700 flex flex-col gap-3 rounded-2xl overflow-hidden w-full pb-4 max-w-md mx-auto lg:mx-0 mt-2">
+                  className="border-2 border-neutral-700 flex flex-col gap-3 rounded-2xl overflow-hidden w-full pb-4 max-w-md mx-auto lg:mx-0 mt-5">
                   <div className="">
                     <img className="" src={selectedCourse.courseImageUrl || "https://res.cloudinary.com/dabywmj68/image/upload/v1738051049/placeholder_pg74id.webp"} alt={`${selectedCourse.title} Image`} />
                   </div>
@@ -142,7 +154,6 @@ const CourseDetailPage = () => {
                     </button>
                   </motion.div>
                 )}
-
                 <div>
                   <ViewInstructorCard instructor={selectedCourse.instructor} />
                 </div>

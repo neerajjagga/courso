@@ -9,7 +9,7 @@ export const UserDashboardMenu = [
     {
         icon: SquareLibrary,
         name: "All Courses",
-        url: "/"
+        url: "/dashboard/all-courses"
     },
     {
         icon: LibraryBig,

@@ -76,7 +76,7 @@ export const updateCourse = async (req, res) => {
 export const getMyCourses = async (req, res) => {
     try {
         const user = req.user;
-        const courses = await Course.find({ instructor: user._id });
+        const courses = await Course.find({ instructor: user._id }).sort({ createdAt : -1 })
 
         if (courses.length === 0) {
             return res.json({
@@ -133,7 +133,10 @@ export const getSingleCourse = async(req, res) => {
         const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl biography headline socialLinks";
         
         const course = await Course.findOne({titleSlug})
-        .populate('instructor', INSTRUCTOR_SAFE_DATA);
+            .populate('instructor', INSTRUCTOR_SAFE_DATA);
+
+        console.log("in getsinglecourse");
+        console.log(course);
 
         if(!course) {
             return res.status(404).json({

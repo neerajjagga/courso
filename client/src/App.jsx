@@ -24,9 +24,12 @@ import NewCourse from "./pages/Dashboard/NewCourse";
 import MyCourses from "./pages/Dashboard/MyCourses";
 import CourseDetailPage from "./pages/CourseDetailPage";
 import { useCourseStore } from "./stores/useCourseStore";
+import { useScrollToTop } from './hooks/useScrollToTop';
+import DashboardAllCourses from "./pages/Dashboard/DashboardAllCourses";
+import DashboardCourseDetailPage from "./pages/Dashboard/DashboardCourseDetailPage";
 
 function App() {
-
+  useScrollToTop();
   const { user, checkAuth, checkingAuthLoader } = useUserStore();
   const { getAllCourses } = useCourseStore();
   const location = useLocation();
@@ -37,7 +40,7 @@ function App() {
 
   useEffect(() => {
     getAllCourses();
-  }, [getAllCourses])
+  }, [getAllCourses]);
 
   if (checkingAuthLoader) {
     return <Loader />
@@ -57,7 +60,7 @@ function App() {
           <Route path="/verify-email" element={(user?.isEmailVerified || !user) ? <Navigate to={'/'} /> : <VerifyEmailPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/courses" element={<CoursesPage />} />
-          <Route path="/courses/:titleSlug" element={<CourseDetailPage />}/>
+          <Route path="/courses/:titleSlug" element={<CourseDetailPage />} />
           <Route path="/contact-us" element={<ContactUsPage />} />
           <Route path="/s" element={user ? <Settings /> : <Navigate to={'/'} />}>
             <Route path="view-profile" element={<ViewPublicProfile />} />
@@ -68,7 +71,9 @@ function App() {
           <Route path="/dashboard" element={user ? <UserDashboard /> : <Navigate to={'/'} />}>
             <Route path="active-courses" element={<ActiveCourses />} />
             <Route path="bookmarks" element={<Bookmarks />} />
+            <Route path="courses/:titleSlug" element={<DashboardCourseDetailPage />} />
             <Route path="my-courses" element={<MyCourses />} />
+            <Route path="all-courses" element={<DashboardAllCourses />} />
             <Route path="new-course" element={<NewCourse />} />
           </Route>
           <Route path="/become-instructor" element={user ? <Navigate to={'/'} /> : <BecomeTeacherPage />} />

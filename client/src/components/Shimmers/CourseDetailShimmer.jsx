@@ -3,7 +3,7 @@ import React from 'react'
 const CourseDetailShimmer = () => {
     return (
         <div className='min-h-screen w-full mt-16'>
-            <div className='flex flex-col bg-gray-800 gap-3 px-5'>
+            <div className='flex flex-col bg-gray-900 gap-3 px-5'>
                 <div className='h-[26rem] flex flex-col gap-5'>
                     <div className='h-8 w-[50%] bg-gray-700 skeleton mt-4'>
                     </div>

@@ -47,7 +47,7 @@ const IndexPage = () => {
           <div className='py-2 px-4 bg-purple-600 rounded-2xl inline animate-bounce'>
             Join our Learning Platform!
           </div>
-          <img src="https://res.cloudinary.com/dabywmj68/image/upload/v1737387683/PrimaryImage_vxgqle.png" alt="Image" />
+          <img className='h-80 object-cover rounded-lg' src="https://res.cloudinary.com/dabywmj68/image/upload/v1738257142/man-sitting-front-laptop-computer-focusing-elearning-studying-online-student-learning-via-laptop-elearning-simple-minimalist-flat-vector-illustration_538213-119024_kifsoz.avif" alt="Image" />
           <div className='mt-4 bg-black py-4 px-8 rounded-full shadow-sm shadow-white'>
             <p className='text-center'>Master new skills and boost your career with us</p>
           </div>

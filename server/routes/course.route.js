@@ -15,8 +15,8 @@ const courseRouter = express.Router();
 
 courseRouter.post('/', checkAuth, checkInstructor, validateCourseData, createCourse);
 courseRouter.get('/', getAllCourses);
-courseRouter.get('/:titleSlug', getSingleCourse);
 courseRouter.get('/me', checkAuth, checkInstructor, getMyCourses);
+courseRouter.get('/:titleSlug', getSingleCourse);
 
 // courseRouter.patch('/', checkAuth, checkInstructor, editCourse);
 // courseRouter.delete('/', checkAuth, checkInstructor, deleteCourse);

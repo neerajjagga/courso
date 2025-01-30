@@ -1,7 +1,7 @@
 import { Facebook, Github, Linkedin, Twitter } from 'lucide-react'
 
 const ViewInstructorCard = ({ instructor }) => {
-
+    
     return (
         <div className="h-full flex flex-col items-center">
             <div className="flex flex-col items-center border-b-2 border-gray-800 w-full pb-4 gap-1">

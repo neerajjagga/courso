@@ -6,46 +6,49 @@ import { Outlet, useLocation } from 'react-router-dom';
 const Settings = () => {
     const { user } = useUserStore();
     const location = useLocation();
-    const [activeTab, setActiveTab] = useState(location.pathname);    
+    const [activeTab, setActiveTab] = useState(location.pathname);
 
     return (
-        <div className='flex justify-center pt-28'>
-            <div className="flex w-[95%] lg:w-[80%] min-h-screen bg-gray-800 border-2 border-gray-600 rounded-md">
+        <div className='flex justify-center pt-28 px-4 pb-10'>
+            <div className="flex w-full max-w-6xl min-h-[80vh] bg-gray-800 border border-gray-700 rounded-xl shadow-lg overflow-hidden">
 
-                <section className="flex flex-col gap-3 items-center w-[25%] bg-gray-700 min-h-screen pt-10">
-                    <div>
+                {/* Sidebar */}
+                <section className="flex flex-col gap-5 items-center w-[25%] bg-gray-850 min-h-[80vh] pt-10 px-4 border-r border-gray-700">
+                    {/* Profile Image */}
+                    <div className="relative group">
                         {user.profileImageUrl ? (
-                            <div className='relative'>
-                                <img
-                                    className="h-36 w-36 rounded-full object-cover transition-all ease shadow-md shadow-black"
-                                    src={user.profileImageUrl}
-                                    alt={user.fullname}
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent rounded-full"></div>
-                            </div>
+                            <img
+                                className="h-36 w-36 rounded-full object-cover shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105"
+                                src={user.profileImageUrl}
+                                alt={user.fullname}
+                            />
                         ) : (
-                            <div className="h-36 w-36 bg-blue-950 text-5xl text-white rounded-full flex items-center justify-center font-semibold hover:brightness-75 transition-all ease shadow-md shadow-black">
+                            <div className="h-36 w-36 bg-blue-700 text-5xl text-white rounded-full flex items-center justify-center font-semibold shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105">
                                 {user.fullname.charAt(0).toUpperCase()}
                             </div>
                         )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent rounded-full"></div>
                     </div>
 
-                    <div className='flex flex-col items-center'>
-                        <span className='text-xl font-bold text-white'>{user.fullname}</span>
+                    {/* User Info */}
+                    <div className="text-center">
+                        <span className="text-xl font-semibold text-white">{user.fullname}</span>
                         {user.headline && (
-                            <span className='text-lg italic text-black text-center'>{user.headline}</span>
+                            <span className="block text-sm italic text-gray-400 mt-1 px-2">{user.headline}</span>
                         )}
                     </div>
 
+                    {/* Settings Menu */}
                     <div className="w-full mt-5">
                         <SettingsMenu activeTab={activeTab} setActiveTab={setActiveTab} />
                     </div>
                 </section>
 
-                <section className='mt-10 w-[75%] '>
+                {/* Main Content */}
+                <section className='w-[75%] bg-gray-900 p-6 rounded-xl'>
                     {location.pathname === '/s' ? (
-                        <div className='h-full w-full flex justify-center'>
-                            <span className='text-5xl font-semibold'>
+                        <div className='h-full w-full flex justify-center items-center'>
+                            <span className='text-4xl font-bold text-white'>
                                 Settings
                             </span>
                         </div>
@@ -53,9 +56,10 @@ const Settings = () => {
                         <Outlet />
                     )}
                 </section>
+
             </div>
         </div>
     )
 }
 
-export default Settings
+export default Settings;

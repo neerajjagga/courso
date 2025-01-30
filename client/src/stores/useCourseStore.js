@@ -9,6 +9,10 @@ export const useCourseStore = create((set, get) => ({
     loading: false,
     success: false,
 
+    setLoading : (bool) => {
+        set({ loading : bool });
+    },
+
     setSuccess: (bool) => {
         set({ success: bool });
     },
