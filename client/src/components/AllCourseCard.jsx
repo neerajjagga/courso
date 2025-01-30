@@ -8,7 +8,6 @@ const AllCourseCard = ({ course }) => {
     const { setSelectedCourse } = useCourseStore();
 
     const handleViewDetails = (course) => {
-        console.log(course);
         setSelectedCourse(course);
         navigate(`/courses/${course.titleSlug}`);
     }

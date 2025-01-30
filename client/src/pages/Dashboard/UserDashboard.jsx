@@ -34,7 +34,7 @@ const UserDashboard = () => {
             {
                 // sidebar
             }
-            <section className={`fixed h-full pt-4 py-2 px-2 bg-gray-800 transition-all ease-in ${isSidebarActive ? "min-w-56" : "max-w-16"}`}>
+            <section className={`fixed h-full pt-4 py-2 px-2 bg-gray-800 transition-all ease-in ${isSidebarActive ? "max-w-56" : "max-w-16"}`}>
                 <div className="flex flex-col justify-between min-h-full">
                     <div className="flex flex-col gap-6 items-center">
                         <div>

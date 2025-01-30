@@ -125,3 +125,29 @@ export const getAllCourses = async (req, res) => {
         })
     }
 };
+
+export const getSingleCourse = async(req, res) => {
+    try {
+        const { titleSlug } = req.params;
+        console.log(titleSlug);
+        const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl biography headline socialLinks";
+        
+        const course = await Course.findOne({titleSlug})
+        .populate('instructor', INSTRUCTOR_SAFE_DATA);
+
+        if(!course) {
+            return res.status(404).json({
+               success : true,
+               message : "Course not found" 
+            });
+        }
+
+        return res.json({ success: true, course });
+    } catch (error) {
+        console.log("Error while getting a course" + error.message);
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}

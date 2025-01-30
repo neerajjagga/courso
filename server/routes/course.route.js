@@ -1,19 +1,21 @@
 import express from 'express';
-import { 
-    checkAuth, 
-    checkInstructor 
+import {
+    checkAuth,
+    checkInstructor
 } from '../middlewares/user.middleware.js';
-import { 
+import {
     createCourse,
     getMyCourses,
     getAllCourses,
+    getSingleCourse,
 } from './../controllers/course.controller.js';
 import { validateCourseData } from './../middlewares/course.middleware.js';
 
 const courseRouter = express.Router();
 
 courseRouter.post('/', checkAuth, checkInstructor, validateCourseData, createCourse);
-courseRouter.get('/', checkAuth, getAllCourses);
+courseRouter.get('/', getAllCourses);
+courseRouter.get('/:titleSlug', getSingleCourse);
 courseRouter.get('/me', checkAuth, checkInstructor, getMyCourses);
 
 // courseRouter.patch('/', checkAuth, checkInstructor, editCourse);
