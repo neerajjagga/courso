@@ -3,14 +3,14 @@ import toast from 'react-hot-toast';
 import axios from '../lib/axios';
 
 export const useCourseStore = create((set, get) => ({
-    allCourses : [],
+    allCourses: [],
     myCourses: [],
-    selectedCourse : null,
+    selectedCourse: null,
     loading: false,
     success: false,
 
-    setLoading : (bool) => {
-        set({ loading : bool });
+    setLoading: (bool) => {
+        set({ loading: bool });
     },
 
     setSuccess: (bool) => {
@@ -44,6 +44,25 @@ export const useCourseStore = create((set, get) => ({
         }
     },
 
+    updateCourse: async (courseId, formData) => {
+        set({ loading: true });
+        try {
+            const res = await axios.patch(`/courses/${courseId}`, {
+                data: formData,
+            });
+            set((prev) => ({
+                myCourses: prev.myCourses.map(course =>
+                    course.id === courseId ? res.data.course : course
+                ),
+                loading: false,
+            }));
+        } catch (error) {
+            console.log(error);
+            set({ loading: false })
+            toast.error(error.response?.data?.message || "An error occurred while updating a course")
+        }
+    },
+
     getMyCourses: async () => {
         set({ loading: true });
         try {
@@ -62,34 +81,51 @@ export const useCourseStore = create((set, get) => ({
         }
     },
 
-    getAllCourses : async () => {
+    getAllCourses: async () => {
         set({ loading: true });
         try {
             const res = await axios.get('/courses');
             console.log(res);
             set({
-                allCourses : res.data.courses,
-                loading : false,
+                allCourses: res.data.courses,
+                loading: false,
             });
         } catch (error) {
             console.log(error);
             set({ loading: false })
             toast.error(error.response?.data?.message || "An error occurred while getting myCourses");
         }
-    }, 
+    },
 
-    getACourse : async (titleSlug) => {
-        set({ loading : true });
+    getACourse: async (titleSlug) => {
+        set({ loading: true });
         try {
             const res = await axios.get(`/courses/${titleSlug}`);
             console.log(res);
-            set({ selectedCourse : res.data.course, loading : false});
+            set({ selectedCourse: res.data.course, loading: false });
         } catch (error) {
             console.log(error);
             set({ loading: false })
             toast.error(error.response?.data?.message || "An error occurred while getting a course");
         }
-    }
+    },
+
+    deleteACourse: async (courseId) => {
+        set({ loading: true });
+        try {
+            const res = await axios.delete(`/courses/${courseId}`);
+            toast.success(res?.data?.message || "Course deleted successfully");
+            // update the myCourse
+            set((prev) => ({
+                myCourses: prev.myCourses.filter(course => course.id !== courseId),
+                loading: false,
+            }));
+        } catch (error) {
+            console.log(error);
+            set({ loading: false })
+            toast.error(error.response?.data?.message || "An error occurred while deleting a course");
+        }
+    },
 }));
 
 

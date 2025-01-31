@@ -18,7 +18,7 @@ const NewCoursePopUp = () => {
             initial={{ opacity: 0, opacity: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="absolute inset-0 flex justify-center items-center min-h-screen bg-black bg-opacity-80 z-10">
+            className="fixed inset-0 flex justify-center items-center min-h-screen bg-black bg-opacity-80 z-10">
             <motion.div
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}

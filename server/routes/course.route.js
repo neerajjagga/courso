@@ -8,6 +8,8 @@ import {
     getMyCourses,
     getAllCourses,
     getSingleCourse,
+    deleteCourse,
+    updateCourse,
 } from './../controllers/course.controller.js';
 import { validateCourseData } from './../middlewares/course.middleware.js';
 
@@ -18,7 +20,7 @@ courseRouter.get('/', getAllCourses);
 courseRouter.get('/me', checkAuth, checkInstructor, getMyCourses);
 courseRouter.get('/:titleSlug', getSingleCourse);
 
-// courseRouter.patch('/', checkAuth, checkInstructor, editCourse);
-// courseRouter.delete('/', checkAuth, checkInstructor, deleteCourse);
+courseRouter.patch('/:courseId', checkAuth, checkInstructor, validateCourseData, updateCourse);
+courseRouter.delete('/:courseId', checkAuth, checkInstructor, deleteCourse);
 
 export default courseRouter;

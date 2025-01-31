@@ -1,7 +1,7 @@
 import { Facebook, Github, Linkedin, Twitter } from 'lucide-react'
 
 const ViewInstructorCard = ({ instructor }) => {
-    
+
     return (
         <div className="h-full flex flex-col items-center">
             <div className="flex flex-col items-center border-b-2 border-gray-800 w-full pb-4 gap-1">
@@ -35,32 +35,33 @@ const ViewInstructorCard = ({ instructor }) => {
                             <span className="text-sm text-gray-400 font-semibold line-clamp-2">{instructor.biography}</span>
                         )}
                     </div>
-                    <div className="flex gap-4 mt-3 bg-black bg-opacity-80 p-2 px-6 rounded-full">
-                        {instructor.socialLinks.map((item, index) => {
-                            const { name, url, username } = item;
+                    {instructor.socialLinks?.some(link => link.username) && (
+                        <div className="flex gap-4 mt-4 bg-gray-900 p-3 px-6 rounded-full border border-gray-700">
+                            {instructor.socialLinks.map((item, index) => {
+                                const { name, url, username } = item;
+                                if (!username) return null;
 
-                            if (!username) return null;
+                                const icons = {
+                                    Twitter: <Twitter size={20} className="hover:text-blue-500" />,
+                                    LinkedIn: <Linkedin size={20} className="hover:text-blue-500" />,
+                                    Facebook: <Facebook size={20} className="hover:text-blue-500" />,
+                                    Github: <Github size={20} className="hover:text-blue-500" />,
+                                };
 
-                            const icons = {
-                                Twitter: <Twitter size={20} />,
-                                LinkedIn: <Linkedin size={20} />,
-                                Facebook: <Facebook size={20} />,
-                                Github: <Github size={20} />,
-                            };
-
-                            return (
-                                <a
-                                    className="text-blue-600"
-                                    key={index}
-                                    href={`${url}/${username}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {icons[name]}
-                                </a>
-                            );
-                        })}
-                    </div>
+                                return (
+                                    <a
+                                        key={index}
+                                        href={`${url}/${username}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-gray-500 hover:scale-110 transition-transform duration-300 ease-in-out"
+                                    >
+                                        {icons[name]}
+                                    </a>
+                                );
+                            })}
+                        </div>
+                    )}
                 </div>
             </section>
         </div>

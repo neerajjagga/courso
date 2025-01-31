@@ -1,10 +1,13 @@
-import { Youtube, Users, Star, Rocket, BookOpenText, Trash2, Edit, Eye, Gauge, Globe } from "lucide-react";
+import { Youtube, Users, Star, Rocket, Trash2, Edit, Eye, Gauge, Globe } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useCourseStore } from "../stores/useCourseStore";
+import { useState } from "react";
 
 const AdminCourseCard = ({ course }) => {
     const navigate = useNavigate();
-    const { setSelectedCourse } = useCourseStore();
+    const { setSelectedCourse, deleteACourse } = useCourseStore();
+    const [isDeletePopUpActive, setIsDeletePopUpActive] = useState(false);
+    const [deleteInput, setDeleteInput] = useState("");
 
     const handleViewDetails = () => {
         setSelectedCourse(course);
@@ -15,8 +18,11 @@ const AdminCourseCard = ({ course }) => {
         navigate(`/dashboard/courses/edit/${course.titleSlug}`);
     };
 
-    const handleDeleteCourse = () => {
-        console.log("Delete course action");
+    const handleDeleteConfirmation = () => {
+        if (deleteInput === "DELETE") {
+            deleteACourse(course.id);
+            setIsDeletePopUpActive(false);
+        }
     };
 
     return (
@@ -30,12 +36,8 @@ const AdminCourseCard = ({ course }) => {
             </div>
 
             <div className="flex flex-col gap-1 border-b pb-2 border-gray-700">
-                <span className="text-lg font-bold text-white truncate">
-                    {course.title}
-                </span>
-                {course.subtitle && (
-                    <span className="text-sm text-gray-400 truncate">{course.subtitle}</span>
-                )}
+                <span className="text-lg font-bold text-white truncate">{course.title}</span>
+                {course.subtitle && <span className="text-sm text-gray-400 truncate">{course.subtitle}</span>}
             </div>
 
             <div className="flex flex-wrap gap-2 text-gray-300 text-sm mt-2">
@@ -67,10 +69,30 @@ const AdminCourseCard = ({ course }) => {
                 <button onClick={handleEditCourse} className="flex items-center gap-2 px-3 py-2 bg-yellow-500 hover:bg-yellow-400 text-black rounded-lg">
                     <Edit size={18} /> Edit
                 </button>
-                <button onClick={handleDeleteCourse} className="flex items-center gap-2 px-3 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg">
+                <button onClick={() => setIsDeletePopUpActive(true)} className="flex items-center gap-2 px-3 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg">
                     <Trash2 size={18} /> Delete
                 </button>
             </div>
+
+            {isDeletePopUpActive && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
+                    <div className="bg-gray-900 p-6 rounded-lg shadow-lg text-white w-96">
+                        <h2 className="text-lg font-bold">Are you sure?</h2>
+                        <p className="text-sm text-gray-400 mt-2">Deleting this course will affect your students. Type <span className="font-bold text-red-600">"DELETE"</span> to confirm.</p>
+                        <input
+                            type="text"
+                            value={deleteInput}
+                            onChange={(e) => setDeleteInput(e.target.value)}
+                            className="mt-3 w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white"
+                            placeholder="Type DELETE to confirm"
+                        />
+                        <div className="flex justify-end gap-2 mt-4">
+                            <button onClick={() => setIsDeletePopUpActive(false)} className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg">Cancel</button>
+                            <button onClick={handleDeleteConfirmation} disabled={deleteInput !== "DELETE"} className={`px-3 py-2 ${deleteInput === "DELETE" ? "bg-red-600 hover:bg-red-500" : "bg-gray-700"} text-white rounded-lg`}>Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

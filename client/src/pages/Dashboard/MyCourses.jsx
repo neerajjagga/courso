@@ -4,6 +4,7 @@ import { Search, X } from 'lucide-react';
 import { motion } from 'motion/react';
 import MyCoursesCard from '../../components/MyCoursesCard';
 import MyCoursesShimmer from '../../components/Shimmers/MyCoursesShimmer';
+import { Link } from 'react-router-dom';
 
 const MyCourses = ({ isSidebarActive }) => {
   const { myCourses, loading } = useCourseStore();
@@ -83,7 +84,7 @@ const MyCourses = ({ isSidebarActive }) => {
               <MyCoursesShimmer key={index} />
             ))}
           </div>
-        ) : filteredCourses.length > 0 ? (
+        ) : myCourses.length > 0 ? (
           <div className={`grid ${isSidebarActive ? "grid-cols-1 md:grid-cols-1 lg:grid-cols-3" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"}  gap-6`}>
             {filteredCourses.map((course) => (
               <div key={course.id} className="rounded-2xl shadow-md bg-gradient-to-t from-slate-900 to-slate-700 pb-4 overflow-hidden">
@@ -96,7 +97,7 @@ const MyCourses = ({ isSidebarActive }) => {
             <span className="text-4xl font-bold">
               You have no <span className='text-blue-500'>Courses</span> yet
             </span>
-            <button className='btn-primary py-2 px-6 rounded-sm text-2xl'>Create now</button>
+            <Link to={'/dashboard/new-course'} className='btn-primary py-2 px-6 rounded-sm text-2xl'>Create now</Link>
           </div>
         )}
       </div>

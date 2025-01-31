@@ -56,27 +56,61 @@ export const updateCourse = async (req, res) => {
     try {
         const user = req.user;
         const { data } = req.body;
+        const { courseId } = req.params;
 
-        user.courses.push(course._id);
-        await user.save();
+        const course = await Course.find({ 
+            _id : courseId,
+            instructor : user._id,
+        });
+
+        if (!course) {
+            return res.status(400).json({
+                success: false,
+                message: "Course not found or unauthorized"
+            });
+        }
+
+        if (data.courseImageUrl) {
+            // delete previous image if needed
+            try {
+                const uploadRes = await cloudinary.uploader.upload(data.courseImageUrl, {
+                    transformation: [
+                        {
+                            crop: 'fill',
+                            gravity: 'auto',
+                            quality: "auto",
+                        }
+                    ]
+                });
+                data["courseImageUrl"] = uploadRes.secure_url;
+            } catch (error) {
+                console.log("Error coming while uploading course image in updateCourse", error.message);
+                throw error;
+            }
+        }
+
+        const updatedCourse = await Course.findByIdAndUpdate(courseId, {
+            $set: data
+        }, { new: true });
 
         res.json({
             message: "Course created successfully",
-        })
+            course: updatedCourse,
+        });
 
     } catch (error) {
-        console.log("Error while creating course" + error.message);
+        console.log("Error while updating a course" + error.message);
         res.status(500).json({
             success: false,
             message: error.message
-        })
+        });
     }
 }
 
 export const getMyCourses = async (req, res) => {
     try {
         const user = req.user;
-        const courses = await Course.find({ instructor: user._id }).sort({ createdAt : -1 })
+        const courses = await Course.find({ instructor: user._id }).sort({ createdAt: -1 })
 
         if (courses.length === 0) {
             return res.json({
@@ -126,28 +160,74 @@ export const getAllCourses = async (req, res) => {
     }
 };
 
-export const getSingleCourse = async(req, res) => {
+export const getSingleCourse = async (req, res) => {
     try {
         const { titleSlug } = req.params;
         console.log(titleSlug);
         const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl biography headline socialLinks";
-        
-        const course = await Course.findOne({titleSlug})
+
+        const course = await Course.findOne({ titleSlug })
             .populate('instructor', INSTRUCTOR_SAFE_DATA);
 
         console.log("in getsinglecourse");
         console.log(course);
 
-        if(!course) {
+        if (!course) {
             return res.status(404).json({
-               success : true,
-               message : "Course not found" 
+                success: true,
+                message: "Course not found"
             });
         }
 
         return res.json({ success: true, course });
     } catch (error) {
         console.log("Error while getting a course" + error.message);
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+export const deleteCourse = async (req, res) => {
+    try {
+        const user = req.user;
+        const { courseId } = req.params;
+        console.log(courseId);
+
+        const course = await Course.findById(courseId);
+
+        if (!course) {
+            return res.status(400).json({
+                success: false,
+                message: "Course not found to delete"
+            });
+        }
+
+        if (course.courseImageUrl) {
+            const publicId = course.courseImageUrl.split('/').pop().split('.')[0];
+
+            console.log(publicId);
+            try {
+                const deleteRes = await cloudinary.uploader.destroy(publicId);
+                console.log(deleteRes);
+            } catch (error) {
+                console.log("Error coming while deleting course image from cloudinary");
+            }
+        }
+
+        user.courses = user.courses.filter(courseId => courseId !== course._id);
+        await user.save();
+
+        await Course.findByIdAndDelete(courseId);
+
+        res.json({
+            success: true,
+            message: "Course deleted successfully"
+        });
+
+    } catch (error) {
+        console.log("Error while deleting a course" + error.message);
         res.status(500).json({
             success: false,
             message: error.message

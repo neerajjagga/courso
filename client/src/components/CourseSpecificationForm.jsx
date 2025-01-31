@@ -5,7 +5,6 @@ import { languageItems } from '../data/languageItems';
 import { useCourseStore } from '../stores/useCourseStore';
 
 const CourseSpecificationForm = ({ formData, setFormData, courseImage, setCourseImage }) => {
-
     const [isSelectedImage, setIsSelectedImage] = useState(false);
     const [isCompressingImage, setIsCompressingImage] = useState(false);
     const { loading } = useCourseStore();

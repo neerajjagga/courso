@@ -27,6 +27,7 @@ import { useCourseStore } from "./stores/useCourseStore";
 import { useScrollToTop } from './hooks/useScrollToTop';
 import DashboardAllCourses from "./pages/Dashboard/DashboardAllCourses";
 import DashboardCourseDetailPage from "./pages/Dashboard/DashboardCourseDetailPage";
+import EditCourse from "./pages/Dashboard/EditCourse";
 
 function App() {
   useScrollToTop();
@@ -72,6 +73,7 @@ function App() {
             <Route path="active-courses" element={<ActiveCourses />} />
             <Route path="bookmarks" element={<Bookmarks />} />
             <Route path="courses/:titleSlug" element={<DashboardCourseDetailPage />} />
+            <Route path="courses/edit/:titleSlug" element={<EditCourse />} />
             <Route path="my-courses" element={<MyCourses />} />
             <Route path="all-courses" element={<DashboardAllCourses />} />
             <Route path="new-course" element={<NewCourse />} />
