@@ -55,24 +55,10 @@ const courseSchema = new mongoose.Schema({
             default: "₹",
         },
     },
-    // lectures: [
-    //     {
-    //         title: {
-    //             type: String,
-    //             maxLength: [80, "Lecture title should be maximum 80 characters"],
-    //             required: true,
-    //             trim: true,
-    //         },
-    //         description: {
-    //             type: String,
-    //             maxLength: [1000, "Lecture description should be maximum 1000 characters"],
-    //             trim: true,
-    //         },
-    //         url: {
-    //             type: String,
-    //         }
-    //     }
-    // ],
+    lectures: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Lecture',
+    },
     category: {
         type: String,
         trim: true,
