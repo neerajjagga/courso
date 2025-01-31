@@ -20,7 +20,7 @@ export const checkAuth = async (req, res, next) => {
             const user = await User.findById(userId);
 
             if (!user) {
-                return res.status(400).json({
+                return res.status(401).json({
                     message: "Unauthorized - User not found"
                 })
             }
@@ -51,7 +51,7 @@ export const checkInstructor = async(req, res, next) => {
         if(user.role !== "instructor") {
             return res.status(400).json({
                 success : false,
-                message : "Unauthorized, you are not a instructor"
+                message : "Not authorized"
             })
         }
 

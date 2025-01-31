@@ -177,8 +177,8 @@ export const refreshTokens = async (req, res) => {
 
         if (!refresh_token) {
             return res.status(401).json({
-                message: "Refresh token missing. Please log in again."
-            })
+                message: "Your session has expired. Please log in again."
+            });
         }
 
         let userId = null;
@@ -187,27 +187,27 @@ export const refreshTokens = async (req, res) => {
             userId = decodedObj.userId;
         } catch (error) {
             if (error.name === "TokenExpiredError") {
-                return res.status(401).json({ message: "Refresh token expired. Please log in again." });
+                return res.status(401).json({ message: "Your session has expired. Please log in again." });
             }
-            throw error;
+            return res.status(400).json({ message: "Something went wrong. Please try again." });
         }
 
         const storedRefreshToken = await Redis.get(`refresh_token:${userId}`);
 
         if (!storedRefreshToken || refresh_token !== storedRefreshToken) {
             return res.status(403).json({
-                message: "Invalid refresh token. Please login again"
-            })
+                message: "Your session has expired. Please log in again."
+            });
         }
 
-        // generate both access token and refresh token to rotate refresh token
+        // Generate both access token and refresh token to rotate refresh token
         const { accessToken, refreshToken } = generateTokens(userId);
         await storeRefreshToken(refreshToken, userId);
         setCookies(accessToken, refreshToken, res);
 
-        res.json({ message: "Tokens refreshed successfully" });
+        res.json({ message: "Your session has been refreshed successfully." });
     } catch (error) {
-        console.log("Error coming while refreshing tokens" + error.message);
-        res.status(500).json({ message: error.message })
+        console.error("Error occurred while refreshing tokens:", error.message);
+        res.status(500).json({ message: "Internal server error. Please try again later." });
     }
-}
+};

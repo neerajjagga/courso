@@ -39,7 +39,7 @@ export const useUserStore = create((set, get) => ({
             })
             console.log(res);
             set({ user: res.data.user, loading: false });
-            toast.success(res.data?.message || "Login successfully");
+            toast.success("Login successfully");
         } catch (error) {
             console.log(error);
             set({ loading: false })

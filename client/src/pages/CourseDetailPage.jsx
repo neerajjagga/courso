@@ -73,7 +73,7 @@ const CourseDetailPage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                   className="flex-1">
-                  <div className="flex flex-col sm:gap-5 gap-3 mt-5 sm:mt-10">
+                  <div className="flex flex-col sm:gap-5 gap-3 mt-5 sm:mt-10 truncate">
                     <span className="sm:text-3xl text-2xl font-bold">{selectedCourse.title}</span>
                     {selectedCourse.subtitle && (
                       <span className="sm:text-lg text-md text-gray-300">{selectedCourse.subtitle}</span>
