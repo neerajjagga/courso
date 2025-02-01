@@ -11,7 +11,7 @@ export const signUpUser = async (req, res) => {
         const { data } = req.body;
 
         const isUserAlreadyPresent = await User.findOne({
-            email : data.email,
+            email: data.email,
         });
 
         if (isUserAlreadyPresent) {
@@ -177,26 +177,21 @@ export const refreshTokens = async (req, res) => {
 
         if (!refresh_token) {
             return res.status(401).json({
-                message: "Your session has expired. Please log in again."
+                message: "Your session has expired. Please log in again. 3333333333333333333333333",
+                tokenExpired: true,
             });
         }
+        
+        const decodedObj = jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET);
+        console.log(decodedObj);
 
-        let userId = null;
-        try {
-            const decodedObj = jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET);
-            userId = decodedObj.userId;
-        } catch (error) {
-            if (error.name === "TokenExpiredError") {
-                return res.status(401).json({ message: "Your session has expired. Please log in again." });
-            }
-            return res.status(400).json({ message: "Something went wrong. Please try again." });
-        }
+        const userId = decodedObj.userId;
 
         const storedRefreshToken = await Redis.get(`refresh_token:${userId}`);
 
         if (!storedRefreshToken || refresh_token !== storedRefreshToken) {
             return res.status(403).json({
-                message: "Your session has expired. Please log in again."
+                message: "Your session has expired. Please log in again. 222222222222222222222222222"
             });
         }
 

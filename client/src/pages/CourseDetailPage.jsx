@@ -9,6 +9,7 @@ import { motion } from 'motion/react';
 import { useUserStore } from '../stores/useUserStore';
 import toast from 'react-hot-toast';
 import CourseDetailShimmer from '../components/Shimmers/CourseDetailShimmer';
+import { usePaymentStore } from '../stores/usePaymentStore';
 
 const CourseDetailPage = () => {
 
@@ -19,11 +20,36 @@ const CourseDetailPage = () => {
   const { titleSlug } = useParams();
 
   const { selectedCourse, getACourse } = useCourseStore();
+  const { createOrder, order } = usePaymentStore();
 
   const { user } = useUserStore();
   const navigate = useNavigate();
 
-  const handleEnrollNow = () => {
+  useEffect(() => {
+    if (order) {
+      const options = {
+        key: order.keyId, 
+        amount: order.amount, 
+        currency: 'INR',
+        name: 'Courso',
+        description: 'Master new skills with Courso',
+        order_id: order.orderId,
+        callback_url: 'http://localhost:5173/dashboard/active-courses', 
+        prefill: {
+          name: user.fullname,
+          email: user.email,
+        },
+        theme: {
+          color: '#030712'
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    }
+  }, [order, user]);
+
+  const handleEnrollNow =async () => {
     if (!user) {
       setTimeout(() => {
         navigate('/login');
@@ -31,7 +57,7 @@ const CourseDetailPage = () => {
       toast.error("Please first login to enroll");
       return;
     }
-    console.log("Button handle enroll now");
+    await createOrder(selectedCourse.id);
   }
 
   useEffect(() => {

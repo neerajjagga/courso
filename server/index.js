@@ -42,11 +42,13 @@ import authRouter from './routes/auth.route.js';
 import userRouter from './routes/user.route.js';
 import courseRouter from './routes/course.route.js';
 import lectureRouter from './routes/lecture.route.js';
+import paymentRouter from './routes/payment.route.js';
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/courses', courseRouter);
 app.use('/api/lectures', lectureRouter);
+app.use('/api/payments', paymentRouter);
 
 app.listen(PORT , async() => {
     console.log(`Server is listening on port ${PORT}`);
