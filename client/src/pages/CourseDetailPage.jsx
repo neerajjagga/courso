@@ -25,44 +25,10 @@ const CourseDetailPage = () => {
   const { user } = useUserStore();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (order) {
-      const options = {
-        key: order.keyId, 
-        amount: order.amount, 
-        currency: 'INR',
-        name: 'Courso',
-        description: 'Master new skills with Courso',
-        order_id: order.orderId,
-        callback_url: 'http://localhost:5173/dashboard/active-courses', 
-        prefill: {
-          name: user.fullname,
-          email: user.email,
-        },
-        theme: {
-          color: '#030712'
-        },
-      };
-
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-    }
-  }, [order, user]);
-
-  const handleEnrollNow =async () => {
-    if (!user) {
-      setTimeout(() => {
-        navigate('/login');
-      }, 1000);
-      toast.error("Please first login to enroll");
-      return;
-    }
-    await createOrder(selectedCourse.id);
-  }
+  const { verifyPayment, setOrder } = usePaymentStore();
 
   useEffect(() => {
     setLoading(true);
-
     const fetchACourse = async () => {
       await getACourse(titleSlug);
     };
@@ -76,6 +42,59 @@ const CourseDetailPage = () => {
     return () => clearTimeout(timer);
   }, [titleSlug]);
 
+  useEffect(() => {
+    console.log("Order of second useEffect");
+    console.log(order);
+
+    if (order) {
+      const options = {
+        key: order.keyId,
+        amount: order.amount,
+        currency: 'INR',
+        name: 'Courso',
+        description: 'Master new skills with Courso',
+        order_id: order.orderId,
+        // callback_url: 'http://localhost:3000/api/payments/verify', 
+        prefill: {
+          name: user.fullname,
+          email: user.email,
+        },
+        handler: async function (response) {
+          console.log(response);
+          const paymentDetails = {
+            orderId: response.razorpay_order_id,
+            paymentId: response.razorpay_payment_id,
+            signature: response.razorpay_signature,
+          }
+          console.log("---------------------------paymentDetails in handler");
+          console.log(paymentDetails);
+          await verifyPayment(paymentDetails);
+        },
+        theme: {
+          color: '#030712'
+        },
+        "modal": {
+          "ondismiss": async function () {
+            await setOrder();
+          }
+        }
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    }
+  }, [order, user]);
+
+  const handleEnrollNow = async () => {
+    if (!user) {
+      setTimeout(() => {
+        navigate('/login');
+      }, 1000);
+      toast.error("Please first login to enroll");
+      return;
+    }
+    await createOrder(selectedCourse.id);
+  }
 
   return (
     <div className={`min-h-screen w-full ${callFromDashboard ? 'mt-14' : 'mt-16'}`}>

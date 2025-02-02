@@ -3,6 +3,7 @@ import Payment from '../models/payment.model.js';
 import Course from '../models/course.model.js';
 import User from '../models/user.model.js';
 import { validateWebhookSignature } from 'razorpay/dist/utils/razorpay-utils.js';
+import { sendCourseReceipt, sendPaymentFailedEmail } from '../lib/nodemailer.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -86,7 +87,7 @@ export const validateWebhook = async (req, res) => {
         }
 
         const paymentDetails = req.body.payload.payment.entity;
-        
+
         if (!paymentDetails.id) {
             return res.status(400).json({
                 success: false,
@@ -104,9 +105,9 @@ export const validateWebhook = async (req, res) => {
         }
 
         switch (paymentDetails.status) {
-            case "authorized":
-                await handleAuthorizedPayments(paymentDetails)
-                break;
+            // case "authorized":
+            //     await handleAuthorizedPayments(paymentDetails)
+            //     break;
 
             case "captured":
                 await handleCapturedPayments(paymentDetails)
@@ -135,11 +136,45 @@ export const validateWebhook = async (req, res) => {
     }
 }
 
-const handleAuthorizedPayments = async (paymentDetails) => {
-    const capturedResponse = await razorpayInst.payments.capture(paymentDetails.id, paymentDetails.amount);
-    console.log("--------------capturedResponse----------");
-    console.log(capturedResponse);
+export const verifyPayment = async (req, res) => {
+    try {
+        const { orderId } = req.body;
+
+        const payment = await Payment.findOne({ orderId });
+
+        if (!payment) {
+            return res.status(404).json({
+                success: false,
+                message: "Payment not found",
+            })
+        }
+
+        if (payment.status !== 'captured') {
+            return res.status(400).json({
+                success: false,
+                message: "Payment failed",
+            })
+        }
+
+        return res.json({
+            success: true,
+            message: "Payment verified successfully"
+        });
+    } catch (error) {
+        console.error("Error in verifying payment:", error.message);
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
 }
+
+// we can do manual capturing also
+// const handleAuthorizedPayments = async (paymentDetails) => {
+//     const capturedResponse = await razorpayInst.payments.capture(paymentDetails.id, paymentDetails.amount);
+//     console.log("--------------capturedResponse----------");
+//     console.log(capturedResponse);
+// }
 
 const handleCapturedPayments = async (paymentDetails) => {
     const payment = await Payment.findOne({ orderId: paymentDetails.order_id });
@@ -151,6 +186,8 @@ const handleCapturedPayments = async (paymentDetails) => {
     payment.amountPaid = paymentDetails.amount;
     payment.amountDue = 0;
     await payment.save();
+
+    const course = await Course.findById(payment.courseId);
 
     // with payment document i will have access to userId as well as courseId
     // now i have to update the user activeCourses array and push the courseId in it
@@ -166,6 +203,9 @@ const handleCapturedPayments = async (paymentDetails) => {
         });
     }
 
+    // send email
+    await sendCourseReceipt(user.email, course.title, payment.updatedAt, payment.amountPaid, course?.courseImageUrl);
+
     console.log("----------------user in capture");
     console.log(user);
 }
@@ -174,7 +214,13 @@ const handleFailedPayments = async (paymentDetails) => {
     const payment = await Payment.findOne({ orderId: paymentDetails.order_id });
 
     payment.status = paymentDetails.status;
+    payment.attempts += 1;
     await payment.save();
+
+    const user = await User.findById(payment.userId);
+    const course = await Course.findById(payment.courseId);
+
+    await sendPaymentFailedEmail(user.email, course.title, payment.updatedAt, payment.amountDue, paymentDetails.error_description, course?.courseImageUrl);
 
     console.log("----------------payment in failed");
     console.log(payment);
