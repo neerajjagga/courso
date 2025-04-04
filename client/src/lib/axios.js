@@ -5,24 +5,24 @@ const axiosInstance = axios.create({
     withCredentials : true,
 })
 
-let isTokenExpired = false;
+// let isTokenExpired = false;
 
-axiosInstance.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-        console.log("API Error:", error.response?.data?.message || error.message);
+// axiosInstance.interceptors.response.use(
+//     (response) => response,
+//     async (error) => {
+//         console.log("API Error:", error.response?.data?.message || error.message);
         
-        if(error.response?.status === 401 && !isTokenExpired) {
-            try {
-                const res = await axiosInstance.post('/auth/refresh-token');
-                isTokenExpired = res.data.tokenExpired;
-                return axiosInstance.request(error.config);
-            } catch (error) {
-                return Promise.reject(error);
-            }
-        }
-        return Promise.reject(error);
-    }
-);
+//         if(error.response?.status === 401 && !isTokenExpired) {
+//             try {
+//                 const res = await axiosInstance.post('/auth/refresh-token');
+//                 isTokenExpired = res.data.tokenExpired;
+//                 return axiosInstance.request(error.config);
+//             } catch (error) {
+//                 return Promise.reject(error);
+//             }
+//         }
+//         return Promise.reject(error);
+//     }
+// );
 
 export default axiosInstance;

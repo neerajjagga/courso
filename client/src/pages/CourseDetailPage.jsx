@@ -112,16 +112,16 @@ const CourseDetailPage = () => {
               </div>
             )}
             <div className='flex flex-col'>
-              <section className="bg-[#1c1f27] px-4 md:px-10 md:pb-10 pb-5 flex flex-col md:gap-10 gap-2 lg:flex-row lg:justify-between">
+              <section className="bg-[#1c1f27] px-4 md:px-10 md:pb-10 pb-5 md:gap-10 gap-2 grid grid-cols-3">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
-                  className="flex-1">
-                  <div className="flex flex-col sm:gap-5 gap-3 mt-5 sm:mt-10 truncate">
+                  className="md:col-span-2 col-span-3">
+                  <div className="flex flex-col sm:gap-5 gap-3 mt-5 sm:mt-10">
                     <span className="sm:text-3xl text-2xl font-bold">{selectedCourse.title}</span>
                     {selectedCourse.subtitle && (
-                      <span className="sm:text-lg text-md text-gray-300">{selectedCourse.subtitle}</span>
+                      <span className="sm:text-lg text-md text-gray-300 line-clamp-1 lg:line-clamp-2">{selectedCourse.subtitle}</span>
                     )}
                     <div className='flex flex-col sm:gap-2 gap-1 text-gray-300'>
                       <div className='flex items-center gap-2'>
@@ -141,7 +141,7 @@ const CourseDetailPage = () => {
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-2 sm:gap-4 text-gray-300 text-sm sm:text-lg mt-5">
+                  <div className="flex flex-wrap gap-2 sm:gap-4 text-gray-300 text-sm lg:text-lg mt-5">
                     <span className="bg-gray-800 px-3 py-1 rounded-full flex items-center gap-2">
                       <Gauge size={20} className='text-red-500' />
                       {selectedCourse.level.charAt(0).toUpperCase()}{selectedCourse.level.slice(1).replace(/([a-z])([A-Z])/g, '$1 $2')}</span>
@@ -161,7 +161,7 @@ const CourseDetailPage = () => {
                   initial={{ opacity: 0, x: 40 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
-                  className="border-2 border-neutral-700 flex flex-col gap-3 rounded-2xl overflow-hidden w-full pb-4 max-w-md mx-auto lg:mx-0 mt-5">
+                  className="border-2 border-neutral-700 flex flex-col gap-3 rounded-2xl overflow-hidden w-full pb-4 max-w-md mx-auto lg:mx-0 mt-5 md:col-span-1 col-span-3">
                   <div className="">
                     <img className="" src={selectedCourse.courseImageUrl || "https://res.cloudinary.com/dabywmj68/image/upload/v1738051049/placeholder_pg74id.webp"} alt={`${selectedCourse.title} Image`} />
                   </div>

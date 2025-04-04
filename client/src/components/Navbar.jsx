@@ -23,7 +23,7 @@ const Navbar = () => {
     }, []);
 
     return (
-        <div className="flex justify-between w-full py-3 px-4 lg:px-36 fixed border-b border-blue-950 backdrop-blur-md shadow-lg items-center top-0 left-0 z-10">
+        <div className="flex justify-between w-full py-3 px-4 lg:px-10 fixed border-b border-blue-950 backdrop-blur-md shadow-lg items-center top-0 left-0 z-10">
             <div className="relative">
                 <Link to={'/'} className="">
                     <GraduationCap className="absolute -top-1 -right-1 text-blue-600 rotate-6" size={30} />

@@ -110,21 +110,30 @@ export const updateCourse = async (req, res) => {
 export const getMyCourses = async (req, res) => {
     try {
         const user = req.user;
-        const courses = await Course.find({ instructor: user._id }).sort({ createdAt: -1 })
+        const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl biography headline socialLinks";
+        let courses;
+        
+        if(user.role === "instructor") {
+            courses = await Course.find({ instructor: user._id }).sort({ createdAt: -1 })
+        } else {
+            courses = await Course.find({
+                _id : { $in : user.enrolledCourses }
+            }).populate('instructor', INSTRUCTOR_SAFE_DATA);
+        }
 
         if (courses.length === 0) {
             return res.json({
                 success: true,
                 message: "No courses found",
                 courses,
-            })
+            });
         }
 
         res.json({
             success: true,
             message: "Courses fetched successfully",
             courses,
-        })
+        });
 
     } catch (error) {
         console.log("Error while getting my courses" + error.message);

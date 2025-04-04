@@ -16,9 +16,7 @@ const UserDashboard = () => {
     const { logout, loading } = useUserStore();
 
     useEffect(() => {
-        if (user.role === "instructor") {
-            getMyCourses();
-        }
+        getMyCourses();
     }, [getMyCourses])
 
     const toggleSidebar = () => {
