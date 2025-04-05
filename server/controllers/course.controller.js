@@ -1,66 +1,66 @@
+import mongoose from "mongoose";
 import Course from "../models/course.model.js";
-import cloudinary from "../lib/cloudinary.js";
+import EnrolledCourse from "../models/enrolledCourse.model.js";
+import Module from '../models/module.model.js';
+import Lecture from "../models/lecture.model.js";
+import Review from "../models/review.model.js";
 import slugify from "slugify";
 import { v4 as uuidv4 } from 'uuid';
+import { uploadImageOnCloudinary, deleteImageOnCloudinary } from "../utils/course.utils.js";
 
+// instructor
 export const createCourse = async (req, res) => {
+    const instructor = req.user;
     try {
-        const user = req.user;
-        const { data } = req.body;
+        const { title, subtitle, description, language, level, courseImageUrl, price, category } = req.body;
 
         // if we have the course image then save it in cloudinary
-        if (data.courseImageUrl) {
-            try {
-                const uploadRes = await cloudinary.uploader.upload(data.courseImageUrl, {
-                    transformation: [
-                        {
-                            crop: 'fill',
-                            gravity: 'auto',
-                            quality: "auto",
-                        }
-                    ]
-                });
-                data["courseImageUrl"] = uploadRes.secure_url;
-            } catch (error) {
-                console.log("Error coming while uploading course image", error.message);
-                throw error;
-            }
+        let courseImageCloudinaryUrl = null;
+        if (courseImageUrl) {
+            courseImageCloudinaryUrl = await uploadImageOnCloudinary(courseImageUrl);
         }
 
-        // add instructor id into data
-        data["instructor"] = user._id;
+        const titleSlug = slugify(title, { lower: true, strict: true }) + '-' + uuidv4().slice(0, 8);
 
-        const titleSlug = slugify(data.title, { lower: true, strict: true });
-        data["titleSlug"] = `${titleSlug}-${uuidv4().slice(0, 8)}`;
+        const course = await Course.create({
+            title,
+            titleSlug,
+            subtitle,
+            description,
+            language,
+            level,
+            courseImageUrl: courseImageCloudinaryUrl,
+            price,
+            category,
+            instructor: instructor._id,
+        });
 
-        const course = await Course.create(data);
-
-        user.courses.push(course._id);
-        await user.save();
-
-        res.json({
+        return res.status(201).json({
+            success: true,
             course,
             message: "Course created successfully",
-        })
+        });
 
     } catch (error) {
         console.log("Error while creating course" + error.message);
         res.status(500).json({
             success: false,
             message: error.message
-        })
+        });
     }
 }
 
+// instructor
 export const updateCourse = async (req, res) => {
+    const instructor = req.user;
+
     try {
-        const user = req.user;
-        const { data } = req.body;
+        const { title, subtitle, description, language, level, courseImageUrl, price, category } = req.body;
         const { courseId } = req.params;
 
-        const course = await Course.find({ 
-            _id : courseId,
-            instructor : user._id,
+        const course = await Course.findOne({
+            _id: courseId,
+            instructor: instructor._id,
         });
 
         if (!course) {
@@ -70,31 +70,31 @@ export const updateCourse = async (req, res) => {
             });
         }
 
-        if (data.courseImageUrl) {
-            // delete previous image if needed
-            try {
-                const uploadRes = await cloudinary.uploader.upload(data.courseImageUrl, {
-                    transformation: [
-                        {
-                            crop: 'fill',
-                            gravity: 'auto',
-                            quality: "auto",
-                        }
-                    ]
-                });
-                data["courseImageUrl"] = uploadRes.secure_url;
-            } catch (error) {
-                console.log("Error coming while uploading course image in updateCourse", error.message);
-                throw error;
-            }
+        let courseImageCloudinaryUrl = null;
+        if (courseImageUrl) {
+            courseImageCloudinaryUrl = await uploadImageOnCloudinary(courseImageUrl);
         }
 
-        const updatedCourse = await Course.findByIdAndUpdate(courseId, {
-            $set: data
-        }, { new: true });
+        let titleSlug = null;
+        if (title) {
+            titleSlug = slugify(title, { lower: true, strict: true }) + '-' + uuidv4().slice(0, 8);
+        }
 
-        res.json({
-            message: "Course created successfully",
+        course.title = title ?? course.title;
+        course.titleSlug = title ? titleSlug : course.titleSlug;
+        course.subtitle = subtitle ?? course.subtitle;
+        course.description = description ?? course.description;
+        course.language = language ?? course.language;
+        course.level = level ?? course.level;
+        course.courseImageUrl = courseImageCloudinaryUrl ?? course.courseImageUrl;
+        course.price = price ?? course.price;
+        course.category = category ?? course.category;
+
+        const updatedCourse = await course.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Course updated successfully",
             course: updatedCourse,
         });
 
@@ -107,59 +107,49 @@ export const updateCourse = async (req, res) => {
     }
 }
 
-export const getMyCourses = async (req, res) => {
+// both
+export const getAllCourses = async (req, res) => {
+    const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl biography headline socialLinks";
+
     try {
-        const user = req.user;
-        const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl biography headline socialLinks";
-        let courses;
-        
-        if(user.role === "instructor") {
-            courses = await Course.find({ instructor: user._id }).sort({ createdAt: -1 })
-        } else {
-            courses = await Course.find({
-                _id : { $in : user.enrolledCourses }
-            }).populate('instructor', INSTRUCTOR_SAFE_DATA);
-        }
+        const { page = 1, limit = 10 } = req.query;
+
+        const pageNumber = Math.max(1, parseInt(page));
+        const limitNumber = Math.min(100, parseInt(limit));
+        const skip = (pageNumber - 1) * limitNumber;
+
+        const [courses, totalCourses] = await Promise.all([
+            Course.find()
+                .sort({ createdAt: -1 })
+                .populate('instructor', INSTRUCTOR_SAFE_DATA)
+                .skip(skip)
+                .limit(limit)
+                .lean(),
+            Course.countDocuments()
+        ]);
+
+        const cleanedCourses = courses.map(course => ({
+            ...course,
+            id: course._id,
+            _id: undefined,
+            __v: undefined
+        }));
 
         if (courses.length === 0) {
-            return res.json({
+            return res.status(200).json({
                 success: true,
-                message: "No courses found",
-                courses,
+                courses: [],
+                totalCourses,
             });
         }
 
-        res.json({
+        return res.status(200).json({
             success: true,
-            message: "Courses fetched successfully",
-            courses,
+            currentPage: pageNumber,
+            totalPages: Math.ceil(totalCourses / limitNumber),
+            totalCourses,
+            courses: cleanedCourses
         });
-
-    } catch (error) {
-        console.log("Error while getting my courses" + error.message);
-        res.status(500).json({
-            success: false,
-            message: error.message
-        })
-    }
-}
-
-export const getAllCourses = async (req, res) => {
-    try {
-        const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl biography headline socialLinks";
-
-        const allCourses = await Course.find({})
-            .sort({ createdAt: -1 })
-            .populate('instructor', INSTRUCTOR_SAFE_DATA);
-
-        if (allCourses.length === 0) {
-            return res.json({
-                success: true,
-                courses: [],
-            })
-        }
-
-        return res.json({ success: true, courses: allCourses });
     } catch (error) {
         console.log("Error while getting all courses" + error.message);
         res.status(500).json({
@@ -169,28 +159,61 @@ export const getAllCourses = async (req, res) => {
     }
 };
 
-export const getSingleCourse = async (req, res) => {
+// instructor and user
+export const getMyEnrolledCourses = async (req, res) => {
+    const user = req.user;
+    const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl biography headline";
     try {
-        const { titleSlug } = req.params;
-        console.log(titleSlug);
-        const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl biography headline socialLinks";
+        const { page = 1, limit = 10 } = req.query;
 
-        const course = await Course.findOne({ titleSlug })
-            .populate('instructor', INSTRUCTOR_SAFE_DATA);
+        const pageNumber = Math.max(1, parseInt(page));
+        const limitNumber = Math.min(100, parseInt(limit));
+        const skip = (pageNumber - 1) * limitNumber;
 
-        console.log("in getsinglecourse");
-        console.log(course);
+        const [enrolledCourses, totalEnrolledCourses] = await Promise.all([
+            EnrolledCourse
+                .find({ userId: user._id })
+                .sort({ createdAt: -1 })
+                .populate({
+                    path: "courseId",
+                    populate: {
+                        path: "instructor",
+                        select: INSTRUCTOR_SAFE_DATA,
+                    }
+                })
+                .skip(skip)
+                .limit(limitNumber)
+                .lean(),
 
-        if (!course) {
-            return res.status(404).json({
+            EnrolledCourse.countDocuments({ userId: user._id })
+        ]);
+
+        if (enrolledCourses.length === 0) {
+            return res.json({
                 success: true,
-                message: "Course not found"
+                message: "No courses found",
+                courses: [],
             });
         }
 
-        return res.json({ success: true, course });
+        const cleanedEnrolledCourses = enrolledCourses.map(course => ({
+            ...course,
+            id: course.id,
+            _id: undefined,
+            __v: undefined,
+        }));
+
+        res.status(200).json({
+            success: true,
+            message: "Courses fetched successfully",
+            currentPage: pageNumber,
+            totalPages: Math.ceil(totalCourses / limitNumber),
+            totalCourses: totalEnrolledCourses,
+            courses: cleanedEnrolledCourses,
+        });
+
     } catch (error) {
-        console.log("Error while getting a course" + error.message);
+        console.log("Error while getting my enrolled courses" + error.message);
         res.status(500).json({
             success: false,
             message: error.message
@@ -198,48 +221,143 @@ export const getSingleCourse = async (req, res) => {
     }
 }
 
-export const deleteCourse = async (req, res) => {
+// instructor
+export const getMyCreatedCourses = async (req, res) => {
+    const instructor = req.user;
     try {
-        const user = req.user;
-        const { courseId } = req.params;
-        console.log(courseId);
+        const { page = 1, limit = 10 } = req.query;
 
-        const course = await Course.findById(courseId);
+        const pageNumber = Math.max(1, parseInt(page));
+        const limitNumber = Math.min(100, parseInt(limit));
+        const skip = (pageNumber - 1) * limitNumber;
 
-        if (!course) {
-            return res.status(400).json({
-                success: false,
-                message: "Course not found to delete"
+        const [courses, totalCourses] = await Promise.all([
+            Course
+                .find({ instructor: instructor._id })
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limitNumber)
+                .lean(),
+
+            Course.countDocuments({ instructor: instructor._id })
+        ]);
+
+        if (courses.length === 0) {
+            return res.status(200).json({
+                success: true,
+                message: "No courses found",
+                courses: [],
             });
         }
 
-        if (course.courseImageUrl) {
-            const publicId = course.courseImageUrl.split('/').pop().split('.')[0];
+        const cleanedEnrolledCourses = courses.map(course => ({
+            ...course,
+            id: course.id,
+            _id: undefined,
+            __v: undefined,
+        }));
 
-            console.log(publicId);
+        res.status(200).json({
+            success: true,
+            message: "Courses fetched successfully",
+            currentPage: pageNumber,
+            totalPages: Math.ceil(totalCourses / limitNumber),
+            totalCourses,
+            courses: cleanedEnrolledCourses,
+        });
+
+    } catch (error) {
+        console.log("Error while getting my courses" + error.message);
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+// both
+export const getSingleCourse = async (req, res) => {
+    const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl biography headline";
+    try {
+        const { courseId } = req.params;
+
+        const course = await Course.findById(courseId)
+            .populate('instructor', INSTRUCTOR_SAFE_DATA);
+
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found"
+            });
+        }
+
+        return res.status(200).json({ success: true, course });
+
+    } catch (error) {
+        console.log("Error while getting a single course" + error.message);
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+// instructor
+export const deleteCourse = async (req, res) => {
+    const session = await mongoose.startSession();
+    const instructor = req.user;
+
+    try {
+        session.startTransaction();
+        const { courseId } = req.params;
+
+        const course = await Course.findOne({ _id: courseId, instructor: instructor._id }).session(session);
+
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found or unauthorized"
+            });
+        }
+
+        await EnrolledCourse.deleteMany({ courseId: course._id }).session(session);
+
+        const moduleDocs = await Module.find({ courseId: course._id }).select("_id").session(session);
+        const moduleIds = moduleDocs.map((m) => m._id);
+
+        // delete all the lectures where moduleId in lecture is in modulesId array
+
+        await Lecture.deleteMany({ moduleId: { $in: moduleIds } }).session(session);
+
+        await Module.deleteMany({ _id: { $in: moduleIds } }).session(session);
+
+        await Review.deleteMany({ courseId: course._id }).session(session);
+
+        await Course.findByIdAndDelete(courseId).session(session);
+
+        await session.commitTransaction();
+
+        if (course.courseImageUrl) {
             try {
-                const deleteRes = await cloudinary.uploader.destroy(publicId);
-                console.log(deleteRes);
+                await deleteImageOnCloudinary(course.courseImageUrl);
             } catch (error) {
-                console.log("Error coming while deleting course image from cloudinary");
+                throw error
             }
         }
 
-        user.courses = user.courses.filter(courseId => courseId !== course._id);
-        await user.save();
-
-        await Course.findByIdAndDelete(courseId);
-
-        res.json({
+        res.status(200).json({
             success: true,
             message: "Course deleted successfully"
         });
 
     } catch (error) {
+        await session.abortTransaction();
         console.log("Error while deleting a course" + error.message);
         res.status(500).json({
             success: false,
             message: error.message
         });
+    } finally {
+        session.endSession();
     }
 }

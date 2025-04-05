@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
@@ -28,25 +28,29 @@ const userSchema = new mongoose.Schema({
     },
     profileImageUrl: {
         type: String,
-        default: "",
+        default: null,
         trim: true,
     },
     socialLinks: [
         {
-            name: String,
-            url: String,
+            name: {
+                type: String,
+                enum: ['github', 'linkedin', 'twitter', 'portfolio', 'facebook', 'instagram'],
+                required: true,
+                trim: true
+            },
+            url: {
+                type: String,
+                required: true,
+                trim: true
+            },
             username: {
                 type: String,
                 default: "",
+                trim: true
             },
-            _id: false,
-        },
-    ],
-    enrolledCourses : [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Course',
-        },
+            _id: false
+        }
     ],
     isEmailVerified: {
         type: Boolean,
@@ -56,26 +60,15 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    courses: {
-        type : [{
-            type : mongoose.Schema.Types.ObjectId,
-            ref : 'User'
-        }]
-    },
     category: { // admin
         type: String,
         trim: true,
     },
-    biography: { // admin
-        type: String,
-        maxLength: [1000, "Biography should be maximum 1000 characters long"],
-        default: "",
-    },
-    headline: { // admin
+    bio: { // admin
         type: String,
         maxLength: [60, "Headline should be maximum 60 characters long"],
         trim: true,
-        default: "",
+        default: null,
     },
 }, {
     timestamps: true,

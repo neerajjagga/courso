@@ -42,10 +42,12 @@ export const courseValidationSchema = Joi.object({
   level: Joi.string()
     .trim()
     .required()
+    .valid("beginner", "intermediate", "expert", "all")
     .messages({
       'string.base': 'Level must be a string.',
       'string.empty': 'Level is required.',
       'any.required': 'Level is required.',
+      'any.only': 'Level must be either "beginner", "intermediate", "expert", or "all".'
     }),
 
   courseImageUrl: Joi.string()
@@ -57,16 +59,14 @@ export const courseValidationSchema = Joi.object({
       'string.uri': 'Course Image URL must be a valid URI.',
     }),
 
-  price: Joi.object({
-    amount: Joi.number()
-      .min(0)
-      .required()
-      .messages({
-        'number.base': 'Amount must be a number.',
-        'number.min': 'Amount must be at least 0.',
-        'any.required': 'Amount is required.',
-      }),
-  }),
+  price: Joi.number()
+    .min(0)
+    .required()
+    .messages({
+      'number.base': 'Price must be a number.',
+      'number.min': 'Price must be at least 0.',
+      'any.required': 'Price is required.',
+    }),
 
   category: Joi.string()
     .trim()
@@ -75,18 +75,69 @@ export const courseValidationSchema = Joi.object({
       'string.base': 'Category must be a string.',
     }),
 
-  students: Joi.array()
-    .items(Joi.string().regex(/^[0-9a-fA-F]{24}$/))
+}).options({ allowUnknown: false, stripUnknown : true });
+
+export const courseUpdateValidationSchema = Joi.object({
+  title: Joi.string()
+    .max(80)
+    .trim()
     .messages({
-      'array.base': 'Students must be an array of ObjectIds.',
-      'string.pattern.base': 'Each student ID must be a valid ObjectId.',
+      'string.base': 'Title must be a string.',
+      'string.max': 'Title should be a maximum of 80 characters.',
     }),
 
-  reviews: Joi.array()
-    .items(Joi.string().regex(/^[0-9a-fA-F]{24}$/))
+  subtitle: Joi.string()
+    .max(200)
+    .trim()
     .messages({
-      'array.base': 'Reviews must be an array of ObjectIds.',
-      'string.pattern.base': 'Each review ID must be a valid ObjectId.',
+      'string.base': 'Subtitle must be a string.',
+      'string.max': 'Subtitle should be a maximum of 200 characters.',
     }),
-    
-}).options({ allowUnknown: true });
+
+  description: Joi.string()
+    .max(3000)
+    .trim()
+    .messages({
+      'string.base': 'Description must be a string.',
+      'string.max': 'Description should be a maximum of 3000 characters.',
+    }),
+
+  language: Joi.string()
+    .trim()
+    .messages({
+      'string.base': 'Language must be a string.',
+    }),
+
+  level: Joi.string()
+    .trim()
+    .valid("beginner", "intermediate", "expert", "all")
+    .messages({
+      'string.base': 'Level must be a string.',
+      'any.only': 'Level must be either "beginner", "intermediate", "expert", or "all".'
+    }),
+
+  courseImageUrl: Joi.string()
+    .trim()
+    .uri()
+    .messages({
+      'string.base': 'Course Image URL must be a string.',
+      'string.uri': 'Course Image URL must be a valid URI.',
+    }),
+
+  price: Joi.number()
+    .min(0)
+    .messages({
+      'number.base': 'Price must be a number.',
+      'number.min': 'Price must be at least 0.',
+    }),
+
+  category: Joi.string()
+    .trim()
+    .messages({
+      'string.base': 'Category must be a string.',
+    }),
+
+  students: Joi.forbidden(), 
+  reviews: Joi.forbidden(),
+
+}).options({ allowUnknown: false, stripUnknown: true, });

@@ -12,21 +12,28 @@ const lectureSchema = new mongoose.Schema({
         maxLength: [1000, "Lecture description should be maximum 1000 characters"],
         trim: true,
     },
-    url: {
+    videoUrl: {
         type: String,
         required: true,
         trim: true,
     },
-    courseId: {   
+    order: {
+        type: Number,
+        required: true,
+    },
+    isFreePreview: {
+        type: Boolean,
+        default: false
+    },
+    moduleId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course',
+        ref: 'Module',
         required: true,
     }
 }, {
     timestamps: true,
 });
 
-// .lean() bypasses Mongoose's document transformation. 
 lectureSchema.set('toJSON', {
     versionKey: false,
     transform: function (doc, ret) {
@@ -35,4 +42,6 @@ lectureSchema.set('toJSON', {
     },
 });
 
-export default mongoose.model('Lecture', lectureSchema);
+const LectureModel = mongoose.model('Lecture', lectureSchema);
+
+export default LectureModel;

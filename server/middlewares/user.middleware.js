@@ -49,10 +49,10 @@ export const checkInstructor = async(req, res, next) => {
     try {
         const user = req.user;
         if(user.role !== "instructor") {
-            return res.status(400).json({
+            return res.status(403).json({
                 success : false,
-                message : "Not authorized"
-            })
+                message : "Forbidden. You are not allowed to perform this action."
+            });
         }
 
         next();
@@ -65,7 +65,7 @@ export const checkInstructor = async(req, res, next) => {
 }
 
 export const validateSignUpData = async (req, res, next) => {
-    const { error } = signupValidationSchema.validate(req.body.data);
+    const { error } = signupValidationSchema.validate(req.body);
 
     if (error) {
         return res.status(400).json({

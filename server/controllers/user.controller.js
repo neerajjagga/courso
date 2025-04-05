@@ -1,12 +1,11 @@
 import User from "../models/user.model.js";
 import cloudinary from "../lib/cloudinary.js";
-import dotenv from "dotenv";
-dotenv.config();
+import 'dotenv/config';
 
 export const getUserProfile = async (req, res) => {
+    const user = req.user;
     try {
-        const user = req.user;
-        res.json({
+        res.status(200).json({
             user,
             success: true,
         })
@@ -20,12 +19,10 @@ export const getUserProfile = async (req, res) => {
 }
 
 export const editUserProfile = async (req, res) => {
+    const user = req.user;
     try {
-        const user = req.user;
         const { updatedData } = req.body;
 
-        console.log(updatedData);
-        
         if (updatedData.profileImageUrl) {
             try {
                 const res = await cloudinary.uploader.upload(updatedData.profileImageUrl, {

@@ -8,22 +8,25 @@ dotenv.config();
 
 export const signUpUser = async (req, res) => {
     try {
-        const { data } = req.body;
+        const { fullname, email, password, role } = req.body;
 
         const isUserAlreadyPresent = await User.findOne({
-            email: data.email,
+            email,
         });
 
         if (isUserAlreadyPresent) {
             return res.status(409).json({
                 success: false,
-                message: "Credentials are already in use"
-            })
+                message: "An account with this email already exists. Please try logging in or use a different email."
+            });
         }
 
-        const user = new User(data);
-
-        await user.save();
+        const user = await User.create({
+            fullname,
+            email,
+            password,
+            role,
+        });
 
         // generate tokens
         const { accessToken, refreshToken } = generateTokens(user._id);
@@ -36,18 +39,19 @@ export const signUpUser = async (req, res) => {
 
         res.status(201).json({
             user,
+            success: true,
             message: "Account created successfully"
-        })
+        });
 
     } catch (error) {
         console.log("Error coming while signup" + error.message);
-        res.status(500).json({ message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
 export const sendVerificationCode = async (req, res) => {
+    const user = req.user;
     try {
-        const user = req.user;
         const code = Math.floor(100000 + Math.random() * 900000);
 
         await sendVerificationEmail(user.email, code);
@@ -55,21 +59,21 @@ export const sendVerificationCode = async (req, res) => {
         // store verification code in redis along with userId
         await Redis.set(`verification_code/${user._id.toString()}`, code, "EX", 2 * 60);
 
-        res.json({
+        res.status(200).json({
             success: true,
             message: "Verification code send successfully",
         });
     } catch (error) {
         console.log("Error coming while sending verification code to user" + error.message);
-        res.status(500).json({ message: error.message })
+        res.status(500).json({ success: false, message: error.message });
     }
 }
 
 export const verifyVerificationCode = async (req, res) => {
+    const user = req.user;
+
     try {
-        const user = req.user;
         const { code: verificationCode } = req.body;
-        console.log(verificationCode);
 
         // store verification code in redis along with userId
         const redisCode = await Redis.get(`verification_code/${user._id.toString()}`);
@@ -92,8 +96,7 @@ export const verifyVerificationCode = async (req, res) => {
         await Redis.del(`verification_code/${user._id.toString()}`);
 
         // update the email verification status
-        user.isEmailVerified = true;
-        await user.save();
+        await User.findByIdAndUpdate({ _id: user.id }, { isEmailVerified: true });
 
         res.json({
             success: true,
@@ -119,7 +122,7 @@ export const loginUser = async (req, res) => {
 
         const isPasswordValid = await user.comparePassword(password);
 
-        if (!isPasswordValid) return res.status(400).json({ message: "Invalid credentials" })
+        if (!isPasswordValid) return res.status(400).json({ success: false, message: "Invalid credentials" })
 
         // generate tokens
         const { accessToken, refreshToken } = generateTokens(user._id);
@@ -130,12 +133,13 @@ export const loginUser = async (req, res) => {
 
         res.status(200).json({
             user,
+            success: true,
             message: "User loggedIn successfully"
-        })
+        });
 
     } catch (error) {
-        console.log("Error coming while login user" + error.message);
-        res.status(500).json({ message: error.message })
+        console.log("Error while login user" + error.message);
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -160,14 +164,14 @@ export const logoutUser = async (req, res) => {
 
         res.clearCookie("access_token");
         res.clearCookie("refresh_token");
-        res.json({
+        res.status(200).json({
             success: true,
             message: "Logged out successfully"
         });
 
     } catch (error) {
         console.log("Error coming while logout user" + error.message);
-        res.status(500).json({ message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -177,11 +181,11 @@ export const refreshTokens = async (req, res) => {
 
         if (!refresh_token) {
             return res.status(401).json({
-                message: "Your session has expired. Please log in again. 3333333333333333333333333",
+                message: "Your session has expired. Please log in again.",
                 tokenExpired: true,
             });
         }
-        
+
         const decodedObj = jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET);
         console.log(decodedObj);
 
@@ -191,7 +195,7 @@ export const refreshTokens = async (req, res) => {
 
         if (!storedRefreshToken || refresh_token !== storedRefreshToken) {
             return res.status(403).json({
-                message: "Your session has expired. Please log in again. 222222222222222222222222222"
+                message: "Your session has expired. Please log in again."
             });
         }
 
@@ -200,9 +204,9 @@ export const refreshTokens = async (req, res) => {
         await storeRefreshToken(refreshToken, userId);
         setCookies(accessToken, refreshToken, res);
 
-        res.json({ message: "Your session has been refreshed successfully." });
+        res.status(200).json({ success: true, message: "Your session has been refreshed successfully." });
     } catch (error) {
         console.error("Error occurred while refreshing tokens:", error.message);
-        res.status(500).json({ message: "Internal server error. Please try again later." });
+        res.status(500).json({ success: false, message: "Internal server error. Please try again later." });
     }
 };

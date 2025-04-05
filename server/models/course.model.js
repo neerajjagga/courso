@@ -16,13 +16,13 @@ const courseSchema = new mongoose.Schema({
         type: String,
         maxLength: [200, "Subtitle should be maximum 200 characters"],
         trim: true,
-        default: "",
+        default: null,
     },
     description: {
         type: String,
         maxLength: [3000, "Description should be maximum 3000 characters"],
         trim: true,
-        default: "",
+        default: null,
     },
     language: {
         type: String,
@@ -31,29 +31,23 @@ const courseSchema = new mongoose.Schema({
     },
     level: {
         type: String,
-        required: true,
+        required: [true, "Level is required"],
+        enum: {
+            values: ["beginner", "intermediate", "expert", "all"],
+            message: 'Level must be either "beginner", "intermediate", "expert" or "all"'
+        },
         trim: true,
     },
     courseImageUrl: {
         type: String,
-        default: "",
+        default: null,
         trim: true,
     },
     price: {
-        amount: {
-            type: Number,
-            min: 0,
-            required: true,
-            trim: true,
-        },
-        currencyCode: {
-            type: String,
-            default: "inr"
-        },
-        currencySymbol: {
-            type: String,
-            default: "₹",
-        },
+        type: Number,
+        min: 0,
+        required: [true, "Price is required"],
+        trim: true,
     },
     lectures: {
         type: mongoose.Schema.Types.ObjectId,
@@ -64,12 +58,6 @@ const courseSchema = new mongoose.Schema({
         trim: true,
         required: true,
     },
-    students: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-        }
-    ],
     reviews: [
         {
             type: mongoose.Schema.Types.ObjectId,
