@@ -6,7 +6,7 @@ import Lecture from "../models/lecture.model.js";
 import Review from "../models/review.model.js";
 import slugify from "slugify";
 import { v4 as uuidv4 } from 'uuid';
-import { uploadImageOnCloudinary, deleteImageOnCloudinary } from "../utils/course.utils.js";
+import { uploadImageOnCloudinary, deleteImageOnCloudinary } from "../utils/cloudinary.utils.js";
 
 // instructor
 export const createCourse = async (req, res) => {
@@ -43,7 +43,7 @@ export const createCourse = async (req, res) => {
 
     } catch (error) {
         console.log("Error while creating course" + error.message);
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: error.message
         });
@@ -100,7 +100,7 @@ export const updateCourse = async (req, res) => {
 
     } catch (error) {
         console.log("Error while updating a course" + error.message);
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: error.message
         });
@@ -152,7 +152,7 @@ export const getAllCourses = async (req, res) => {
         });
     } catch (error) {
         console.log("Error while getting all courses" + error.message);
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: error.message
         })
@@ -203,7 +203,7 @@ export const getMyEnrolledCourses = async (req, res) => {
             __v: undefined,
         }));
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Courses fetched successfully",
             currentPage: pageNumber,
@@ -214,7 +214,7 @@ export const getMyEnrolledCourses = async (req, res) => {
 
     } catch (error) {
         console.log("Error while getting my enrolled courses" + error.message);
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: error.message
         });
@@ -252,12 +252,12 @@ export const getMyCreatedCourses = async (req, res) => {
 
         const cleanedEnrolledCourses = courses.map(course => ({
             ...course,
-            id: course.id,
+            id: course._id,
             _id: undefined,
             __v: undefined,
         }));
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Courses fetched successfully",
             currentPage: pageNumber,
@@ -268,7 +268,7 @@ export const getMyCreatedCourses = async (req, res) => {
 
     } catch (error) {
         console.log("Error while getting my courses" + error.message);
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: error.message
         });
@@ -277,12 +277,20 @@ export const getMyCreatedCourses = async (req, res) => {
 
 // both
 export const getSingleCourse = async (req, res) => {
-    const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl biography headline";
+    const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl socialLinks isEmailVerified bio";
     try {
         const { courseId } = req.params;
 
         const course = await Course.findById(courseId)
-            .populate('instructor', INSTRUCTOR_SAFE_DATA);
+            .populate('instructor', INSTRUCTOR_SAFE_DATA)
+            .populate({
+                path: 'modules',
+                select: 'title titleSlug -courseId',
+                populate: {
+                    path: 'lectures',
+                    select: 'title titleSlug description isFreePreview createdAt -moduleId'
+                },
+            });
 
         if (!course) {
             return res.status(404).json({
@@ -295,7 +303,7 @@ export const getSingleCourse = async (req, res) => {
 
     } catch (error) {
         console.log("Error while getting a single course" + error.message);
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: error.message
         });
@@ -345,7 +353,7 @@ export const deleteCourse = async (req, res) => {
             }
         }
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Course deleted successfully"
         });
@@ -353,7 +361,7 @@ export const deleteCourse = async (req, res) => {
     } catch (error) {
         await session.abortTransaction();
         console.log("Error while deleting a course" + error.message);
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: error.message
         });

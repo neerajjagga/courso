@@ -12,13 +12,6 @@ export const moduleValidationSchema = Joi.object({
       'any.required': 'Module title is required',
     }),
 
-  titleSlug: Joi.string()
-    .trim()
-    .optional()
-    .messages({
-      'string.base': 'Slug must be a string',
-    }),
-
   // order: Joi.number()
   //   .required()
   //   .messages({
@@ -34,3 +27,21 @@ export const moduleValidationSchema = Joi.object({
       'any.required': 'courseId is required',
     }),
 });
+
+export const moduleUpdateValidationSchema = Joi.object({
+  title: Joi.string()
+    .max(120)
+    .trim()
+    .messages({
+      'string.base': 'Module title must be a string',
+      'string.empty': 'Module title is required',
+      'string.max': 'Module title should be maximum 120 characters',
+      'any.required': 'Module title is required',
+    }),
+
+  // order: Joi.number()
+  //   .messages({
+  //     'number.base': 'Order must be a number',
+  //     'any.required': 'Order is required',
+  //   }),
+}).options({ allowUnknown: false });

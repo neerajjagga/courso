@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema({
             },
             username: {
                 type: String,
-                default: "",
+                default: null,
                 trim: true
             },
             _id: false

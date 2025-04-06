@@ -1,8 +1,8 @@
 import cloudinary from "../lib/cloudinary.js";
 
-export const uploadImageOnCloudinary = async (courseImageUrl) => {
+export const uploadImageOnCloudinary = async (imageUrl) => {
     try {
-        const uploadRes = await cloudinary.uploader.upload(courseImageUrl, {
+        const uploadRes = await cloudinary.uploader.upload(imageUrl, {
             transformation: [
                 {
                     crop: 'fill',
@@ -13,14 +13,14 @@ export const uploadImageOnCloudinary = async (courseImageUrl) => {
         });
         return uploadRes.secure_url;
     } catch (error) {
-        console.error("Cloudinary upload error in updateCourse:", error.message);
+        console.error("Cloudinary upload error while uploading image on cloudinary:", error.message);
         throw error;
     }
 }
 
-export const deleteImageOnCloudinary = async (courseImageUrl) => {
-    const publicId = courseImageUrl.split('/').pop().split('.')[0];
-
+export const deleteImageOnCloudinary = async (imageUrl) => {
+    const publicId = imageUrl.split('/').pop().split('.')[0];
+    
     try {
         await cloudinary.uploader.destroy(publicId);
     } catch (error) {

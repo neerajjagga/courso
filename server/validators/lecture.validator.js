@@ -1,30 +1,84 @@
 import Joi from "joi";
 
-export const lectureSchema = Joi.object({
-    title: Joi.string().required().messages({
-        'string.empty': 'Title is required',
-        'any.required': 'Title is required'
+export const lectureValidationSchema = Joi.object({
+  title: Joi.string()
+    .max(300)
+    .required()
+    .messages({
+      "string.base": "Title should be a string",
+      "string.max": "Lecture title should be maximum 300 characters",
+      "any.required": "Lecture title is required",
     }),
-    description: Joi.string().required().messages({
-        'string.empty': 'Description is required',
-        'any.required': 'Description is required'
+
+  description: Joi.string()
+    .max(1000)
+    .messages({
+      "string.base": "Description should be a string",
+      "string.max": "Lecture description should be maximum 1000 characters",
     }),
-    url: Joi.string().uri().required().messages({
-        'string.empty': 'URL is required',
-        'string.uri': 'Please provide a valid URL',
-        'any.required': 'URL is required'
+
+  videoUrl: Joi.string()
+    .uri()
+    .required()
+    .messages({
+      "string.uri": "Video URL must be a valid URI",
+      "any.required": "Video URL is required",
+    }),
+
+  order: Joi.number()
+    .messages({
+      "number.base": "Order must be a number",
+      "any.required": "Order is required",
+    }),
+
+  isFreePreview: Joi.boolean().default(false),
+
+  moduleId: Joi.string()
+    .length(24)
+    .hex()
+    .required()
+    .messages({
+      "string.base": "Module ID must be a string",
+      "string.length": "Module ID must be a 24-character ObjectId",
+      "string.hex": "Module ID must be a valid hexadecimal value",
+      "any.required": "Module ID is required",
     }),
 });
 
-export const validateLectureData = async (req, res, next) => {
-    const { error } = lectureSchema.validate(req.body);
+export const lectureUpdateValidationSchema = Joi.object({
+  title: Joi.string()
+    .max(300)
+    .messages({
+      "string.base": "Title should be a string",
+      "string.max": "Lecture title should be maximum 300 characters",
+    }),
 
-    if (error) {
-        return res.status(400).json({
-            success: false,
-            message: error.details[0].message,
-        })
-    }
+  description: Joi.string()
+    .max(1000)
+    .messages({
+      "string.base": "Description should be a string",
+      "string.max": "Lecture description should be maximum 1000 characters",
+    }),
 
-    next();
-}
+  videoUrl: Joi.string()
+    .uri()
+    .messages({
+      "string.uri": "Video URL must be a valid URI",
+    }),
+
+  order: Joi.number()
+    .messages({
+      "number.base": "Order must be a number",
+    }),
+
+  isFreePreview: Joi.boolean(),
+
+  moduleId: Joi.string()
+    .length(24)
+    .hex()
+    .messages({
+      "string.base": "Module ID must be a string",
+      "string.length": "Module ID must be a 24-character ObjectId",
+      "string.hex": "Module ID must be a valid hexadecimal value",
+    }),
+});

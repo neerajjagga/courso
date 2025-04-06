@@ -1,13 +1,25 @@
 import express from 'express';
-import { checkInstructor, checkAuth } from '../middlewares/user.middleware.js';
-import { validateLectureData } from '../validators/lecture.validator.js';
-import { createLecture, getLectures, updateLecture, deleteLecture } from '../controllers/lecture.controller.js';
+import {
+    checkInstructor,
+    checkAuth
+} from '../middlewares/user.middleware.js';
+import {
+    validateLectureData,
+    validateLectureUpdateData
+} from '../middlewares/lecture.middleware.js';
+import {
+    createLecture,
+    getSingleLecture,
+    updateLecture,
+    deleteLecture
+} from '../controllers/lecture.controller.js';
 
 const lectureRouter = express.Router();
 
-lectureRouter.post('/:courseId', checkAuth, checkInstructor, validateLectureData, createLecture);
-lectureRouter.get('/:courseId', checkAuth, getLectures);
-lectureRouter.patch('/:lectureId', checkAuth, checkInstructor, validateLectureData, updateLecture);
+lectureRouter.post('/', checkAuth, checkInstructor, validateLectureData, createLecture);
+lectureRouter.get('/:lectureId', checkAuth, getSingleLecture);
+
+lectureRouter.patch('/:lectureId', checkAuth, checkInstructor, validateLectureUpdateData, updateLecture);
 lectureRouter.delete('/:lectureId', checkAuth, checkInstructor, deleteLecture);
 
 export default lectureRouter;

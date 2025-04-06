@@ -1,7 +1,9 @@
+import mongoose from 'mongoose';
 import Course from '../models/course.model.js';
 import Module from '../models/module.model.js';
 import slugify from "slugify";
 import { v4 as uuidv4 } from 'uuid';
+import Lecture from '../models/lecture.model.js';
 
 export const createModule = async (req, res) => {
     const instructor = req.user;
@@ -81,28 +83,35 @@ export const getModules = async (req, res) => {
     }
 }
 
-// TODO: Add joi validation schema
 export const updateModule = async (req, res) => {
     const instructor = req.user;
     try {
         const { moduleId } = req.params;
         const { title, order } = req.body;
 
+        if (!title && !order) {
+            return res.status(400).json({
+                success: false,
+                message: "title or order is required to update"
+            });
+        }
+
         const module = await Module.findById(moduleId);
 
         if (!module) {
-            return res.status(400).json({
+            return res.status(404).json({
                 success: false,
-                message: "CourseId is required to fetch modules"
+                message: "Module not found"
             });
         }
 
         const course = await Course.findById(module.courseId);
 
-        if (!course.instructor.toString() === instructor._id.toString()) {
+        if (course.instructor.toString() !== instructor._id.toString()) {
+            await session.abortTransaction();
             return res.status(403).json({
                 success: false,
-                message: "Unauthorized to update module"
+                message: "Unauthorized to delete module"
             });
         }
 
@@ -133,13 +142,50 @@ export const updateModule = async (req, res) => {
 }
 
 export const deleteModule = async (req, res) => {
+    const instructor = req.user;
+    const session = await mongoose.startSession();
     try {
+        session.startTransaction();
+
+        const { moduleId } = req.params;
+        const module = await Module.findById(moduleId).session(session);
+
+        if (!module) {
+            return res.status(404).json({
+                success: false,
+                message: "Module not found"
+            });
+        }
+
+        const course = await Course.findById(module.courseId).session(session);
+
+        if (course.instructor.toString() !== instructor._id.toString()) {
+            await session.abortTransaction();
+            return res.status(403).json({
+                success: false,
+                message: "Unauthorized to delete module"
+            });
+        }
+
+        // delete all lectures whose moduleId is current moduleId
+        await Lecture.deleteMany({ moduleId: module._id }).session(session);
+        await Module.deleteOne({ _id: module._id }).session(session);
+
+        await session.commitTransaction();
+
+        return res.status(200).json({
+            success: true,
+            message: "Module deleted successfully",
+        });
 
     } catch (error) {
+        await session.abortTransaction();
         console.log("Error while deleting module" + error.message);
         res.status(500).json({
             success: false,
             message: error.message
         });
+    } finally {
+        session.endSession();
     }
 }

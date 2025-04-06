@@ -3,7 +3,7 @@ import {
     checkAuth,
     checkInstructor
 } from '../middlewares/user.middleware.js';
-import { validateModuleData } from '../middlewares/module.middleware.js';
+import { validateModuleData, validateModuleUpdateData } from '../middlewares/module.middleware.js';
 import {
     createModule,
     getModules,
@@ -20,7 +20,7 @@ moduleRouter.post('/', checkAuth, checkInstructor, validateModuleData, createMod
 moduleRouter.get('/', getModules);
 
 // edit module (title, order) 
-moduleRouter.patch('/:moduleId', checkAuth, checkInstructor, updateModule);
+moduleRouter.patch('/:moduleId', checkAuth, checkInstructor, validateModuleUpdateData, updateModule);
 
 // delete module
 moduleRouter.delete('/:moduleId', checkAuth, checkInstructor, deleteModule);

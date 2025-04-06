@@ -73,8 +73,16 @@ const courseSchema = new mongoose.Schema({
     timestamps: true,
 });
 
+// course.model.js
+courseSchema.virtual('modules', {
+    ref: 'Module',
+    localField: '_id',
+    foreignField: 'courseId',
+});
+
 courseSchema.set('toJSON', {
     versionKey: false,
+    virtuals: true,
     transform: function (doc, ret) {
         ret.id = ret._id;
         delete ret._id;

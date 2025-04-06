@@ -107,68 +107,44 @@ export const signupValidationSchema = Joi.object({
 
 }).options({ allowUnknown: true });
 
-
-export const loginValidationSchema = Joi.object({
+export const userProfileUpdateSchema = Joi.object({
   fullname: Joi.string()
-    .min(3)
     .trim()
     .max(20)
     .messages({
-      'string.base': 'Fullname must be a string.',
-      'string.empty': 'Fullname cannot be empty.',
-      'string.max': 'Fullname should be maximum 20 characters.',
-      'string.min': 'Fullname should be minimum 3 characters.',
+      'string.max': 'Name should be maximum 20 characters',
     }),
 
-  socialLinks: Joi.array()
-    .items(
-      Joi.object({
-        name: Joi.string()
-          .required()
-          .messages({
-            'string.empty': 'Social link name is required.',
-            'any.required': 'Social link name is required.',
-          }),
-        url: Joi.string()
-          .uri()
-          .required()
-          .messages({
-            'string.base': 'Social link URL must be a string.',
-            'string.uri': 'Social link URL must be a valid URL.',
-            'string.empty': 'Social link URL is required.',
-            'any.required': 'Social link URL is required.',
-          }),
-      })
-    )
-    .messages({
-      'array.base': 'Social Links must be an array of objects.',
-    }),
+  profileImageUrl: Joi.string()
+    .trim(),
 
   bio: Joi.string()
-    .max(100)
     .trim()
-    .allow('')
+    .max(60)
+    .allow(null, '')
     .messages({
-      'string.base': 'Bio must be a string.',
-      'string.max': 'Bio should be a maximum of 100 characters long.'
+      'string.max': 'Headline should be maximum 60 characters long',
     }),
 
-  // role: Joi.string()
-  //   .valid('user', 'admin')
-  //   .default('user')
-  //   .messages({
-  //     'string.base': 'Role must be a string.',
-  //     'any.only': 'Role must be one of "user" or "admin".'
-  //   }),
+  category: Joi.string().trim().allow('', null),
 
-  // interestedInSkills: Joi.array()
-  //   .items(Joi.string())
-  //   .min(1)
-  //   .messages({
-  //     'array.base': 'Interested In Skills must be an array of strings.',
-  //     'array.min': 'Please select at least one skill.',
-  //     'any.required': 'Please select at least one skill.'
-  //   }),
-
-
-}).options({ allowUnknown: true });
+  socialLinks: Joi.array().items(
+    Joi.object({
+      name: Joi.string()
+        .valid('github', 'linkedin', 'twitter', 'portfolio', 'facebook', 'instagram')
+        .required(),
+      url: Joi.string()
+        .trim()
+        .uri()
+        .required()
+        .messages({
+          'string.uri': 'Social link must be a valid URL',
+        }),
+      username: Joi.string()
+        .trim()
+    })
+  )
+}).min(1)
+  .messages({
+    'object.min': 'At least one field is required to update your profile',
+  });

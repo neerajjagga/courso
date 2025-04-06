@@ -3,27 +3,30 @@ import mongoose from "mongoose";
 const lectureSchema = new mongoose.Schema({
     title: {
         type: String,
-        maxLength: [80, "Lecture title should be maximum 80 characters"],
+        maxLength: [300, "Lecture title should be maximum 300 characters"],
         required: true,
         trim: true,
+    },
+    titleSlug: {
+        type: String,
+        trim: true,
+        unique: true,
+        required : true,
     },
     description: {
         type: String,
         maxLength: [1000, "Lecture description should be maximum 1000 characters"],
         trim: true,
+        default : null,
     },
     videoUrl: {
         type: String,
         required: true,
         trim: true,
     },
-    order: {
-        type: Number,
-        required: true,
-    },
     isFreePreview: {
         type: Boolean,
-        default: false
+        default: false,
     },
     moduleId: {
         type: mongoose.Schema.Types.ObjectId,

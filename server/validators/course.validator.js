@@ -75,7 +75,7 @@ export const courseValidationSchema = Joi.object({
       'string.base': 'Category must be a string.',
     }),
 
-}).options({ allowUnknown: false, stripUnknown : true });
+}).options({ allowUnknown: false, stripUnknown: true });
 
 export const courseUpdateValidationSchema = Joi.object({
   title: Joi.string()
@@ -137,7 +137,10 @@ export const courseUpdateValidationSchema = Joi.object({
       'string.base': 'Category must be a string.',
     }),
 
-  students: Joi.forbidden(), 
+  students: Joi.forbidden(),
   reviews: Joi.forbidden(),
 
-}).options({ allowUnknown: false, stripUnknown: true, });
+}).options({ allowUnknown: false, stripUnknown: true, }).min(1)
+  .messages({
+    'object.min': 'At least one field is required to update the course',
+  });

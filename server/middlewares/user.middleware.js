@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import jwt from 'jsonwebtoken';
-import { signupValidationSchema, loginValidationSchema } from '../validators/user.validator.js';
+import { signupValidationSchema, userProfileUpdateSchema } from '../validators/user.validator.js';
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -78,7 +78,7 @@ export const validateSignUpData = async (req, res, next) => {
 }
 
 export const validateEditProfileData = async (req, res, next) => {
-    const { error } = loginValidationSchema.validate(req.body.updatedData);
+    const { error } = userProfileUpdateSchema.validate(req.body);
 
     if (error) {
         return res.status(400).json({
