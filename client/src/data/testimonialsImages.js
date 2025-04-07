@@ -1,2 +1,0 @@
-
-export const testimonialsImages = ["https://res.cloudinary.com/dabywmj68/image/upload/v1738341918/Zw_yrpvas.jpg", "https://res.cloudinary.com/dabywmj68/image/upload/v1738341959/Zw_lthpzv.jpg", "https://res.cloudinary.com/dabywmj68/image/upload/v1738258442/Screenshot_2025-01-30_230345_cthapj.png", "https://res.cloudinary.com/dabywmj68/image/upload/v1738258383/Screenshot_2025-01-30_230251_fjes53.png"]

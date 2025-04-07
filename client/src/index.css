@@ -2,27 +2,81 @@
 @tailwind components;
 @tailwind utilities;
 
-
-.btn-primary {
-    @apply text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:outline-none text-center;
+@font-face {
+    font-family: 'Satoshi';
+    src: url('./assets/fonts/Satoshi-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
 }
 
-.text-bg-primary {
-    @apply bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent
+@font-face {
+    font-family: 'Satoshi';
+    src: url('./assets/fonts/Satoshi-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
 }
 
-.input-primary {
-    @apply bg-gray-900 border border-gray-700 rounded-md shadow-sm
-    placeholder-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm
+@font-face {
+    font-family: 'Satoshi';
+    src: url('./assets/fonts/Satoshi-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
 }
 
-.input-instructor-primary {
-    @apply bg-gray-900 border border-gray-700 rounded-md shadow-sm
-    placeholder-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:sm:text-base
+@font-face {
+    font-family: 'Satoshi';
+    src: url('./assets/fonts/Satoshi-Variable.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
 }
 
+:root {
+    --theme-text-base: hsl(0, 0%, 100%);
+    --theme-background-primary: hsl(230, 23%, 5%);
+    --theme-border-bg-primary: hsl(210, 20%, 98%);
+    --theme-border-bg-primary-hover: hsla(210, 20%, 98%, 0.734);
+    --theme-text-primary-background: linear-gradient(180deg, #3e75f3 0%, #0b3db2 70%);
+    --theme-text-secondary-background: linear-gradient(180deg, #ffffff 0%, #a6a6a6 100%);
+}
 
-.input-profile-primary {
-    @apply bg-gray-800 border border-gray-600 shadow-sm
-    placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm
+.dark {
+    --theme-text-base: hsl(0, 0%, 100%);
+    --theme-background-primary: hsl(216, 45%, 98%);
+    --theme-text-secondary-background: linear-gradient(180deg, #b7b4b4 0%, #a6a6a6 100%);
+}
+
+@layer components {
+    .btn-primary {
+        background-color: var(--theme-border-bg-primary);
+        @apply text-lg text-black px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100;
+    }
+
+    .btn-primary:hover {
+        background-color: var(--theme-border-bg-primary-hover);
+    }
+
+    .btn-secondary {
+        background-image: linear-gradient(180deg, #5c8bf9 0%, #1551db 70%);
+        @apply text-lg text-white px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100;
+    }
+
+    .btn-secondary:hover {
+        background-image: linear-gradient(180deg, #3e75f3 0%, #0b3db2 70%);
+    }
+
+    .input-primary {
+        @apply bg-transparent border border-gray-400 border-opacity-30 rounded-md px-3 py-1 text-lg outline-none
+    }
+}
+
+@layer utilities {
+    .text-gradient-primary {
+        @apply text-transparent bg-clip-text;
+        background-image: var(--theme-text-primary-background);
+    }
+
+    .text-gradient-secondary {
+        @apply text-transparent bg-clip-text;
+        background-image: var(--theme-text-secondary-background);
+    }
 }

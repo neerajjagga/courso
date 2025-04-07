@@ -3,14 +3,14 @@ import {
     getUserProfile,
     editUserProfile
 } from '../controllers/user.controller.js';
-import { 
+import {
     checkAuth,
     validateEditProfileData
 } from '../middlewares/user.middleware.js';
 
 const userRouter = express.Router();
 
-userRouter.get('/profile', checkAuth, getUserProfile);
+userRouter.get('/', checkAuth, getUserProfile);
 userRouter.patch('/profile', checkAuth, validateEditProfileData, editUserProfile);
 
 export default userRouter;

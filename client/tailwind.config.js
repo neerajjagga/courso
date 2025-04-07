@@ -1,31 +1,43 @@
 /** @type {import('tailwindcss').Config} */
+import defaultTheme from 'tailwindcss/defaultTheme'
+
 export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  dark: ['dark'],
   theme: {
+    screens: {
+      xs: "420px",
+      ...defaultTheme.screens
+    },
+    container: {
+      center: true,
+      padding: "1rem",
+      screens: {
+        xs: "420px",
+        sm: "600px",
+        md: "700px",
+        lg: "900px",
+        xl: "1100px",
+        "2xl": "1280px"
+      }
+    },
     extend: {
-      keyframes: {
-        'scroll-left': {
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-100%)' },
+      colors: {
+        bg: {
+          primary: "var(--theme-background-primary)"
         },
+        text: {
+          base: "var(--theme-text-base)"
+        }
       },
-      animation: {
-        'scroll-left': 'scroll-left 20s linear infinite',
-      },
-      textStrokeWidth: {
-        DEFAULT: '1px',
-        sm: '0.5px',
-        md: '2px',
-        lg: '4px',
+      fontFamily: {
+        satoshi: ['Satoshi', 'sans-serif'],
       },
     },
   },
-  plugins: [
-    require('daisyui'),
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [],
 }
 
