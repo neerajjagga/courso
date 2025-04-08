@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom'
-import { Moon, Sun, Menu, X } from 'lucide-react'
+import { Moon, Sun, Menu, X, ChevronDown, LogOut, Rocket } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useAuthUser } from '../hooks/useAuthUser'
+import { useLogoutUser } from '../hooks/useLogoutUser'
 
 const Navbar = () => {
   const [isHamburgerOpened, setIsHamburgerOpened] = useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const user = useAuthUser();
+  const { mutate: logout, isPending } = useLogoutUser();
 
   const [isLightTheme, setIsLightTheme] = useState(() => {
     return localStorage.getItem("theme") === "light";
@@ -33,21 +38,48 @@ const Navbar = () => {
               <Sun onClick={() => setIsLightTheme(true)} size={26} />
             }
           </div>
-          <div className="hidden md:block">
-            <div className="space-x-4">
-              <Link to='/instructor-signup'>
-                <button className='text-lg px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100 hover:bg-[#1949b8] border border-[#2a5acb] hover:border-[#8cafff]'>Teach on Courso</button>
-              </Link>
-              <Link to="/login">
-                <button className="btn-primary">Login</button>
-              </Link>
-              <Link to="/signup">
-                <button className="btn-secondary">Join now</button>
-              </Link>
-            </div>
+          {!user ? (
+            <div className="hidden md:block">
+              <div className="space-x-4">
+                <Link to='/instructor-signup'>
+                  <button className='text-lg px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100 hover:bg-[#1949b8] border border-[#2a5acb] hover:border-[#8cafff]'>Teach on Courso</button>
+                </Link>
+                <Link to="/login">
+                  <button className="btn-primary">Login</button>
+                </Link>
+                <Link to="/signup">
+                  <button className="btn-secondary">Join now</button>
+                </Link>
+              </div>
 
-          </div>
-          <div className='z-50 md:hidden'>
+            </div>
+          ) : (
+            <div className="hidden md:block">
+              <div className="flex items-center gap-4">
+                <Link to='/dashboard'>
+                  <button disabled={isPending} className='text-lg px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100 hover:bg-[#1949b8] border border-[#2a5acb] hover:border-[#8cafff] flex justify-center items-center gap-2'>
+                    <Rocket size={23} />
+                    <span className='hidden sm:block'>Dashboard</span>
+                  </button>
+                </Link>
+
+                {/* profile Icon */}
+                <div className='relative flex items-end gap-1'>
+                  <button disabled={isPending} className='text-lg py-[0.30rem] px-3 rounded-full transition-all ease-in duration-100 hover:bg-red-700 border border-red-500 hover:border-red-400 font-bold'>
+                    {user.fullname.split('')[0].toUpperCase()}
+                  </button>
+                  <button onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)} className={`${isProfileDropdownOpen && "rotate-180"} transition-all ease-in duration-200`}>
+                    <ChevronDown />
+                  </button>
+
+                  {isProfileDropdownOpen && (
+                    <button disabled={isPending} onClick={() => logout()} className='absolute right-0 z-30 flex items-center justify-center gap-2 px-4 py-2 text-lg text-white transition-all duration-200 ease-in bg-gray-800 rounded-md -bottom-16 hover:text-red-500'><LogOut size={20} /> Logout</button>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+          <div className={`z-50 md:hidden`}>
             {!isHamburgerOpened ? (
               <Menu onClick={() => setIsHamburgerOpened(!isHamburgerOpened)} size={30} />
             ) : (
@@ -57,23 +89,39 @@ const Navbar = () => {
         </div>
 
         {isHamburgerOpened && (
-          <div className='absolute inset-0 z-40 flex justify-center w-full min-h-screen overflow-hidden backdrop-blur-md'>
-            <div className="mt-32">
-              <div className="flex flex-col items-center gap-6">
-                <Link to="/login" >
-                  <button onClick={() => setIsHamburgerOpened(false)} className="btn-primary">Login</button>
-                </Link>
-                <Link to="/signup" >
-                  <button onClick={() => setIsHamburgerOpened(false)} className="btn-secondary">Join now</button>
-                </Link>
-                <Link to='/instructor-signup'>
-                  <button onClick={() => setIsHamburgerOpened(false)} className='text-lg px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100 hover:bg-[#1949b8] border border-[#2a5acb] hover:border-[#8cafff]'>Teach on Courso</button>
-                </Link>
+          !user ?
+            <div className='absolute inset-0 z-40 flex justify-center w-full min-h-screen overflow-hidden backdrop-blur-md'>
+              <div className="mt-32">
+                <div className="flex flex-col items-center gap-6">
+                  <Link to="/login" >
+                    <button onClick={() => setIsHamburgerOpened(false)} className="btn-primary">Login</button>
+                  </Link>
+                  <Link to="/signup" >
+                    <button onClick={() => setIsHamburgerOpened(false)} className="btn-secondary">Join now</button>
+                  </Link>
+                  <Link to='/instructor-signup'>
+                    <button onClick={() => setIsHamburgerOpened(false)} className='text-lg px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100 hover:bg-[#1949b8] border border-[#2a5acb] hover:border-[#8cafff]'>Teach on Courso</button>
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+            :
+            <div className='absolute inset-0 z-40 flex justify-center w-full min-h-screen overflow-hidden backdrop-blur-md'>
+              <div className="flex flex-col items-center gap-4 mt-32">
+                <div className='flex items-center justify-center gap-2 text-lg transition-all duration-100 ease-in'>
+                  <span className='py-[0.10rem] px-2 font-bold border bg-red-600 rounded-full hover:bg-red-700 hover:border-red-400'>{user.fullname.split('')[0].toUpperCase()}</span>
+                  {user.email.split('@')[0]}
+                </div>
 
+                <Link to='/dashboard'>
+                  <button disabled={isPending} className='text-lg px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100 hover:bg-[#1949b8] border border-[#2a5acb] hover:border-[#8cafff]'>Dashboard</button>
+                </Link>
+
+                {/* profile Icon */}
+                <button disabled={isPending} onClick={() => logout()} className='flex items-center justify-center gap-2 px-4 py-2 text-lg text-white transition-all duration-200 ease-in bg-red-600 rounded-md -left-4 -bottom-16 hover:bg-red-500'><LogOut size={20} /> Logout</button>
+              </div>
+            </div>
+        )}
       </div>
     </div>
   )
