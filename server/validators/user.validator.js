@@ -121,7 +121,7 @@ export const userProfileUpdateSchema = Joi.object({
   bio: Joi.string()
     .trim()
     .max(60)
-    .allow(null, '')
+    .allow(null)
     .messages({
       'string.max': 'Headline should be maximum 60 characters long',
     }),
@@ -142,6 +142,7 @@ export const userProfileUpdateSchema = Joi.object({
         }),
       username: Joi.string()
         .trim()
+        .allow(null)
     })
   )
 }).min(1)

@@ -30,7 +30,7 @@ export default {
           primary: "var(--theme-background-primary)"
         },
         text: {
-          base: "var(--theme-text-base)"
+          base: "var(--theme-text-base)",
         }
       },
       fontFamily: {

@@ -1,10 +1,10 @@
 import InstructorSignUpForm from "../../components/auth/InstructorSignUpForm"
-import InstructorSignUpImage from '../../assets/InstructorSignUp.svg';
+import InstructorSignUpImage from '../../assets/InstructorSignUp.webp';
 
 const InstructorSignUp = () => {
 
     return (
-        <div className="flex items-center justify-center gap-10 mt-24 md:mt-40">
+        <div className="flex items-center justify-center gap-10 mt-16 md:mt-24">
 
             <div className="hidden lg:block">
                 <img className="xl:w-[90%]" src={InstructorSignUpImage} alt="Instructor SignUp Illustration" />

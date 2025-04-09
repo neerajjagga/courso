@@ -1,0 +1,22 @@
+export const languages = [
+    { name: "Choose a language" },
+    { name: "English" },
+    { name: "Hindi" },
+    { name: "Spanish" },
+    { name: "Arabic" },
+    { name: "French" },
+    { name: "German" },
+    { name: "Portuguese" },
+    { name: "Bengali" },
+    { name: "Russian" },
+    { name: "Urdu" },
+    { name: "Japanese" },
+    { name: "Korean" },
+    { name: "Turkish" },
+    { name: "Tamil" },
+    { name: "Telugu" },
+    { name: "Marathi" },
+    { name: "Malayalam" },
+    { name: "Gujarati" },
+    { name: "Punjabi" }
+];

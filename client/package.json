@@ -12,6 +12,11 @@
   "dependencies": {
     "@tanstack/react-query": "^5.71.10",
     "@tanstack/react-query-devtools": "^5.71.10",
+    "@tiptap/extension-placeholder": "^2.11.7",
+    "@tiptap/extension-text-align": "^2.11.7",
+    "@tiptap/extension-underline": "^2.11.7",
+    "@tiptap/react": "^2.11.7",
+    "@tiptap/starter-kit": "^2.11.7",
     "axios": "^1.8.4",
     "lucide-react": "^0.487.0",
     "react": "^19.0.0",

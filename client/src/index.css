@@ -34,6 +34,7 @@
     --theme-text-base: hsl(0, 0%, 100%);
     --theme-background-primary: hsl(230, 23%, 5%);
     --theme-btn-bg-primary: hsl(0, 6%, 90%);
+    --theme-btn-bg-primary-disabled: hsl(0, 1%, 63%);
     --theme-btn-bg-primary-hover: hsla(210, 20%, 98%, 0.734);
     --theme-text-primary-background: linear-gradient(180deg, #3e75f3 0%, #0b3db2 70%);
     --theme-text-secondary-background: linear-gradient(180deg, #ffffff 0%, #a6a6a6 100%);
@@ -48,12 +49,12 @@
 @layer components {
     .btn-primary {
         background-color: var(--theme-btn-bg-primary);
-        @apply text-lg text-black px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100;
+        @apply md:text-lg text-base text-black md:px-5 px-4 md:py-[0.40rem] py-[0.30rem] rounded-md transition-all ease-in duration-100;
     }
 
     .btn-primary-disabled {
-        background-color: var(--theme-btn-bg-primary);
-        @apply text-lg text-black px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100;
+        background-color: var(--theme-btn-bg-primary-disabled);
+        @apply md:text-lg text-base text-black md:px-5 px-4 md:py-[0.40rem] py-[0.30rem] rounded-md transition-all ease-in duration-100;
     }
 
     .btn-primary:hover {
@@ -62,7 +63,12 @@
 
     .btn-secondary {
         background-image: linear-gradient(180deg, #5c8bf9 0%, #1551db 70%);
-        @apply text-lg text-white px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100;
+        @apply md:text-lg text-base text-white md:px-5 px-4 md:py-[0.40rem] py-[0.30rem] rounded-md transition-all ease-in duration-100;
+    }
+
+    .btn-secondary-disabled {
+        background-image: linear-gradient(180deg, #5c8bf9ab 0%, #1550db77 70%);
+        @apply md:text-lg text-base text-white md:px-5 px-4 md:py-[0.40rem] py-[0.30rem] rounded-md transition-all ease-in duration-100;
     }
 
     .btn-secondary:hover {
@@ -70,11 +76,15 @@
     }
 
     .input-primary {
-        @apply bg-transparent border border-gray-400 border-opacity-30 rounded-md px-3 py-1 text-lg outline-none
+        @apply bg-transparent border border-gray-400 border-opacity-30 rounded-md px-3 py-1 md:text-lg text-base outline-none
     }
 
     .input-primary-disabled {
-        @apply bg-gray-800 border border-gray-400 border-opacity-30 rounded-md px-3 py-1 text-lg outline-none
+        @apply bg-gray-800 border border-gray-400 border-opacity-30 rounded-md px-3 py-1 md:text-lg outline-none
+    }
+
+    .input-search-primary {
+        @apply bg-transparent border border-[#3e75f3] rounded-md px-4 py-[0.4rem] md:text-lg outline-none
     }
 }
 

@@ -12,6 +12,14 @@ import AllCourses from "./pages/dashboard/AllCourses";
 import Enrollments from "./pages/dashboard/Enrollments";
 import History from "./pages/dashboard/History";
 import Settings from "./pages/dashboard/Settings";
+import InstructorCourses from "./pages/dashboard/InstructorCourses";
+
+import NewCourseBoarding from './pages/course/new/NewCourseBoarding';
+import StepOne from "./pages/course/new/steps/StepOne";
+import StepTwo from "./pages/course/new/steps/StepTwo";
+import StepThree from "./pages/course/new/steps/StepThree";
+import StepFour from "./pages/course/new/steps/StepFour";
+import StepFive from "./pages/course/new/steps/StepFive";
 
 import toast, { Toaster } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
@@ -19,7 +27,7 @@ import { axiosInst } from "./lib/axios";
 
 const App = () => {
 
-  const { data: user, isLoading, error } = useQuery({
+  const { data: user, isLoading } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
       try {
@@ -47,10 +55,22 @@ const App = () => {
         <Route path="/instructor-signup" element={!user ? <InstructorSignUp /> : <Navigate to='/' />} />
 
         <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to='/' />} >
+
+          {/* instructor route */}
+          <Route path="instructor/courses" element={user ? <InstructorCourses /> : <Navigate to='/' />} />
+
           <Route path="courses" element={user ? <AllCourses /> : <Navigate to='/' />} />
           <Route path="enrollments" element={user ? <Enrollments /> : <Navigate to='/' />} />
           <Route path="settings" element={user ? <Settings /> : <Navigate to='/' />} />
           <Route path="history" element={user ? <History /> : <Navigate to='/' />} />
+        </Route>
+
+        <Route path="/course/create" element={(user && user.role === "instructor") ? <NewCourseBoarding /> : <Navigate to='/' />}>
+          <Route path="1" element={(user && user.role === "instructor") ? <StepOne /> : <Navigate to='/' />} />
+          <Route path="2" element={(user && user.role === "instructor") ? <StepTwo /> : <Navigate to='/' />} />
+          <Route path="3" element={(user && user.role === "instructor") ? <StepThree /> : <Navigate to='/' />} />
+          <Route path="4" element={(user && user.role === "instructor") ? <StepFour /> : <Navigate to='/' />} />
+          <Route path="5" element={(user && user.role === "instructor") ? <StepFive /> : <Navigate to='/' />} />
         </Route>
 
       </Routes>

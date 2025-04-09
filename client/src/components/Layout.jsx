@@ -3,9 +3,11 @@ import { useLocation } from 'react-router-dom';
 
 const Layout = ({ children }) => {
   const location = useLocation();
+  console.log(location);
 
-  const hideNavbarRoutes = '/dashboard';
-  const shouldHideNavbar = location.pathname.startsWith(hideNavbarRoutes);
+
+  const hideNavbarRoutes = ['/dashboard', '/course'];
+  const shouldHideNavbar = hideNavbarRoutes.some(route => location.pathname.startsWith(route));
 
   return (
     <div className="relative min-h-screen bg-bg-primary text-text-base font-satoshi">

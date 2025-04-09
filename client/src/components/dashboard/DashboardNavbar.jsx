@@ -6,7 +6,7 @@ const DashboardNavbar = ({ isSidebarActive, setIsSidebarActive }) => {
     const locationArray = location.pathname.split('/');
 
     return (
-        <div className={`fixed backdrop-blur-sm w-full border-b border-gray-400 border-opacity-50 ${isSidebarActive ? "md:pl-[13rem] lg:pl-[16rem]" : "md:pl-[5rem] lg:pl-[6rem]"} transition-all duration-300 ease md:h-16 h-13`}>
+        <div className={`z-30 fixed backdrop-blur-sm w-full border-b border-gray-400 border-opacity-50 ${isSidebarActive ? "md:pl-[13rem] lg:pl-[16rem]" : "md:pl-[5rem] lg:pl-[6rem]"} transition-all duration-300 ease md:h-16 h-13`}>
             <div className="flex items-center gap-2 py-[1rem] md:px-8 px-4 cursor-pointer">
                 {isSidebarActive ? (
                     <PanelLeftClose className='' onClick={() => setIsSidebarActive(!isSidebarActive)} size={26} />

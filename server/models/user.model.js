@@ -1,6 +1,22 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
+const socialLinkSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+        enum: ['linkedin', 'facebook', 'twitter', 'github', 'instagram'],
+    },
+    url: {
+        type: String,
+        required: true,
+    },
+    username: {
+        type: String,
+        default: null,
+    },
+}, { _id: false });
+
 const userSchema = new mongoose.Schema({
     fullname: {
         type: String,
@@ -31,32 +47,17 @@ const userSchema = new mongoose.Schema({
         default: null,
         trim: true,
     },
-    socialLinks: [
-        {
-            name: {
-                type: String,
-                enum: ['github', 'linkedin', 'twitter', 'portfolio', 'facebook', 'instagram'],
-                required: true,
-                trim: true
-            },
-            url: {
-                type: String,
-                required: true,
-                trim: true
-            },
-            username: {
-                type: String,
-                default: null,
-                trim: true
-            },
-            _id: false
-        }
-    ],
+    socialLinks: {  // admin
+        type: [socialLinkSchema],
+        default: [
+            { name: 'linkedin', url: 'http://linkedin.com', username: null },
+            { name: 'facebook', url: 'http://facebook.com', username: null },
+            { name: 'twitter', url: 'http://x.com', username: null },
+            { name: 'github', url: 'http://github.com', username: null },
+            { name: 'instagram', url: 'http://instagram.com', username: null },
+        ],
+    }, // admin
     isEmailVerified: {
-        type: Boolean,
-        default: false,
-    },
-    isProfileCompleted: {
         type: Boolean,
         default: false,
     },
@@ -93,8 +94,10 @@ userSchema.set('toJSON', {
         delete ret.password;
 
         if (ret.role === "user") {
-            delete ret.courses;
-            delete ret.biography;
+            delete ret.bio;
+            delete ret.socialLinks;
+            delete ret.isEmailVerified;
+            delete ret.category;
         }
     },
 });

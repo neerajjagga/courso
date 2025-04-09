@@ -43,13 +43,13 @@ export const dashboardSidebarMenuInstructor = [
     },
     {
         name: "All Courses",
-        icon: LibraryBig,
-        path: "/dashboard/all-courses",
+        icon: ListChecks,
+        path: "/dashboard/courses",
     },
     {
-        name: "My Courses",
-        icon: ListChecks,
-        path: "/dashboard/my-courses",
+        name: "Manage Courses",
+        icon: LibraryBig,
+        path: "/dashboard/instructor/courses",
     },
     {
         name: "Settings",

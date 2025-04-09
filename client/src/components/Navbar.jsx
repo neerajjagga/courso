@@ -65,9 +65,16 @@ const Navbar = () => {
 
                 {/* profile Icon */}
                 <div className='relative flex items-end gap-1'>
-                  <button disabled={isPending} className='text-lg py-[0.30rem] px-3 rounded-full transition-all ease-in duration-100 hover:bg-red-700 border border-red-500 hover:border-red-400 font-bold'>
-                    {user.fullname.split('')[0].toUpperCase()}
-                  </button>
+                  {user.profileImageUrl ? (
+                    <img
+                      className="object-cover w-10 h-10 rounded-full"
+                      src={user.profileImageUrl}
+                      alt="User Profile Image"
+                    />
+                  ) : (
+                    <span className='flex items-center justify-center w-10 h-10 text-2xl font-bold text-white bg-red-600 rounded-full'>
+                      {user.fullname?.charAt(0).toUpperCase()}
+                    </span>)}
                   <button onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)} className={`${isProfileDropdownOpen && "rotate-180"} transition-all ease-in duration-200`}>
                     <ChevronDown />
                   </button>
@@ -109,7 +116,16 @@ const Navbar = () => {
             <div className='absolute inset-0 z-40 flex justify-center w-full min-h-screen overflow-hidden backdrop-blur-md'>
               <div className="flex flex-col items-center gap-4 mt-32">
                 <div className='flex items-center justify-center gap-2 text-lg transition-all duration-100 ease-in'>
-                  <span className='py-[0.10rem] px-2 font-bold border bg-red-600 rounded-full hover:bg-red-700 hover:border-red-400'>{user.fullname.split('')[0].toUpperCase()}</span>
+                  {user.profileImageUrl ? (
+                    <img
+                      className="object-cover w-10 h-10 rounded-full"
+                      src={user.profileImageUrl}
+                      alt="User Profile Image"
+                    />
+                  ) : (
+                    <span className='flex items-center justify-center w-10 h-10 text-2xl font-bold text-white bg-red-600 rounded-full'>
+                      {user.fullname?.charAt(0).toUpperCase()}
+                    </span>)}
                   {user.email.split('@')[0]}
                 </div>
 

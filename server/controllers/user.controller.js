@@ -20,17 +20,18 @@ export const getUserProfile = async (req, res) => {
 export const editUserProfile = async (req, res) => {
     const user = req.user;
     try {
-        const { fullname, profileImageUrl, socialLinks, isEmailVerified, isProfileCompleted } = req.body;
+        const { fullname, profileImageUrl, bio, socialLinks, isEmailVerified, isProfileCompleted } = req.body;
 
         let profileImageCloudinaryUrl = null;
-        if (user.profileImageUrl) {
-            await deleteImageOnCloudinary(profileImageUrl);
+        if (profileImageUrl && user.profileImageUrl) {
+            await deleteImageOnCloudinary(user.profileImageUrl);
         }
         if (profileImageUrl) {
             profileImageCloudinaryUrl = await uploadImageOnCloudinary(profileImageUrl);
         }
 
         user.fullname = fullname ?? user.fullname;
+        user.bio = bio ?? user.bio;
         user.profileImageUrl = profileImageCloudinaryUrl ?? user.profileImageUrl;
         user.socialLinks = socialLinks ?? user.socialLinks;
         user.isProfileCompleted = isProfileCompleted ?? user.isProfileCompleted;
