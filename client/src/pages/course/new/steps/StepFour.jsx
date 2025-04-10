@@ -29,7 +29,7 @@ const StepFour = () => {
             <div className='flex flex-col items-start gap-4'>
                 <div className="flex items-center flex-shrink-0 md:justify-center">
                     <img
-                        className="border-2 border-gray-600 md:h-[360px] md:w-[640px] object-contain sm:h-[270px] sm:w-[480px] h-[180px] min-w-[310px]"
+                        className="border-2 border-gray-600 md:h-[360px] md:w-[640px] object-contain sm:h-[270px] sm:w-[480px] h-[180px] min-w-[310px] pointer-events-none"
                         src={`${courseFormData.courseImageUrl ? courseFormData.courseImageUrl : 'https://res.cloudinary.com/dabywmj68/image/upload/t_placeholder/v1738051049/placeholder_pg74id.webp'}`}
                         alt="Placeholder" />
                 </div>

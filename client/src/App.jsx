@@ -21,6 +21,10 @@ import StepThree from "./pages/course/new/steps/StepThree";
 import StepFour from "./pages/course/new/steps/StepFour";
 import StepFive from "./pages/course/new/steps/StepFive";
 
+import ManageCourse from "./pages/course/manage/ManageCourse";
+import Curriculum from "./pages/course/manage/Curriculum";
+import CourseLandingPage from "./pages/course/manage/CourseLandingPage";
+
 import toast, { Toaster } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInst } from "./lib/axios";
@@ -65,12 +69,17 @@ const App = () => {
           <Route path="history" element={user ? <History /> : <Navigate to='/' />} />
         </Route>
 
-        <Route path="/course/create" element={(user && user.role === "instructor") ? <NewCourseBoarding /> : <Navigate to='/' />}>
+        <Route path="/instructor/course/create" element={(user && user.role === "instructor") ? <NewCourseBoarding /> : <Navigate to='/' />}>
           <Route path="1" element={(user && user.role === "instructor") ? <StepOne /> : <Navigate to='/' />} />
           <Route path="2" element={(user && user.role === "instructor") ? <StepTwo /> : <Navigate to='/' />} />
           <Route path="3" element={(user && user.role === "instructor") ? <StepThree /> : <Navigate to='/' />} />
           <Route path="4" element={(user && user.role === "instructor") ? <StepFour /> : <Navigate to='/' />} />
           <Route path="5" element={(user && user.role === "instructor") ? <StepFive /> : <Navigate to='/' />} />
+        </Route>
+
+        <Route path="/instructor/course/:courseId/manage" element={(user && user.role === "instructor") ? <ManageCourse /> : <Navigate to='/' />}>
+          <Route path="curriculum" element={(user && user.role === "instructor") ? <Curriculum /> : <Navigate to='/' />} />
+          <Route path="basics" element={(user && user.role === "instructor") ? <CourseLandingPage /> : <Navigate to='/' />} />
         </Route>
 
       </Routes>

@@ -86,21 +86,14 @@ export const courseUpdateValidationSchema = Joi.object({
       'string.max': 'Title should be a maximum of 80 characters.',
     }),
 
-  subtitle: Joi.string()
-    .max(200)
-    .trim()
-    .messages({
-      'string.base': 'Subtitle must be a string.',
-      'string.max': 'Subtitle should be a maximum of 200 characters.',
-    }),
-
-  description: Joi.string()
-    .max(3000)
-    .trim()
-    .messages({
-      'string.base': 'Description must be a string.',
-      'string.max': 'Description should be a maximum of 3000 characters.',
-    }),
+  // description: Joi.string()
+  //   .max(3000)
+  //   .trim()
+  //   .allow(null)
+  //   .messages({
+  //     'string.base': 'Description must be a string.',
+  //     'string.max': 'Description should be a maximum of 3000 characters.',
+  //   }),
 
   language: Joi.string()
     .trim()
@@ -119,6 +112,7 @@ export const courseUpdateValidationSchema = Joi.object({
   courseImageUrl: Joi.string()
     .trim()
     .uri()
+    .allow(null)
     .messages({
       'string.base': 'Course Image URL must be a string.',
       'string.uri': 'Course Image URL must be a valid URI.',

@@ -27,7 +27,7 @@ const NewCourseBoarding = () => {
     });
 
     useEffect(() => {
-        const step = parseInt(location.pathname.split('/')[3]);
+        const step = parseInt(location.pathname.split('/')[4]);
         setCurrentStep(step);
         if (step === 1) {
             setIsBackBtnEnabled(false);
@@ -83,7 +83,7 @@ const NewCourseBoarding = () => {
                             <span className="text-4xl text-gray-800 md:text-5xl">|</span>
 
                             <div className="text-xl md:text-2xl">
-                                Step {location.pathname.split('/')[3]}
+                                Step {location.pathname.split('/')[4]}
                             </div>
                         </div>
 
@@ -103,14 +103,14 @@ const NewCourseBoarding = () => {
                     <div className="container flex items-center justify-between">
                         {currentStep !== 5 ? (
                             <button
-                                onClick={() => navigate(`/course/create/${currentStep + 1}`)}
+                                onClick={() => navigate(`/instructor/course/create/${currentStep + 1}`)}
                                 disabled={!isNextBtnEnabled}
                                 className={` ${isNextBtnEnabled ? "btn-secondary" : "btn-secondary-disabled"} z-40`}>
                                 Next
                             </button>
                         ) : (
                             <button
-                                onClick={() => navigate(`/course/create/${currentStep - 1}`)}
+                                onClick={() => navigate(`/instructor/course/create/${currentStep - 1}`)}
                                 disabled={!isBackBtnEnabled || isPending}
                                 className={` ${(isBackBtnEnabled && !isPending) ? "btn-primary" : "btn-primary-disabled"} z-40`}>
                                 Back
@@ -119,7 +119,7 @@ const NewCourseBoarding = () => {
 
                         {currentStep !== 5 ? (
                             <button
-                                onClick={() => navigate(`/course/create/${currentStep - 1}`)}
+                                onClick={() => navigate(`/instructor/course/create/${currentStep - 1}`)}
                                 disabled={!isBackBtnEnabled}
                                 className={` ${isBackBtnEnabled ? "btn-primary" : "btn-primary-disabled"} z-40`}>
                                 Back

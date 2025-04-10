@@ -8,9 +8,9 @@ export const convertImageToBase64 = (e) => {
             return reject("No file selected");
         }
 
-        const validImageTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"];
+        const validImageTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg", "image/webp"];
         if (!validImageTypes.includes(file.type)) {
-            toast.error("Please upload a valid image file (JPEG, PNG, GIF)");
+            toast.error("Please upload a valid image file (JPEG, PNG, GIF, webp)");
             return reject("Invalid file type");
         }
 

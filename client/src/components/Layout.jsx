@@ -6,7 +6,7 @@ const Layout = ({ children }) => {
   console.log(location);
 
 
-  const hideNavbarRoutes = ['/dashboard', '/course'];
+  const hideNavbarRoutes = ['/dashboard', '/instructor/course'];
   const shouldHideNavbar = hideNavbarRoutes.some(route => location.pathname.startsWith(route));
 
   return (

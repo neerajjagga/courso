@@ -70,8 +70,10 @@ export const updateCourse = async (req, res) => {
             });
         }
 
-        let courseImageCloudinaryUrl = null;
-        if (courseImageUrl) {
+        let courseImageCloudinaryUrl = course.courseImageUrl;
+        if (courseImageUrl === null) {
+            courseImageCloudinaryUrl = null;
+        } else if (courseImageUrl) {
             courseImageCloudinaryUrl = await uploadImageOnCloudinary(courseImageUrl);
         }
 
@@ -86,7 +88,7 @@ export const updateCourse = async (req, res) => {
         course.description = description ?? course.description;
         course.language = language ?? course.language;
         course.level = level ?? course.level;
-        course.courseImageUrl = courseImageCloudinaryUrl ?? course.courseImageUrl;
+        course.courseImageUrl = courseImageCloudinaryUrl;
         course.price = price ?? course.price;
         course.category = category ?? course.category;
 

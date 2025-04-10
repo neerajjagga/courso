@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 3000;
 // })
 
 // app.use(limiter);
-app.use(express.json({ limit: "5MB" }));
+app.use(express.json({ limit: "10MB" }));
 app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(helmet());

@@ -2,6 +2,7 @@ import { Search } from 'lucide-react'
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { useFetchInstructorCreatedCourses } from '../../hooks/useFetchInstructorCreatedCourses';
+import InstructorCourseCard from '../../components/dashboard/InstructorCourseCard';
 
 const InstructorCourses = () => {
     const navigate = useNavigate();
@@ -14,7 +15,7 @@ const InstructorCourses = () => {
                     <h2>Manage Your Courses</h2>
 
                     <div className='md:hidden'>
-                        <button onClick={() => navigate('/course/create/1')} className=' btn-secondary'>New Course</button>
+                        <button onClick={() => navigate('/instructor/course/create/1')} className=' btn-secondary'>New Course</button>
                     </div>
                 </div>
 
@@ -33,16 +34,14 @@ const InstructorCourses = () => {
                         </div>
 
                         <div className='hidden md:block'>
-                            <button onClick={() => navigate('/course/create/1')} className='btn-secondary'>New Course</button>
+                            <button onClick={() => navigate('/instructor/course/create/1')} className='btn-secondary'>New Course</button>
                         </div>
                     </div>
 
                     {/* all Courses should come */}
                     <div className=''>
                         {!isLoading && courses.map((course, index) => (
-                            <div>
-                                <img src={course.courseImageUrl} alt="" />
-                            </div>
+                            <InstructorCourseCard key={index} course={course} />
                         ))}
                     </div>
                 </main>

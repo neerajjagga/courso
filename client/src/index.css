@@ -36,6 +36,12 @@
     --theme-btn-bg-primary: hsl(0, 6%, 90%);
     --theme-btn-bg-primary-disabled: hsl(0, 1%, 63%);
     --theme-btn-bg-primary-hover: hsla(210, 20%, 98%, 0.734);
+    --theme-btn-bg-safe: hsla(120, 80%, 48%, 0.734);
+    --theme-btn-bg-safe-hover: hsla(120, 80%, 48%, 0.5);
+    --theme-btn-bg-safe-disabled: hsla(120, 80%, 48%, 0.425);
+    --theme-btn-bg-danger: hsla(0, 69%, 51%, 0.918);
+    --theme-btn-bg-danger-hover: hsla(0, 69%, 51%, 0.719);
+    --theme-btn-bg-danger-disabled: hsla(0, 80%, 41%, 0.664);
     --theme-text-primary-background: linear-gradient(180deg, #3e75f3 0%, #0b3db2 70%);
     --theme-text-secondary-background: linear-gradient(180deg, #ffffff 0%, #a6a6a6 100%);
 }
@@ -85,6 +91,42 @@
 
     .input-search-primary {
         @apply bg-transparent border border-[#3e75f3] rounded-md px-4 py-[0.4rem] md:text-lg outline-none
+    }
+
+    .btn-safe {
+        background-color: var(--theme-btn-bg-safe);
+        @apply md:text-lg text-base text-white md:px-5 px-4 md:py-[0.40rem] py-[0.30rem] rounded-md transition-all ease-in duration-100 flex items-center justify-center gap-2;
+    }
+
+    .btn-safe-disabled {
+        background-color: var(--theme-btn-bg-safe-disabled);
+        @apply md:text-lg text-base text-white md:px-5 px-4 md:py-[0.40rem] py-[0.30rem] rounded-md transition-all ease-in duration-100 flex items-center justify-center gap-2;
+    }
+
+    .btn-safe:hover {
+        background-color: var(--theme-btn-bg-safe-hover)
+    }
+
+    .btn-danger {
+        background-color: var(--theme-btn-bg-danger);
+        @apply md:text-lg text-base text-white md:px-5 px-4 md:py-[0.40rem] py-[0.30rem] rounded-md transition-all ease-in duration-100;
+    }
+
+    .btn-danger-disabled {
+        background-color: var(--theme-btn-bg-danger-disabled);
+        @apply md:text-lg text-base text-white md:px-5 px-4 md:py-[0.40rem] py-[0.30rem] rounded-md transition-all ease-in duration-100;
+    }
+
+    .btn-danger:hover {
+        background-color: var(--theme-btn-bg-danger-hover)
+    }
+
+    .btn-special {
+        @apply md:text-lg text-base bg-[#3e75f3] text-white md:px-5 px-4 md:py-[0.40rem] py-[0.30rem] rounded-md transition-all ease-in duration-100 flex justify-center items-center gap-2;
+    }
+
+    .btn-special:hover {
+        @apply bg-[#3e74f3b6]
     }
 }
 
