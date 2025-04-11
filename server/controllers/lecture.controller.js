@@ -4,6 +4,22 @@ import Course from "../models/course.model.js";
 import Module from '../models/module.model.js';
 import slugify from "slugify";
 import { v4 as uuidv4 } from 'uuid';
+import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from '../lib/cloudinary.js';
+
+const storage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+        folder: "course-lectures",
+        resource_type: "video",
+    },
+});
+
+const upload = multer({
+    storage,
+    limits: { fileSize: 100 * 1024 * 1024 },
+});
 
 export const createLecture = async (req, res) => {
     const instructor = req.user;
@@ -125,13 +141,12 @@ export const updateLecture = async (req, res) => {
             });
         }
 
-        let titleSlug = null;
         if (title) {
-            titleSlug = slugify(title, { lower: true, strict: true }) + '-' + uuidv4().slice(0, 8);
+            const titleSlug = slugify(title, { lower: true, strict: true }) + '-' + uuidv4().slice(0, 8);
+            lecture.title = title;
+            lecture.titleSlug = titleSlug;
         }
 
-        lecture.title = title ?? lecture.title;
-        lecture.titleSlug = title ? titleSlug : course.titleSlug;
         lecture.description = description ?? lecture.description;
         lecture.videoUrl = videoUrl ?? lecture.videoUrl;
         lecture.isFreePreview = isFreePreview ?? lecture.isFreePreview;
@@ -213,4 +228,72 @@ export const deleteLecture = async (req, res) => {
     } finally {
         session.endSession();
     }
-}   
+}
+
+const validateLectureData = async (req, res, next) => {
+    const instructor = req.user;
+    try {
+        const { lectureId } = req.params;
+        const lecture = await Lecture.findById(lectureId);
+        if (!lecture) {
+            return res.status(400).json({
+                success: false,
+                message: "Lecture not found"
+            });
+        }
+
+        const module = await Module.findById(lecture.moduleId);
+        if (!module) {
+            return res.status(400).json({
+                success: false,
+                message: "Module not found"
+            });
+        }
+
+        const course = await Course.findById(module.courseId);
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found",
+            });
+        }
+
+        if (course.instructor.toString() !== instructor._id.toString()) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to add content for this course",
+            });
+        }
+        req.lecture = lecture;
+        next();
+    } catch (error) {
+        console.error("Lecture validation error:", error);
+        return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+}
+
+export const uploadLectureVideo = [
+    validateLectureData,
+    upload.single("video"),
+    async (req, res) => {
+        const lecture = req.lecture;
+        try {
+            if (!req.file || !req.file.path) {
+                return res.status(400).json({ success: false, message: "Video not uploaded" });
+            }
+
+            const { path: videoUrl } = req.file;
+
+            lecture.videoUrl = videoUrl;
+            await lecture.save();
+
+            return res.status(200).json({
+                success: true,
+                message: "Video uploaded successfully"
+            });
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({ success: false, message: "Upload failed" });
+        }
+    },
+];

@@ -122,11 +122,11 @@
     }
 
     .btn-special {
-        @apply md:text-lg text-base bg-[#3e75f3] text-white md:px-5 px-4 md:py-[0.40rem] py-[0.30rem] rounded-md transition-all ease-in duration-100 flex justify-center items-center gap-2;
+        @apply md:text-lg text-base bg-[#1f48a6ac] text-white md:px-5 px-4 md:py-[0.40rem] py-[0.30rem] rounded-md transition-all ease-in duration-100 flex justify-center items-center gap-2 border border-[#3e75f3];
     }
 
     .btn-special:hover {
-        @apply bg-[#3e74f3b6]
+        @apply bg-[#2763eece]
     }
 }
 

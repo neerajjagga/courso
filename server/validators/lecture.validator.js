@@ -19,10 +19,8 @@ export const lectureValidationSchema = Joi.object({
 
   videoUrl: Joi.string()
     .uri()
-    .required()
     .messages({
       "string.uri": "Video URL must be a valid URI",
-      "any.required": "Video URL is required",
     }),
 
   order: Joi.number()

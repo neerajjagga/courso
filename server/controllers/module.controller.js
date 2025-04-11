@@ -47,8 +47,9 @@ export const createModule = async (req, res) => {
 }
 
 export const getModules = async (req, res) => {
+    const instructor = req.user;
     try {
-        const { courseId } = req.body;
+        const { courseId } = req.params;
 
         if (!courseId) {
             return res.status(400).json({
@@ -66,7 +67,14 @@ export const getModules = async (req, res) => {
             });
         }
 
-        const modules = await Module.find({ courseId: course._id });
+        if (course.instructor.toString() !== instructor._id.toString()) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to fetch modules for this course",
+            });
+        }
+
+        const modules = await Module.find({ courseId: course._id }).populate('lectures');
 
         return res.status(200).json({
             success: true,

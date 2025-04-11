@@ -1,12 +1,13 @@
 import { useParams } from "react-router-dom";
-import { useFetchSingleCourse } from "../../../hooks/useFetchSingleCourse";
 import { Loader, Plus } from "lucide-react";
 import { NewSection } from '../../../components/NewSection';
 import { useState } from "react";
+import SectionCard from "../../../components/SectionCard";
+import { useFetchModules } from '../../../hooks/useFetchModules';
 
 const Curriculum = () => {
   const { courseId } = useParams();
-  const { data: course, isPending } = useFetchSingleCourse(courseId);
+  const { data: modules, isPending } = useFetchModules(courseId);
   const [showNewSection, setShowNewSection] = useState(false);
 
   return (
@@ -14,22 +15,33 @@ const Curriculum = () => {
       <div className='flex flex-col justify-between gap-2 px-4 py-3 text-center border-b border-gray-400 md:py-5 xs:flex-row sm:px-6 border-opacity-20 sm:gap-0'>
         <h2 className='text-2xl sm:text-3xl'>Curriculum</h2>
         <div className='flex flex-col items-center gap-3 sm:flex-row sm:gap-2'>
-          <button onClick={() => setShowNewSection(true)} className="btn-special"><Plus /> Section</button>
+          <button
+            disabled={showNewSection}
+            onClick={() => setShowNewSection(true)} className="btn-special">
+            <Plus /> Section
+          </button>
         </div>
       </div>
 
       {!isPending ? (
         <div className='flex flex-col flex-wrap gap-6 px-4 pb-6 md:gap-10 sm:px-6 sm:pb-10'>
-          {course.modules.length !== 0 ? (
-            hjghjghj
-            // first render modules
+          {showNewSection && (
+            <NewSection
+              setShowNewSection={setShowNewSection}
+              courseId={courseId}
+            />
+          )}
+          {modules.length !== 0 ? (
+            modules.map((module, index) => (
+              <SectionCard
+                key={index}
+                module={module}
+              />
+            ))
           ) : (
             <div className="mt-12 text-3xl text-center">
               No Sections or module
             </div>
-          )}
-          {showNewSection && (
-            <NewSection />
           )}
         </div>
       ) : (

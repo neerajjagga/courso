@@ -28,9 +28,10 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(helmet());
 app.use(cors({
-    origin : 'http://localhost:5173',
-    credentials : true
+    origin: 'http://localhost:5173',
+    credentials: true
 }));
+app.use(express.urlencoded({ extended: true }));
 
 import authRouter from './routes/auth.route.js';
 import userRouter from './routes/user.route.js';

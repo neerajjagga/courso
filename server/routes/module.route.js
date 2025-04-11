@@ -17,7 +17,7 @@ const moduleRouter = express.Router();
 moduleRouter.post('/', checkAuth, checkInstructor, validateModuleData, createModule);
 
 // get modules of specific course
-moduleRouter.get('/', getModules);
+moduleRouter.get('/:courseId', checkAuth, checkInstructor, getModules);
 
 // edit module (title, order) 
 moduleRouter.patch('/:moduleId', checkAuth, checkInstructor, validateModuleUpdateData, updateModule);

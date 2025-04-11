@@ -11,17 +11,17 @@ const lectureSchema = new mongoose.Schema({
         type: String,
         trim: true,
         unique: true,
-        required : true,
+        required: true,
     },
     description: {
         type: String,
         maxLength: [1000, "Lecture description should be maximum 1000 characters"],
         trim: true,
-        default : null,
+        default: null,
     },
     videoUrl: {
         type: String,
-        required: true,
+        default: null,
         trim: true,
     },
     isFreePreview: {

@@ -11,7 +11,8 @@ import {
     createLecture,
     getSingleLecture,
     updateLecture,
-    deleteLecture
+    deleteLecture,
+    uploadLectureVideo
 } from '../controllers/lecture.controller.js';
 
 const lectureRouter = express.Router();
@@ -21,5 +22,7 @@ lectureRouter.get('/:lectureId', checkAuth, getSingleLecture);
 
 lectureRouter.patch('/:lectureId', checkAuth, checkInstructor, validateLectureUpdateData, updateLecture);
 lectureRouter.delete('/:lectureId', checkAuth, checkInstructor, deleteLecture);
+
+lectureRouter.post('/:lectureId/upload-video', checkAuth, checkInstructor, uploadLectureVideo);
 
 export default lectureRouter;

@@ -3,7 +3,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
 
-const DescriptionTextEditor = ({ setCourseFormData }) => {
+const DescriptionTextEditor = ({ setCourseFormData, setDescription }) => {
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
@@ -22,10 +22,14 @@ const DescriptionTextEditor = ({ setCourseFormData }) => {
             },
         },
         onUpdate: ({ editor }) => {
-            setCourseFormData((prev) => ({
-                ...prev,
-                description: editor.getHTML(),
-            }));
+            if (setCourseFormData) {
+                setCourseFormData((prev) => ({
+                    ...prev,
+                    description: editor.getHTML(),
+                }));
+            } else {
+                setDescription(editor.getHTML());
+            }
         },
     });
 
