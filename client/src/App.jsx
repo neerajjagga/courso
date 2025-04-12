@@ -28,6 +28,7 @@ import CourseLandingPage from "./pages/course/manage/CourseLandingPage";
 import toast, { Toaster } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInst } from "./lib/axios";
+import SingleCourse from "./pages/dashboard/SingleCourse";
 
 const App = () => {
 
@@ -67,6 +68,7 @@ const App = () => {
           <Route path="enrollments" element={user ? <Enrollments /> : <Navigate to='/' />} />
           <Route path="settings" element={user ? <Settings /> : <Navigate to='/' />} />
           <Route path="history" element={user ? <History /> : <Navigate to='/' />} />
+          <Route path="course/:titleSlug" element={user ? <SingleCourse /> : <Navigate to='/' />} />
         </Route>
 
         <Route path="/instructor/course/create" element={(user && user.role === "instructor") ? <NewCourseBoarding /> : <Navigate to='/' />}>
@@ -77,7 +79,12 @@ const App = () => {
           <Route path="5" element={(user && user.role === "instructor") ? <StepFive /> : <Navigate to='/' />} />
         </Route>
 
-        <Route path="/instructor/course/:courseId/manage" element={(user && user.role === "instructor") ? <ManageCourse /> : <Navigate to='/' />}>
+        <Route path="/instructor/course/:titleSlug/manage" element={(user && user.role === "instructor") ? <ManageCourse /> : <Navigate to='/' />}>
+          <Route
+            index
+            element={<Navigate to="basics" replace />}
+          />
+
           <Route path="curriculum" element={(user && user.role === "instructor") ? <Curriculum /> : <Navigate to='/' />} />
           <Route path="basics" element={(user && user.role === "instructor") ? <CourseLandingPage /> : <Navigate to='/' />} />
         </Route>

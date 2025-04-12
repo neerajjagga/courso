@@ -44,6 +44,7 @@
     --theme-btn-bg-danger-disabled: hsla(0, 80%, 41%, 0.664);
     --theme-text-primary-background: linear-gradient(180deg, #3e75f3 0%, #0b3db2 70%);
     --theme-text-secondary-background: linear-gradient(180deg, #ffffff 0%, #a6a6a6 100%);
+    --theme-background-scrollbar: hsl(0, 0%, 28%);
 }
 
 .dark {
@@ -140,4 +141,31 @@
         @apply text-transparent bg-clip-text;
         background-image: var(--theme-text-secondary-background);
     }
+}
+
+::-webkit-scrollbar {
+    width: 4px; /* Set the width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--theme-background-scrollbar);
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--theme-btn-bg-primary-hover);
+}
+--theme-btn-bg-primary
+::-webkit-scrollbar-track {
+    background-color: var(--theme-background-primary);
+    border-radius: 5px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background-color: var(--theme-btn-bg-safe);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--theme-btn-bg-safe-hover);
 }

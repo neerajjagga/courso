@@ -25,10 +25,10 @@ const AddCurriculum = ({ setShowAddCurriculum, moduleId }) => {
   if (isSuccess) setShowAddCurriculum(false);
 
   return (
-    <div className='w-full px-6 py-4 bg-gray-500 rounded-md bg-opacity-20'>
+    <div className='w-full px-2 py-4 bg-gray-500 rounded-md sm:px-6 bg-opacity-15'>
       <form onSubmit={handleSubmit} className='flex flex-col gap-6'>
-        <div className='flex items-center gap-4'>
-          <label htmlFor="new-section" className='text-xl font-bold'>New Lecture:</label>
+        <div className='flex flex-col gap-4 sm:gap-6 sm:items-center sm:flex-row'>
+          <label htmlFor="new-section" className='text-base font-bold sm:text-xl'>New Lecture:</label>
           <input
             type="text"
             className='flex-1 input-primary'
@@ -39,37 +39,39 @@ const AddCurriculum = ({ setShowAddCurriculum, moduleId }) => {
           />
         </div>
 
-        <div className='flex items-center gap-6'>
-          <label className='text-xl font-bold'>Preview:</label>
+        <div className='flex flex-col gap-3 sm:gap-6 sm:items-center sm:flex-row'>
+          <label className='text-base font-bold sm:text-xl'>Preview:</label>
 
-          <div className='flex gap-2'>
-            <input
-              type="radio"
-              id="free"
-              name="previewType"
-              className="w-5 h-5 accent-blue-600"
-              checked={!isPaid}
-              onChange={() => {
-                setIsFree(true);
-                setIsPaid(false);
-              }}
-            />
-            <label htmlFor="free" className='text-base'>Free</label>
-          </div>
+          <div className='flex gap-4'>
+            <div className='flex gap-2'>
+              <input
+                type="radio"
+                id="free"
+                name="previewType"
+                className="w-5 h-5 accent-blue-600"
+                checked={!isPaid}
+                onChange={() => {
+                  setIsFree(true);
+                  setIsPaid(false);
+                }}
+              />
+              <label htmlFor="free" className='text-base'>Free</label>
+            </div>
 
-          <div className='flex gap-2'>
-            <input
-              type="radio"
-              id="paid"
-              name="previewType"
-              className="w-5 h-5 accent-blue-600"
-              checked={isPaid}
-              onChange={() => {
-                setIsPaid(true);
-                setIsFree(false);
-              }}
-            />
-            <label htmlFor="paid" className='text-base'>Paid</label>
+            <div className='flex gap-2'>
+              <input
+                type="radio"
+                id="paid"
+                name="previewType"
+                className="w-5 h-5 accent-blue-600"
+                checked={isPaid}
+                onChange={() => {
+                  setIsPaid(true);
+                  setIsFree(false);
+                }}
+              />
+              <label htmlFor="paid" className='text-base'>Paid</label>
+            </div>
           </div>
         </div>
 

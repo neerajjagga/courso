@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import cloudinary from '../lib/cloudinary.js';
+import { deleteCloudinaryVideo } from "../utils/cloudinary.utils.js";
 
 const storage = new CloudinaryStorage({
     cloudinary,
@@ -208,6 +209,10 @@ export const deleteLecture = async (req, res) => {
                 success: false,
                 message: "You are not authorized to delete a lecture for this course",
             });
+        }
+
+        if (lecture.videoUrl && lecture.videoUrl.includes('res.cloudinary.com')) {
+            await deleteCloudinaryVideo(lecture.videoUrl);
         }
 
         await Lecture.findByIdAndDelete(lecture._id).session(session);

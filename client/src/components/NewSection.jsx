@@ -18,13 +18,13 @@ export const NewSection = ({ setShowNewSection, courseId }) => {
         }
     };
 
-    if(isSuccess) setShowNewSection(false);
+    if (isSuccess) setShowNewSection(false);
 
     return (
-        <div className='w-full px-6 py-4 bg-gray-500 rounded-md bg-opacity-20'>
+        <div className='w-full px-4 py-4 bg-gray-500 rounded-md sm:px-6 bg-opacity-20'>
             <form onSubmit={handleSubmit} className='flex flex-col gap-6'>
-                <div className='flex items-center gap-4'>
-                    <label htmlFor="new-section" className='text-xl font-bold'>New Section:</label>
+                <div className='flex flex-col gap-4 sm:gap-6 sm:items-center sm:flex-row'>
+                    <label htmlFor="new-section" className='text-base font-bold sm:text-xl'>New Section:</label>
                     <input
                         type="text"
                         className='flex-1 input-primary'

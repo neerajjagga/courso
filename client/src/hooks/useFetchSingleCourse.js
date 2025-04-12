@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchSingleCourse } from '../api/course/fetchSingleCourse';
 
-export const useFetchSingleCourse = (courseId) => {
+export const useFetchSingleCourse = (titleSlug) => {
     return useQuery({
-        queryKey: ['singleCourse', courseId],
-        queryFn: () => fetchSingleCourse(courseId),
-        enabled : !!courseId
+        queryKey: ['singleCourse', titleSlug],
+        queryFn: () => fetchSingleCourse(titleSlug),
+        enabled : !!titleSlug
     });
 }

@@ -4,9 +4,10 @@ import { NewSection } from '../../../components/NewSection';
 import { useState } from "react";
 import SectionCard from "../../../components/SectionCard";
 import { useFetchModules } from '../../../hooks/useFetchModules';
+import { useOutletContext } from "react-router-dom";
 
 const Curriculum = () => {
-  const { courseId } = useParams();
+  const { courseId } = useOutletContext();
   const { data: modules, isPending } = useFetchModules(courseId);
   const [showNewSection, setShowNewSection] = useState(false);
 

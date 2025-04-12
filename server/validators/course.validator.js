@@ -86,14 +86,14 @@ export const courseUpdateValidationSchema = Joi.object({
       'string.max': 'Title should be a maximum of 80 characters.',
     }),
 
-  // description: Joi.string()
-  //   .max(3000)
-  //   .trim()
-  //   .allow(null)
-  //   .messages({
-  //     'string.base': 'Description must be a string.',
-  //     'string.max': 'Description should be a maximum of 3000 characters.',
-  //   }),
+  description: Joi.string()
+    .max(3000)
+    .trim()
+    .allow('')
+    .messages({
+      'string.base': 'Description must be a string.',
+      'string.max': 'Description should be a maximum of 3000 characters.',
+    }),
 
   language: Joi.string()
     .trim()

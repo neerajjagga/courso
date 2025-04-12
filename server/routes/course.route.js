@@ -26,7 +26,7 @@ courseRouter.get('/', getAllCourses);
 courseRouter.get('/me/enrolled', checkAuth, getMyEnrolledCourses);
 courseRouter.get('/me/created', checkAuth, checkInstructor, getMyCreatedCourses);
 
-courseRouter.get('/:courseId', getSingleCourse);
+courseRouter.get('/:titleSlug', getSingleCourse);
 
 courseRouter.patch('/:courseId', checkAuth, checkInstructor, validateUpdateCourseData, updateCourse);
 courseRouter.delete('/:courseId', checkAuth, checkInstructor, deleteCourse);

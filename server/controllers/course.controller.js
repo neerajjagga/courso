@@ -114,20 +114,28 @@ export const getAllCourses = async (req, res) => {
     const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl biography headline socialLinks";
 
     try {
-        const { page = 1, limit = 10 } = req.query;
+        const { page = 1, limit = 10, category, search } = req.query;
 
         const pageNumber = Math.max(1, parseInt(page));
         const limitNumber = Math.min(100, parseInt(limit));
         const skip = (pageNumber - 1) * limitNumber;
 
+        const query = {};
+        if (category) {
+            query.category = category;
+        }
+        if (search) {
+            query.title = { $regex: search, $options: 'i' }
+        }
+
         const [courses, totalCourses] = await Promise.all([
-            Course.find()
+            Course.find(query)
                 .sort({ createdAt: -1 })
                 .populate('instructor', INSTRUCTOR_SAFE_DATA)
                 .skip(skip)
                 .limit(limit)
                 .lean(),
-            Course.countDocuments()
+            Course.countDocuments(query)
         ]);
 
         const cleanedCourses = courses.map(course => ({
@@ -227,7 +235,7 @@ export const getMyEnrolledCourses = async (req, res) => {
 export const getMyCreatedCourses = async (req, res) => {
     const instructor = req.user;
     try {
-        const { page = 1, limit = 10 } = req.query;
+        const { page = 1, limit = 10, search } = req.query;
 
         const pageNumber = Math.max(1, parseInt(page));
         const limitNumber = Math.min(100, parseInt(limit));
@@ -235,7 +243,12 @@ export const getMyCreatedCourses = async (req, res) => {
 
         const [courses, totalCourses] = await Promise.all([
             Course
-                .find({ instructor: instructor._id })
+                .find({
+                    instructor: instructor._id,
+                    ...(search && {
+                        title: { $regex: search, $options: 'i' }
+                    })
+                })
                 .sort({ createdAt: -1 })
                 .skip(skip)
                 .limit(limitNumber)
@@ -281,9 +294,9 @@ export const getMyCreatedCourses = async (req, res) => {
 export const getSingleCourse = async (req, res) => {
     const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl socialLinks isEmailVerified bio";
     try {
-        const { courseId } = req.params;
+        const { titleSlug } = req.params;
 
-        const course = await Course.findById(courseId)
+        const course = await Course.findOne({ titleSlug })
             .populate('instructor', INSTRUCTOR_SAFE_DATA)
             .populate({
                 path: 'modules',

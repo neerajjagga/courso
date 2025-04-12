@@ -1,28 +1,49 @@
-import { FileText, Plus, ChevronDown, Video } from "lucide-react"
-import { useState } from "react"
+import { FileText, Plus, ChevronDown, Video, Trash2 } from "lucide-react"
+import { useEffect, useState } from "react"
 import DescriptionTextEditor from './DescriptionTextEditor';
 import { useEditLecture } from '../hooks/useEditLecture';
 import { Loader } from 'lucide-react';
 import AddContent from "./AddContent";
+import DeleteConfirmDialog from "./DeleteConfirmDialog";
 
 const LectureCard = ({ lecture }) => {
   const [isDropDownEnabled, setIsDropDownEnabled] = useState(false);
   const [isDescriptionDialogOpened, setIsDescriptionDialogOpened] = useState(false);
   const [isAddContentDialogOpened, setIsAddContentDialogOpened] = useState(false);
+  const [isDeleteClicked, setIsDeleteClicked] = useState(false);
 
   const [description, setDescription] = useState('');
 
   const { mutate: editLecture, isPending } = useEditLecture();
 
+
+  useEffect(() => {
+    if (isDeleteClicked) {
+      document.body.style.overflow = "hidden"
+    }
+
+    return () => {
+      document.body.style.overflow = "auto"
+    }
+  }, [isDeleteClicked]);
+
   return (
-    <div className="flex flex-col gap-6 px-6 py-6 pb-6 bg-gray-500 rounded-md bg-opacity-20">
-      <div className="flex items-center justify-between w-full">
-        <div>
-          <h3 className="flex gap-5">
-            <span className="text-xl text-gray-300">Lecture:</span>
-            <span className="flex items-center gap-2 text-lg">
-              {lecture.videoUrl ? <Video size={20} /> : <FileText size={20} />}
-              {lecture.title}</span>
+    <div className="flex flex-col gap-6 px-2 py-6 pb-6 bg-gray-500 rounded-md shadow-xl sm:px-6 bg-opacity-15">
+      <div className="flex flex-col justify-between w-full gap-4 xl:items-center xl:flex-row xl:gap-0">
+        <div className="group">
+          <h3 className="flex items-start gap-5 ">
+            <span className="text-xl text-gray-300 shrink-0">Lecture:</span>
+            <span className="flex items-center gap-2 text-lg truncate overflow-hidden whitespace-nowrap max-w-[150px] sm:max-w-[300px] xl:max-w-[400px] 2xl:w-full text-ellipsis">
+              <span>
+                {lecture.videoUrl ? <Video size={20} /> : <FileText size={20} />}
+              </span>
+              <span>{lecture.title}</span>
+              <button
+                onClick={() => setIsDeleteClicked(true)}
+                className="pl-4 transition-all duration-200 ease-in opacity-0 group-hover:opacity-100">
+                <Trash2 size={20} className="text-red-500" />
+              </button>
+            </span>
           </h3>
         </div>
 
@@ -95,6 +116,14 @@ const LectureCard = ({ lecture }) => {
           setIsAddContentDialogOpened={setIsAddContentDialogOpened}
           lectureId={lecture.id}
         />}
+
+      {isDeleteClicked && (
+        <DeleteConfirmDialog
+          type="lecture"
+          contentId={lecture.id}
+          setIsDeleteClicked={setIsDeleteClicked}
+        />
+      )}
     </div>
   )
 }

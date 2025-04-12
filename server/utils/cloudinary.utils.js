@@ -20,7 +20,7 @@ export const uploadImageOnCloudinary = async (imageUrl) => {
 
 export const deleteImageOnCloudinary = async (imageUrl) => {
     const publicId = imageUrl.split('/').pop().split('.')[0];
-    
+
     try {
         await cloudinary.uploader.destroy(publicId);
     } catch (error) {
@@ -28,3 +28,21 @@ export const deleteImageOnCloudinary = async (imageUrl) => {
         throw error;
     }
 }
+
+export const deleteCloudinaryVideo = async (videoUrl) => {
+    try {
+        if (!videoUrl.includes("res.cloudinary.com")) return;
+
+        const parts = videoUrl.split("/upload/")[1];
+        const noExtension = parts.split(".")[0];
+        const publicId = noExtension.replace(/^v\d+\//, "");
+
+        await cloudinary.uploader.destroy(publicId, {
+            resource_type: "video",
+        });
+
+    } catch (error) {
+        console.error("Cloudinary deletion failed", error);
+        throw error;
+    }
+};

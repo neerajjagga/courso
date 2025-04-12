@@ -4,16 +4,16 @@ import { categories } from '../../../constants/categories';
 import { languages } from '../../../constants/languages';
 import { convertImageToBase64 } from '../../../utils/imageToBase64';
 import { useFetchSingleCourse } from '../../../hooks/useFetchSingleCourse';
-import { useParams, useLocation } from 'react-router-dom'
+import { useLocation, useOutletContext } from 'react-router-dom'
 import CustomLoader from '../../../components/CustomLoader';
 import { useEditCourse } from "../../../hooks/useEditCourse";
 import toast from 'react-hot-toast';
 import { Loader } from 'lucide-react';
 
 const CourseLandingPage = () => {
-    const { courseId } = useParams();
+    const { courseId, titleSlug } = useOutletContext();
     const location = useLocation();
-    const { data: course, isPending } = useFetchSingleCourse(courseId);
+    const { data: course, isPending } = useFetchSingleCourse(titleSlug);
 
     const [courseFormData, setCourseFormData] = useState(null);
     const [isSaveBtnEnabled, setIsSaveBtnEnabled] = useState(false);

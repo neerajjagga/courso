@@ -1,13 +1,13 @@
 import { Search } from 'lucide-react'
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { useFetchInstructorCreatedCourses } from '../../hooks/useFetchInstructorCreatedCourses';
-import InstructorCourseCard from '../../components/dashboard/InstructorCourseCard';
+import CourseCard from '../../components/dashboard/CourseCard';
+import CourseCardSkeleton from '../../components/skeletons/InstructorCourseCardSkeleton';
 
 const InstructorCourses = () => {
     const navigate = useNavigate();
     const { data: courses, isLoading } = useFetchInstructorCreatedCourses();
-
+    
     return (
         <div className="w-full px-3 pt-2 md:pt-4 sm:px-12 xl:px-28">
             <div className="flex flex-col gap-8">
@@ -20,7 +20,6 @@ const InstructorCourses = () => {
                 </div>
 
                 <main className='flex flex-col gap-20'>
-                    {/* search and new course */}
                     <div className='flex items-center justify-between'>
                         <div className='flex gap-2'>
                             <input
@@ -38,11 +37,24 @@ const InstructorCourses = () => {
                         </div>
                     </div>
 
-                    {/* all Courses should come */}
-                    <div className=''>
-                        {!isLoading && courses.map((course, index) => (
-                            <InstructorCourseCard key={index} course={course} />
-                        ))}
+                    <div className='flex flex-wrap gap-10'>
+                        {!isLoading ? (courses ?? []).map((course, index) => (
+                            <CourseCard key={index} course={course}>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        navigate(`/instructor/course/${course.titleSlug}/manage`)
+                                    }}
+                                    className="btn-secondary"
+                                >
+                                    Edit / manage
+                                </button>
+                            </CourseCard>
+                        )) : (
+                            new Array(4).fill(0).map((_, index) => (
+                                <CourseCardSkeleton key={index} />
+                            ))
+                        )}
                     </div>
                 </main>
             </div>

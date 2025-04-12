@@ -4,7 +4,6 @@ import { useUploadLectureVideo } from '../hooks/useUploadLectureVideo';
 import { useEditLecture } from '../hooks/useEditLecture';
 
 const AddContent = ({ setIsAddContentDialogOpened, lectureId }) => {
-    console.log(lectureId);
     const [contentType, setContentType] = useState('');
     const [isContentTypeSelected, setIsContentTypeSelected] = useState(false)
 
@@ -58,22 +57,22 @@ const AddContent = ({ setIsAddContentDialogOpened, lectureId }) => {
     if (isSuccess || isLectureEdited) setIsAddContentDialogOpened(false);
 
     return (
-        <div className="px-6 py-6 pb-6 bg-gray-500 rounded-md bg-opacity-30">
+        <div className="px-2 py-6 pb-6 bg-gray-500 rounded-md sm:px-6 bg-opacity-15">
             {!isContentTypeSelected ? (
                 <div className="flex flex-col gap-4">
                     <div>
-                        <h3 className="text-lg">Select the main type of content. Files and links can be added as resources.</h3>
+                        <h3 className="text-base md:text-lg">Select the main type of content. Files and links can be added as resources.</h3>
                     </div>
 
-                    <div className="flex items-start gap-6">
+                    <div className="flex items-start gap-1 sm:gap-6">
                         <button
                             onClick={() => {
                                 setContentType('video')
                                 setIsContentTypeSelected(true)
                             }}
-                            className={`${contentType === "video" ? "border border-blue-500 border-opacity-80" : "border border-gray-300 border-opacity-40"} flex flex-col items-center gap-2 px-6 py-5 bg-gray-800  w-36 `}>
+                            className={`${contentType === "video" ? "border border-blue-500 border-opacity-80" : "border border-gray-300 border-opacity-40"} flex flex-col items-center gap-2 px-6 py-5 bg-gray-800 w-1/2 sm:w-36 `}>
                             <FileVideo />
-                            <h4 className="text-lg">Video File</h4>
+                            <h4 className="text-base sm:text-lg">Video File</h4>
                         </button>
 
                         <button
@@ -81,9 +80,9 @@ const AddContent = ({ setIsAddContentDialogOpened, lectureId }) => {
                                 setContentType('youtube')
                                 setIsContentTypeSelected(true)
                             }}
-                            className={`${contentType === "youtube" ? "border border-blue-500 border-opacity-80" : "border border-gray-300 border-opacity-40"} flex flex-col items-center gap-2 px-6 py-5 bg-gray-800  w-36 `}>
+                            className={`${contentType === "youtube" ? "border border-blue-500 border-opacity-80" : "border border-gray-300 border-opacity-40"} flex flex-col items-center gap-2 px-6 py-5 bg-gray-800 w-1/2  sm:w-36 `}>
                             <Youtube />
-                            <h4 className="text-lg">Video Url</h4>
+                            <h4 className="text-base sm:text-lg">Video Url</h4>
                         </button>
                     </div>
                 </div>
@@ -104,7 +103,7 @@ const AddContent = ({ setIsAddContentDialogOpened, lectureId }) => {
                                     accept="video/*"
                                 />
 
-                                <div className="flex-1 px-4 py-2 overflow-hidden text-sm text-gray-700 bg-white border rounded line-clamp-1">
+                                <div className="flex-1 px-4 py-2 overflow-hidden text-sm text-gray-700 bg-gray-200 border rounded line-clamp-1">
                                     {fileName}
                                 </div>
 

@@ -5,9 +5,8 @@ import { useState } from "react";
 
 const ManageCourse = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-    const { courseId } = useParams();
-    const { data: course, isPending } = useFetchSingleCourse(courseId);
+    const { titleSlug } = useParams();
+    const { data: course, isPending } = useFetchSingleCourse(titleSlug);
     const [isHamburgerOpened, setIsHamburgerOpened] = useState(false);
 
     return (
@@ -51,7 +50,7 @@ const ManageCourse = () => {
                                 <h3 className="text-xl font-bold">Create your content</h3>
                                 <div className="px-4 text-gray-200">
                                     <button
-                                        onClick={() => navigate(`/instructor/course/${courseId}/manage/curriculum`)}
+                                        onClick={() => navigate(`/instructor/course/${course.titleSlug}/manage/curriculum`)}
                                         className="flex items-center w-full gap-1 px-4 py-2 transition-all duration-200 ease-in rounded-md hover:bg-gray-800"><Circle size={18} /> Curriculum</button>
                                 </div>
                             </div>
@@ -60,7 +59,7 @@ const ManageCourse = () => {
                                 <h3 className="text-xl font-bold">Standout your course</h3>
                                 <div className="flex flex-col gap-4 px-4 text-gray-200">
                                     <button
-                                        onClick={() => navigate(`/instructor/course/${courseId}/manage/basics`)}
+                                        onClick={() => navigate(`/instructor/course/${course.titleSlug}/manage/basics`)}
                                         className="flex items-center gap-1 px-4 py-2 transition-all duration-200 ease-in rounded-md hover:bg-gray-800"><Circle size={18} /> Course landing page</button>
                                 </div>
                             </div>
@@ -76,7 +75,7 @@ const ManageCourse = () => {
                                         <h3 className="text-sm font-bold xs:text-base">Create your content</h3>
                                         <div className="text-gray-200">
                                             <button
-                                                onClick={() => navigate(`/instructor/course/${courseId}/manage/curriculum`)}
+                                                onClick={() => navigate(`/instructor/course/${course.titleSlug}/manage/curriculum`)}
                                                 className="flex items-center w-full gap-1 transition-all duration-200 ease-in rounded-md hover:bg-gray-800"><Circle size={18} /> Curriculum</button>
                                         </div>
                                     </div>
@@ -85,7 +84,7 @@ const ManageCourse = () => {
                                         <h3 className="text-sm font-bold xs:text-base">Standout your course</h3>
                                         <div className="text-gray-200">
                                             <button
-                                                onClick={() => navigate(`/instructor/course/${courseId}/manage/basics`)}
+                                                onClick={() => navigate(`/instructor/course/${course.titleSlug}/manage/basics`)}
                                                 className="flex items-center w-full gap-1 transition-all duration-200 ease-in rounded-md hover:bg-gray-800"><Circle size={18} /> Course landing page</button>
                                         </div>
                                     </div>
@@ -94,7 +93,9 @@ const ManageCourse = () => {
                         </div>
 
                         <main className="w-full pt-4 pb-24 lg:pt-16 lg:pl-60">
-                            <Outlet />
+                            <Outlet
+                                context={{ courseId: course?.id, titleSlug: course?.titleSlug }}
+                            />
                         </main>
                     </div>
                 </div>
