@@ -6,13 +6,14 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
+    "start:dev": "nodemon index.js",
     "start": "node index.js"
   },
-  "author": "njagga",
+  "author": "neerajjagga",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "cloudinary": "^2.5.1",
+    "cloudinary": "^1.41.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
