@@ -11,6 +11,7 @@ import {
     getSingleCourse,
     deleteCourse,
     updateCourse,
+    getSingleEnrolledCourse
 } from './../controllers/course.controller.js';
 import {
     validateCourseData,
@@ -24,9 +25,11 @@ courseRouter.post('/', checkAuth, checkInstructor, validateCourseData, createCou
 courseRouter.get('/', getAllCourses);
 
 courseRouter.get('/me/enrolled', checkAuth, getMyEnrolledCourses);
+courseRouter.get('/me/enrolled/:titleSlug', checkAuth, getSingleEnrolledCourse);
+
 courseRouter.get('/me/created', checkAuth, checkInstructor, getMyCreatedCourses);
 
-courseRouter.get('/:titleSlug', getSingleCourse);
+courseRouter.get('/:titleSlug', checkAuth, getSingleCourse);
 
 courseRouter.patch('/:courseId', checkAuth, checkInstructor, validateUpdateCourseData, updateCourse);
 courseRouter.delete('/:courseId', checkAuth, checkInstructor, deleteCourse);

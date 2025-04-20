@@ -52,6 +52,11 @@ export const dashboardSidebarMenuInstructor = [
         path: "/dashboard/instructor/courses",
     },
     {
+        name: "Enrollments",
+        icon: BookOpenCheck,
+        path: "/dashboard/enrollments",
+    },
+    {
         name: "Settings",
         icon: Settings,
         path: "/dashboard/settings",

@@ -2,14 +2,15 @@ import razorpayInst from './../lib/Razorpay.js';
 import Payment from '../models/payment.model.js';
 import Course from '../models/course.model.js';
 import User from '../models/user.model.js';
+import enrolledCourse from '../models/enrolledCourse.model.js';
 import { validateWebhookSignature } from 'razorpay/dist/utils/razorpay-utils.js';
 import { sendCourseReceipt, sendPaymentFailedEmail } from '../lib/nodemailer.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
 export const createOrder = async (req, res) => {
+    const user = req.user;
     try {
-        const user = req.user;
         const { courseId } = req.body;
 
         const course = await Course.findById(courseId);
@@ -21,8 +22,18 @@ export const createOrder = async (req, res) => {
             });
         }
 
+        // found if user has already purchased the course
+        const isUserAlreadyHasCourse = await enrolledCourse.findOne({ userId: user._id, courseId: course._id });
+
+        if (isUserAlreadyHasCourse) {
+            return res.status(400).json({
+                success: false,
+                message: "You already have this course",
+            });
+        }
+
         const orderData = {
-            amount: course.price.amount * 100, // paisa
+            amount: course.price * 100, // paisa
             currency: "INR",
             receipt: `order_${Date.now()}`,
             notes: {
@@ -94,8 +105,6 @@ export const validateWebhook = async (req, res) => {
                 message: 'Payment ID is missing in the webhook data',
             });
         }
-        console.log("------------paymentDetails---------------");
-        console.log(paymentDetails);
 
         if (!paymentDetails.order_id) {
             return res.status(400).json({
@@ -178,8 +187,6 @@ export const verifyPayment = async (req, res) => {
 
 const handleCapturedPayments = async (paymentDetails) => {
     const payment = await Payment.findOne({ orderId: paymentDetails.order_id });
-    console.log("----------------payment in capture");
-    console.log(payment);
 
     // update the payment status
     payment.status = paymentDetails.status;
@@ -192,9 +199,7 @@ const handleCapturedPayments = async (paymentDetails) => {
     // with payment document i will have access to userId as well as courseId
     // now i have to update the user activeCourses array and push the courseId in it
 
-    const user = await User.findByIdAndUpdate(payment.userId, {
-        $addToSet: { enrolledCourses: payment.courseId }
-    }, { new: true });
+    const user = await User.findById(payment.userId);
 
     if (!user) {
         return res.status(404).json({
@@ -203,11 +208,13 @@ const handleCapturedPayments = async (paymentDetails) => {
         });
     }
 
+    await enrolledCourse.create({
+        userId: payment.userId,
+        courseId: payment.courseId
+    });
+
     // send email
     await sendCourseReceipt(user.email, course.title, payment.updatedAt, payment.amountPaid, course?.courseImageUrl);
-
-    console.log("----------------user in capture");
-    console.log(user);
 }
 
 const handleFailedPayments = async (paymentDetails) => {
@@ -221,7 +228,4 @@ const handleFailedPayments = async (paymentDetails) => {
     const course = await Course.findById(payment.courseId);
 
     await sendPaymentFailedEmail(user.email, course.title, payment.updatedAt, payment.amountDue, paymentDetails.error_description, course?.courseImageUrl);
-
-    console.log("----------------payment in failed");
-    console.log(payment);
 }

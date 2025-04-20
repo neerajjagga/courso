@@ -172,7 +172,7 @@ export const getAllCourses = async (req, res) => {
 // instructor and user
 export const getMyEnrolledCourses = async (req, res) => {
     const user = req.user;
-    const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl biography headline";
+    const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl bio";
     try {
         const { page = 1, limit = 10 } = req.query;
 
@@ -183,9 +183,11 @@ export const getMyEnrolledCourses = async (req, res) => {
         const [enrolledCourses, totalEnrolledCourses] = await Promise.all([
             EnrolledCourse
                 .find({ userId: user._id })
+                .select('-userId')
                 .sort({ createdAt: -1 })
                 .populate({
                     path: "courseId",
+                    select: 'courseImageUrl title titleSlug',
                     populate: {
                         path: "instructor",
                         select: INSTRUCTOR_SAFE_DATA,
@@ -208,16 +210,18 @@ export const getMyEnrolledCourses = async (req, res) => {
 
         const cleanedEnrolledCourses = enrolledCourses.map(course => ({
             ...course,
-            id: course.id,
+            id: course._id,
+            course: course.courseId,
             _id: undefined,
             __v: undefined,
+            courseId : undefined
         }));
 
         return res.status(200).json({
             success: true,
             message: "Courses fetched successfully",
             currentPage: pageNumber,
-            totalPages: Math.ceil(totalCourses / limitNumber),
+            totalPages: Math.ceil(totalEnrolledCourses / limitNumber),
             totalCourses: totalEnrolledCourses,
             courses: cleanedEnrolledCourses,
         });
@@ -313,6 +317,51 @@ export const getSingleCourse = async (req, res) => {
                 message: "Course not found"
             });
         }
+
+        return res.status(200).json({ success: true, course });
+
+    } catch (error) {
+        console.log("Error while getting a single course" + error.message);
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+export const getSingleEnrolledCourse = async (req, res) => {
+    const user = req.user;
+    const INSTRUCTOR_SAFE_DATA = "fullname profileImageUrl bio";
+    try {
+        const { titleSlug } = req.params;
+
+        const courseRaw = await Course.findOne({ titleSlug }).select('_id');
+        if (!courseRaw) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found"
+            });
+        }
+
+        const isUserEnrolled = await EnrolledCourse.findOne({ userId: user._id, courseId: courseRaw._id });
+
+        if (!isUserEnrolled) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to access the enrolled course"
+            });
+        }
+
+        const course = await Course.findOne({ titleSlug })
+            .populate('instructor', INSTRUCTOR_SAFE_DATA)
+            .populate({
+                path: 'modules',
+                select: 'title titleSlug -courseId',
+                populate: {
+                    path: 'lectures',
+                    select: 'title titleSlug description isFreePreview createdAt videoUrl -moduleId'
+                },
+            });
 
         return res.status(200).json({ success: true, course });
 
