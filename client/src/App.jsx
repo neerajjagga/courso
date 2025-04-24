@@ -30,6 +30,8 @@ import { useQuery } from "@tanstack/react-query";
 import { axiosInst } from "./lib/axios";
 import SingleCourse from "./pages/dashboard/SingleCourse";
 
+import LearnCourse from "./pages/course/learn/LearnCourse";
+
 const App = () => {
 
   const { data: user, isLoading } = useQuery({
@@ -89,6 +91,7 @@ const App = () => {
           <Route path="basics" element={(user && user.role === "instructor") ? <CourseLandingPage /> : <Navigate to='/' />} />
         </Route>
 
+        <Route path="/learn/:titleSlug" element={user ? <LearnCourse /> : <Navigate to='/' />} />
       </Routes>
 
       <Toaster position="bottom-right" toastOptions={{

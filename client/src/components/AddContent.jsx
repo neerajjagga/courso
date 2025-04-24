@@ -70,7 +70,7 @@ const AddContent = ({ setIsAddContentDialogOpened, lectureId }) => {
                                 setContentType('video')
                                 setIsContentTypeSelected(true)
                             }}
-                            className={`${contentType === "video" ? "border border-blue-500 border-opacity-80" : "border border-gray-300 border-opacity-40"} flex flex-col items-center gap-2 px-6 py-5 bg-gray-800 w-1/2 sm:w-36 `}>
+                            className={`rounded-md ${contentType === "video" ? "border border-blue-500 border-opacity-80" : "border border-gray-300 border-opacity-40"} flex flex-col items-center gap-2 px-6 py-5 bg-gray-800 w-1/2 sm:w-36 `}>
                             <FileVideo />
                             <h4 className="text-base sm:text-lg">Video File</h4>
                         </button>
@@ -80,7 +80,7 @@ const AddContent = ({ setIsAddContentDialogOpened, lectureId }) => {
                                 setContentType('youtube')
                                 setIsContentTypeSelected(true)
                             }}
-                            className={`${contentType === "youtube" ? "border border-blue-500 border-opacity-80" : "border border-gray-300 border-opacity-40"} flex flex-col items-center gap-2 px-6 py-5 bg-gray-800 w-1/2  sm:w-36 `}>
+                            className={`rounded-md ${contentType === "youtube" ? "border border-blue-500 border-opacity-80" : "border border-gray-300 border-opacity-40"} flex flex-col items-center gap-2 px-6 py-5 bg-gray-800 w-1/2  sm:w-36 `}>
                             <Youtube />
                             <h4 className="text-base sm:text-lg">Video Url</h4>
                         </button>

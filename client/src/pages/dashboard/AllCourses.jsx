@@ -51,7 +51,7 @@ const AllCourses = () => {
               <Search size={20} />
             </button>
           </div>
-          <div className="flex gap-8 px-10 py-4 bg-gray-700 rounded-b-xl bg-opacity-40">
+          <div className="flex self-start gap-8 px-6 py-3 ml-4 bg-gray-700 sm:px-10 sm:py-4 rounded-b-xl bg-opacity-40 sm:self-auto sm:ml-0">
             <div ref={categoriesRef} className="relative">
               <button
                 onClick={() => setIsCategoriesDropDownOpened(!isCategoriesDropDownOpened)}
@@ -59,7 +59,7 @@ const AllCourses = () => {
 
               {isCategoriesDropDownOpened && (
                 <div
-                  className="absolute z-50 flex flex-col gap-2 px-4 py-4 overflow-auto transition-all duration-200 bg-gray-800 rounded-lg h-[400px] -right-48">
+                  className="absolute z-50 flex flex-col gap-2 px-4 py-4 overflow-auto transition-all duration-200 bg-gray-800 rounded-lg h-[400px] sm:-right-48 -right-32">
                   {categories.slice(1).map((category, index) => (
                     <button
                       onClick={() => {
@@ -92,20 +92,28 @@ const AllCourses = () => {
           )}
         </div>
 
-        <div className='flex flex-wrap gap-10 pt-4'>
-          {!isPending ? (courses ?? []).map((course, index) => (
-            <CourseCard key={index} course={course}>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  navigate(`/dashboard/course/${course.titleSlug}`)
-                }}
-                className="btn-secondary"
-              >
-                View Details
-              </button>
-            </CourseCard>
-          )) : (
+        <div className='flex flex-wrap justify-center gap-10 sm:pt-4 sm:justify-start'>
+          {!isPending ? (
+            (courses ?? []).length > 0 ? (
+              courses.map((course, index) => (
+                <CourseCard key={index} course={course}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/dashboard/course/${course.titleSlug}`);
+                    }}
+                    className="btn-secondary"
+                  >
+                    View Details
+                  </button>
+                </CourseCard>
+              ))
+            ) : (
+              <div className="w-full py-10 text-2xl text-center text-gray-300 md:text-3xl">
+                No courses found.
+              </div>
+            )
+          ) : (
             new Array(4).fill(0).map((_, index) => (
               <CourseCardSkeleton key={index} />
             ))

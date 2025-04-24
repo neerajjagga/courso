@@ -3,15 +3,13 @@ import { Star } from 'lucide-react'
 
 const CourseCard = ({ course, children }) => {
     const navigate = useNavigate()
-    const cleanDescription = course?.description?.replace(/<[^>]*>?/gm, '')?.slice(0, 120) + '...'
-    console.log(course);
+    const cleanDescription = course?.description && course?.description?.replace(/<[^>]*>?/gm, '')?.slice(0, 120) + '...'
 
     return (
         <div
-            onClick={() => navigate(`/courses/${course.titleslug}`)}
-            className="cursor-pointer rounded-xl overflow-hidden bg-[#1e1e1e] hover:shadow-xl transition-all duration-200 w-[320px] max-h-[500px] flex flex-col"
+            className="rounded-xl overflow-hidden bg-[#1e1e1e] hover:shadow-xl transition-all duration-200 w-[320px] max-h-[500px] flex flex-col"
         >
-            <div className="w-full h-[180px]">
+            <div className="w-full h-[180px] pointer-events-none">
                 <img
                     src={
                         course.courseImageUrl ||
@@ -23,7 +21,7 @@ const CourseCard = ({ course, children }) => {
             </div>
 
             <div className="flex flex-col justify-between flex-grow gap-2 p-4">
-                <div className='flex flex-col flex-grow gap-2 text-white'>
+                <div className='flex flex-col flex-grow gap-2 text-white pointer-events-none'>
                     <div className="flex items-center gap-2">
                         <span className="px-2 py-1 text-xs font-semibold text-yellow-400 bg-yellow-800 rounded-md">
                             PREMIUM

@@ -1,7 +1,7 @@
-import { ChevronDown, FileText, Lock } from "lucide-react"
+import { ChevronDown, FileText, Lock, Square, Video } from "lucide-react"
 import { useState } from "react";
 
-const SingleCourseModules = ({ modules }) => {
+const SingleCourseModules = ({ modules, type, activeLecture, setActiveLecture }) => {
     const [openModuleIndexes, setOpenModuleIndexes] = useState({
         0: true
     });
@@ -15,20 +15,24 @@ const SingleCourseModules = ({ modules }) => {
 
     return (
         <div className="flex flex-col w-full gap-4">
-            <div className="pb-3 text-2xl border-b border-gray-400 md:text-3xl border-opacity-20">
-                Course Content
-            </div>
+            {type !== "learn" && (
+                <div className="pb-3 text-2xl border-b border-gray-400 md:text-3xl border-opacity-20">
+                    Course Content
+                </div>
+            )}
 
-            <div className="xl:w-[70%] flex flex-col gap-4">
+            <div className={`${type !== "learn" && "xl:w-[70%] gap-4"} flex flex-col`}>
                 {modules.map((module, index) => (
                     <div
                         key={index}
-                        className="flex flex-col gap-6 px-2 py-6 pb-6 bg-gray-500 rounded-md sm:px-6 bg-opacity-20">
+                        className={`flex flex-col gap-6 px-2 py-6 pb-6 bg-gray-500  bg-opacity-20 ${type !== "learn" ? "rounded-md sm:px-6" : "border-b border-gray-300 border-opacity-15 sm:px-4"} `}>
                         <div className="relative flex flex-col gap-10">
                             <div className="flex justify-between gap-5 group">
-                                <h3 className="flex gap-6">
+                                <h3 className={`flex ${type !== "learn" ? "gap-6" : "gap-2"}`}>
                                     <span className="text-xl text-gray-300">Section:</span>
-                                    <span className="flex items-center gap-2 text-lg"><FileText size={20} /> {module.title}
+                                    <span className="flex items-center gap-2 text-lg">
+                                        {type !== "learn" && <FileText className="text-gray-300" />}
+                                        {module.title}
                                     </span>
                                 </h3>
 
@@ -40,15 +44,32 @@ const SingleCourseModules = ({ modules }) => {
                             </div>
 
                             {openModuleIndexes[index] && (
-                                <div className="flex flex-col gap-6">
+                                <div className={`flex flex-col ${type !== "learn" ? "gap-6" : "gap-2"}`}>
                                     {module.lectures.length > 0 && (
                                         module.lectures.map((lecture, index) => (
-                                            <div className="flex justify-between gap-6 px-2 py-6 pb-6 bg-gray-500 rounded-md shadow-xl sm:px-6 bg-opacity-15">
-                                                <div>
-                                                    <h2>{lecture.title}</h2>
+                                            <div
+                                                key={index}
+                                                onClick={() => {
+                                                    type === "learn" && setActiveLecture(lecture);
+                                                }}
+                                                className={`transition-all ease-in duration-150 flex justify-between gap-6 px-2 py-6 pb-6 rounded-md  bg-opacity-15 ${type !== "learn" ? "bg-gray-500 sm:px-6 shadow-xl " : "hover:bg-gray-500 hover:shadow-xl hover:bg-opacity-15 sm:px-4 cursor-pointer"}`}>
+                                                <div className="flex items-center justify-between w-full gap-6">
+                                                    <div className={`flex items-center gap-4 ${activeLecture?.id === lecture.id && "text-blue-500"}`}>
+                                                        <span>
+                                                            {lecture.videoUrl && (
+                                                                <Video size={22} />
+                                                            )}
+                                                        </span>
+                                                        <h2>{lecture.title}</h2>
+                                                    </div>
+                                                    {type === "learn" && (
+                                                        <button className="text-gray-400">
+                                                            <Square />
+                                                        </button>
+                                                    )}
                                                 </div>
 
-                                                {!lecture.isFreePreview && (
+                                                {(!lecture.isFreePreview && type !== "learn") && (
                                                     <span className="text-gray-400">
                                                         <Lock />
                                                     </span>

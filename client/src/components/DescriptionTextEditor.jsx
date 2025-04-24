@@ -3,7 +3,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
 
-const DescriptionTextEditor = ({ setCourseFormData, setDescription }) => {
+const DescriptionTextEditor = ({ setCourseFormData, setDescription, initialDescription = "" }) => {
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
@@ -15,7 +15,7 @@ const DescriptionTextEditor = ({ setCourseFormData, setDescription }) => {
                 placeholder: "Insert your course description.",
             }),
         ],
-        content: "",
+        content: initialDescription,
         editorProps: {
             attributes: {
                 class: "min-h-[300px] px-4 py-2 outline-none text-gray-200 text-xl",

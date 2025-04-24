@@ -348,7 +348,7 @@ export const getSingleEnrolledCourse = async (req, res) => {
         if (!isUserEnrolled) {
             return res.status(403).json({
                 success: false,
-                message: "You are not authorized to access the enrolled course"
+                message: "You are not authorized to access this course"
             });
         }
 
@@ -359,7 +359,7 @@ export const getSingleEnrolledCourse = async (req, res) => {
                 select: 'title titleSlug -courseId',
                 populate: {
                     path: 'lectures',
-                    select: 'title titleSlug description isFreePreview createdAt videoUrl -moduleId'
+                    select: 'title titleSlug description createdAt videoUrl',
                 },
             });
 

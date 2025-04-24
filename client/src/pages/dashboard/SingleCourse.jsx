@@ -31,7 +31,7 @@ const SingleCourse = () => {
                 </div>
 
                 {/* course card */}
-                <div className='flex flex-col gap-8 px-4 md:px-12'>
+                <div className='flex flex-col gap-6 px-4 md:gap-8 md:px-12'>
                     <div className='flex flex-col items-start gap-6'>
                         <div className='self-center lg:hidden'>
                             <SingleCourseCard
@@ -43,7 +43,7 @@ const SingleCourse = () => {
                     {/* description */}
                     <div className='flex flex-col gap-10'>
                         {/* extra info */}
-                        <div className='flex flex-col gap-4'>
+                        <div className='flex flex-col gap-6'>
                             <div className='flex gap-6'>
                                 <div className='flex items-center gap-2'>
                                     <Globe className='text-[#3e75f3]' size={20} />
@@ -64,24 +64,26 @@ const SingleCourse = () => {
                     </div>
 
                     {/* sections */}
-                    <div className='flex flex-col gap-2'>
-                        {course.modules.length > 0 && (
-                            <SingleCourseModules
-                                modules={course.modules}
-                            />
-                        )}
-                    </div>
-
-                    {/* instructor */}
-                    <div className="flex flex-col w-full gap-4">
-                        <div className="pb-3 text-2xl border-b border-gray-400 border-opacity-20 md:text-3xl ">
-                            Instructor
+                    <div className={`flex flex-col lg:gap-20 gap-10 ${!course.description ? 'lg:mt-36' : 'lg:mt-12'}`}>
+                        <div className='flex flex-col gap-2'>
+                            {course.modules.length > 0 && (
+                                <SingleCourseModules
+                                    modules={course.modules}
+                                />
+                            )}
                         </div>
 
-                        <div>
-                            <InstructorCard
-                                instructor={course.instructor}
-                            />
+                        {/* instructor */}
+                        <div className="flex flex-col w-full gap-4">
+                            <div className="pb-3 text-2xl border-b border-gray-400 border-opacity-20 md:text-3xl ">
+                                Instructor
+                            </div>
+
+                            <div>
+                                <InstructorCard
+                                    instructor={course.instructor}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

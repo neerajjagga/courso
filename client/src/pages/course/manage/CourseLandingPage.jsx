@@ -121,7 +121,10 @@ const CourseLandingPage = () => {
 
                 <div className='w-full'>
                     <label htmlFor="description" className='block mb-2 text-lg text-gray-300 sm:text-xl'>Description</label>
-                    <DescriptionTextEditor setCourseFormData={setCourseFormData} />
+                    <DescriptionTextEditor
+                        setCourseFormData={setCourseFormData}
+                        initialDescription={courseFormData.description}
+                    />
                 </div>
 
                 <div className='grid grid-cols-1 gap-6 pt-4 md:pt-10 md:grid-cols-3'>

@@ -73,11 +73,11 @@ const SingleCourseCard = ({ course }) => {
     };
 
     return (
-        <div className="flex flex-col max-w-sm gap-4 mx-auto overflow-hidden border border-gray-200 shadow-xl bg-blue-50 rounded-2xl">
+        <div className="flex flex-col max-w-md gap-4 mx-auto overflow-hidden border border-gray-200 shadow-xl bg-blue-50 rounded-2xl">
             <img
-                src={course.courseImageUrl}
+                src={course.courseImageUrl || "https://res.cloudinary.com/dabywmj68/image/upload/t_placeholder/v1738051049/placeholder_pg74id.webp"}
                 alt={`${course.title} Course thumbnail`}
-                className="w-full object-cover xl:h-[240px]"
+                className="object-cover w-full"
             />
 
             <div className="flex flex-col gap-4 px-2 py-2">

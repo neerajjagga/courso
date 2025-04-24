@@ -25,7 +25,7 @@ const upload = multer({
 export const createLecture = async (req, res) => {
     const instructor = req.user;
     try {
-        const { moduleId, title, description, videoUrl, isFreePreview } = req.body;
+        const { moduleId, title, description, isFreePreview } = req.body;
 
         if (!moduleId) {
             return res.status(400).json({
@@ -59,7 +59,6 @@ export const createLecture = async (req, res) => {
             title,
             titleSlug,
             description,
-            videoUrl,
             isFreePreview,
             moduleId
         });
@@ -148,8 +147,13 @@ export const updateLecture = async (req, res) => {
             lecture.titleSlug = titleSlug;
         }
 
+        let updatedLink = null;
+        if (videoUrl && videoUrl.includes("youtu.be")) {
+            updatedLink = videoUrl.replace("youtu.be/", "www.youtube.com/embed/");
+        }
+
         lecture.description = description ?? lecture.description;
-        lecture.videoUrl = videoUrl ?? lecture.videoUrl;
+        lecture.videoUrl = videoUrl && videoUrl.includes("youtu.be") ? updatedLink : videoUrl;
         lecture.isFreePreview = isFreePreview ?? lecture.isFreePreview;
 
         const updatedLecture = await lecture.save();
