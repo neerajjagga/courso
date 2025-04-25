@@ -15,7 +15,7 @@ const Enrollments = () => {
           <h2>My Enrollments</h2>
         </div>
 
-        {courses.length === 0 ? (
+        {(courses ?? []).length === 0 ? (
           <div className="flex flex-col items-center justify-center w-full h-[300px] gap-4 text-white">
             <p className="text-lg text-gray-300 sm:text-3xl">You haven't enrolled in any courses yet.</p>
             <button

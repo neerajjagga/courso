@@ -2,7 +2,9 @@ import razorpayInst from './../lib/Razorpay.js';
 import Payment from '../models/payment.model.js';
 import Course from '../models/course.model.js';
 import User from '../models/user.model.js';
-import enrolledCourse from '../models/enrolledCourse.model.js';
+import EnrolledCourse from '../models/enrolledCourse.model.js';
+import Module from '../models/module.model.js';
+import UserCourseProgress from '../models/userCourseProgress.model.js';
 import { validateWebhookSignature } from 'razorpay/dist/utils/razorpay-utils.js';
 import { sendCourseReceipt, sendPaymentFailedEmail } from '../lib/nodemailer.js';
 import dotenv from 'dotenv';
@@ -23,7 +25,7 @@ export const createOrder = async (req, res) => {
         }
 
         // found if user has already purchased the course
-        const isUserAlreadyHasCourse = await enrolledCourse.findOne({ userId: user._id, courseId: course._id });
+        const isUserAlreadyHasCourse = await EnrolledCourse.findOne({ userId: user._id, courseId: course._id });
 
         if (isUserAlreadyHasCourse) {
             return res.status(400).json({
@@ -197,7 +199,6 @@ const handleCapturedPayments = async (paymentDetails) => {
     const course = await Course.findById(payment.courseId);
 
     // with payment document i will have access to userId as well as courseId
-    // now i have to update the user activeCourses array and push the courseId in it
 
     const user = await User.findById(payment.userId);
 
@@ -208,9 +209,29 @@ const handleCapturedPayments = async (paymentDetails) => {
         });
     }
 
-    await enrolledCourse.create({
+    await EnrolledCourse.create({
         userId: payment.userId,
         courseId: payment.courseId
+    });
+
+    // update the user course progress
+
+    // first fetch the modules of each course
+    const modules = await Module.find({ courseId: payment.courseId }).populate('lectures');
+    const cleanModules = modules.map(m => m.toJSON());
+
+    const progress = cleanModules.map(m => ({
+        moduleId: m.id,
+        lectures: m.lectures.map(l => ({
+            lectureId: l.id,
+            isCompleted: false,
+        }))
+    }));
+
+    await UserCourseProgress.create({
+        userId: payment.userId,
+        courseId: payment.courseId,
+        progress
     });
 
     // send email

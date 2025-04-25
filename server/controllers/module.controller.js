@@ -4,12 +4,13 @@ import Module from '../models/module.model.js';
 import slugify from "slugify";
 import { v4 as uuidv4 } from 'uuid';
 import Lecture from '../models/lecture.model.js';
+import UserCourseProgress from '../models/userCourseProgress.model.js';
 
 export const createModule = async (req, res) => {
     const instructor = req.user;
     try {
         // order not included right now
-        const { title, order, courseId } = req.body;
+        const { title, courseId } = req.body;
 
         const course = await Course.findOne({
             _id: courseId,
@@ -29,6 +30,13 @@ export const createModule = async (req, res) => {
             title,
             titleSlug,
             courseId: course._id,
+        });
+
+        // update UserCourseProgress
+        await UserCourseProgress.updateMany({
+            courseId : module.courseId,
+        }, {
+            $push : { progress :  { moduleId : module._id, lectures : [] }}
         });
 
         return res.status(201).json({
@@ -178,6 +186,12 @@ export const deleteModule = async (req, res) => {
         // delete all lectures whose moduleId is current moduleId
         await Lecture.deleteMany({ moduleId: module._id }).session(session);
         await Module.deleteOne({ _id: module._id }).session(session);
+
+        await UserCourseProgress.updateMany({
+            courseId : module.courseId,
+        }, {
+            $pull : { progress :  { moduleId : module._id }}
+        }).session(session);
 
         await session.commitTransaction();
 

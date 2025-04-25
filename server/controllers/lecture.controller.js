@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Lecture from "../models/lecture.model.js";
 import Course from "../models/course.model.js";
+import UserCourseProgress from '../models/userCourseProgress.model.js';
 import Module from '../models/module.model.js';
 import slugify from "slugify";
 import { v4 as uuidv4 } from 'uuid';
@@ -61,6 +62,20 @@ export const createLecture = async (req, res) => {
             description,
             isFreePreview,
             moduleId
+        });
+
+        await UserCourseProgress.updateMany({
+            courseId: module.courseId,
+        }, {
+            $push:
+            {
+                "progress.$[mod].lectures": {
+                    lectureId: lecture._id,
+                    isCompleted: false,
+                },
+            },
+        }, {
+            arrayFilters: [{ "mod.moduleId": module._id }]
         });
 
         return res.status(201).json({
@@ -220,6 +235,20 @@ export const deleteLecture = async (req, res) => {
         }
 
         await Lecture.findByIdAndDelete(lecture._id).session(session);
+
+        await UserCourseProgress.updateMany({
+            courseId: module.courseId,
+        }, {
+            $pull:
+            {
+                "progress.$[mod].lectures": {
+                    lectureId: lecture._id
+                }
+            },
+        }, {
+            arrayFilters: [{ "mod.moduleId": module._id }],
+            session
+        });
 
         await session.commitTransaction();
 
