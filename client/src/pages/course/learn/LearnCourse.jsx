@@ -3,8 +3,9 @@ import CustomLoader from '../../../components/CustomLoader';
 import { useNavigate, useParams } from "react-router-dom"
 import { Menu } from 'lucide-react'
 import SingleCourseModules from '../../../components/dashboard/single-course/SingleCourseModules';
-import { act, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import VideoPlayer from '../../../components/VideoPlayer';
+import { useUpdateCourseProgress } from '../../../hooks/courseProgress.hooks';
 
 const LearnCourse = () => {
     const navigate = useNavigate();
@@ -13,7 +14,9 @@ const LearnCourse = () => {
     const [activeLecture, setActiveLecture] = useState(null);
     const [isSidebarActive, setIsSidebarActive] = useState(true);
 
-    const { data: course, isPending } = useFetchSingleEnrolledCourse(titleSlug);
+    const { data: { course, progressSummary } = {}, isPending } = useFetchSingleEnrolledCourse(titleSlug);
+
+    const { mutate: updateProgress, isPending: isUpdatingProgress } = useUpdateCourseProgress(course?.id, course?.titleSlug);
 
     const videoPlayerOptions = useMemo(() => ({
         autoplay: false,
@@ -72,6 +75,9 @@ const LearnCourse = () => {
                                 type="learn"
                                 activeLecture={activeLecture}
                                 setActiveLecture={setActiveLecture}
+                                progressSummary={progressSummary}
+                                updateProgress={updateProgress}
+                                isUpdatingProgress={isUpdatingProgress}
                             />
                         </div>
 

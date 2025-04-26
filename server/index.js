@@ -39,6 +39,7 @@ import courseRouter from './routes/course.route.js';
 import lectureRouter from './routes/lecture.route.js';
 import paymentRouter from './routes/payment.route.js';
 import moduleRouter from './routes/module.route.js';
+import userCourseProgressRouter from './routes/userCourseProgress.route.js';
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
@@ -46,6 +47,7 @@ app.use('/api/courses', courseRouter);
 app.use('/api/lectures', lectureRouter);
 app.use('/api/payments', paymentRouter);
 app.use('/api/modules', moduleRouter);
+app.use('/api/progress', userCourseProgressRouter);
 
 connectDB().then(() => {
     app.listen(PORT, async () => {

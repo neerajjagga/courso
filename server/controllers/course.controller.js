@@ -7,6 +7,7 @@ import Review from "../models/review.model.js";
 import slugify from "slugify";
 import { v4 as uuidv4 } from 'uuid';
 import { uploadImageOnCloudinary, deleteImageOnCloudinary } from "../utils/cloudinary.utils.js";
+import { getUserCourseProgressSummary } from "../utils/course.utils.js";
 
 // instructor
 export const createCourse = async (req, res) => {
@@ -214,7 +215,7 @@ export const getMyEnrolledCourses = async (req, res) => {
             course: course.courseId,
             _id: undefined,
             __v: undefined,
-            courseId : undefined
+            courseId: undefined
         }));
 
         return res.status(200).json({
@@ -363,7 +364,9 @@ export const getSingleEnrolledCourse = async (req, res) => {
                 },
             });
 
-        return res.status(200).json({ success: true, course });
+        const progressSummary = await getUserCourseProgressSummary(course._id, user._id);
+
+        return res.status(200).json({ success: true, course, progressSummary });
 
     } catch (error) {
         console.log("Error while getting a single course" + error.message);
