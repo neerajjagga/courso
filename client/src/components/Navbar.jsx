@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 import { Moon, Sun, Menu, X, ChevronDown, LogOut, Rocket } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useAuthUser } from '../hooks/useAuthUser'
-import { useLogoutUser } from '../hooks/useLogoutUser'
+import { useAuthUser } from '../hooks/user/useAuthUser';
+import { useLogoutUser } from '../hooks/user/useLogoutUser';
 
 const Navbar = () => {
   const [isHamburgerOpened, setIsHamburgerOpened] = useState(false);

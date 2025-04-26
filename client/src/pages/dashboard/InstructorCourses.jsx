@@ -1,8 +1,8 @@
 import { Search } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { useFetchInstructorCreatedCourses } from '../../hooks/useFetchInstructorCreatedCourses';
-import CourseCard from '../../components/dashboard/CourseCard';
+import CourseCard from '../../components/dashboard/common/CourseCard';
 import CourseCardSkeleton from '../../components/skeletons/InstructorCourseCardSkeleton';
+import { useFetchInstructorCreatedCourses } from '../../hooks/course/useFetchInstructorCreatedCourses';
 
 const InstructorCourses = () => {
     const navigate = useNavigate();

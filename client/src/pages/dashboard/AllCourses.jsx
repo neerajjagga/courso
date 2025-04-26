@@ -1,10 +1,10 @@
 import { Search, X } from "lucide-react";
-import CourseCard from "../../components/dashboard/CourseCard";
+import CourseCard from "../../components/dashboard/common/CourseCard";
 import CourseCardSkeleton from "../../components/skeletons/InstructorCourseCardSkeleton";
-import { useFetchCourses } from "../../hooks/useFetchCourses"
 import { useNavigate } from "react-router-dom";
 import { categories } from "../../constants/categories";
 import { useEffect, useRef, useState } from "react";
+import { useFetchCourses } from '../../hooks/course/useFetchCourses';
 
 const AllCourses = () => {
   const navigate = useNavigate();

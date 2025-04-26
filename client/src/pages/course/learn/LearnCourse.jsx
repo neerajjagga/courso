@@ -1,11 +1,12 @@
-import { useFetchSingleEnrolledCourse } from '../../../hooks/useFetchSingleEnrolledCourse';
-import CustomLoader from '../../../components/CustomLoader';
+import { useEffect, useMemo, useState } from 'react';
+import CustomLoader from '../../../components/common/CustomLoader';
 import { useNavigate, useParams } from "react-router-dom"
 import { Menu } from 'lucide-react'
-import SingleCourseModules from '../../../components/dashboard/single-course/SingleCourseModules';
-import { useEffect, useMemo, useState } from 'react';
-import VideoPlayer from '../../../components/VideoPlayer';
-import { useUpdateCourseProgress } from '../../../hooks/courseProgress.hooks';
+import SingleCourseModules from '../../../components/dashboard/common/SingleCourseModules';
+import VideoPlayer from '../../../components/course/learn/VideoPlayer';
+
+import { useFetchSingleEnrolledCourse } from '../../../hooks/enrolledCourse/useFetchSingleEnrolledCourse';
+import { useUpdateCourseProgress } from '../../../hooks/courseProgress/courseProgress.hooks';
 
 const LearnCourse = () => {
     const navigate = useNavigate();
@@ -108,7 +109,7 @@ const LearnCourse = () => {
                                     {/* information */}
                                     <div className='flex flex-col gap-12 md:px-4'>
                                         <div>
-                                            <h2 className='text-xl text-gray-200 md:text-2xl lg:md:text-3xl'>{activeLecture.title}</h2>
+                                            <h2 className='text-xl font-semibold text-gray-200 md:text-2xl lg:md:text-3xl'>{activeLecture.title}</h2>
                                         </div>
 
                                         {/* reviews */}

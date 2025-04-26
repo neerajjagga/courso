@@ -3,12 +3,12 @@ import DescriptionTextEditor from '../../../components/DescriptionTextEditor';
 import { categories } from '../../../constants/categories';
 import { languages } from '../../../constants/languages';
 import { convertImageToBase64 } from '../../../utils/imageToBase64';
-import { useFetchSingleCourse } from '../../../hooks/useFetchSingleCourse';
 import { useLocation, useOutletContext } from 'react-router-dom'
-import CustomLoader from '../../../components/CustomLoader';
-import { useEditCourse } from "../../../hooks/useEditCourse";
 import toast from 'react-hot-toast';
 import { Loader } from 'lucide-react';
+import CustomLoader from '../../../components/common/CustomLoader';
+import { useFetchSingleCourse } from '../../../hooks/course/useFetchSingleCourse';
+import { useEditCourse } from '../../../hooks/course/useEditCourse';
 
 const CourseLandingPage = () => {
     const { courseId, titleSlug } = useOutletContext();

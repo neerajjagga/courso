@@ -1,7 +1,7 @@
-import Sidebar from "../../components/dashboard/Sidebar"
+import Sidebar from "../../components/dashboard/common/Sidebar"
 import { Outlet } from "react-router-dom"
 
-import DashboardNavbar from "../../components/dashboard/DashboardNavbar"
+import DashboardNavbar from "../../components/dashboard/common/DashboardNavbar"
 import { useState } from "react"
 
 const Dashboard = () => {

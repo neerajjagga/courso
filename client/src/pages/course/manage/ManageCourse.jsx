@@ -1,7 +1,7 @@
 import { Outlet, useNavigate, useParams } from "react-router-dom"
 import { ChevronLeft, Circle, Menu, X } from 'lucide-react'
-import { useFetchSingleCourse } from "../../../hooks/useFetchSingleCourse";
 import { useState } from "react";
+import { useFetchSingleCourse } from '../../../hooks/course/useFetchSingleCourse';
 
 const ManageCourse = () => {
     const navigate = useNavigate();

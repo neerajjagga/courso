@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import CustomLoader from '../../components/CustomLoader';
-import { useFetchEnrolledCourses } from '../../hooks/useFetchEnrolledCourses';
+import CustomLoader from '../../components/common/CustomLoader';
+import { useFetchEnrolledCourses } from '../../hooks/enrolledCourse/useFetchEnrolledCourses';
 
 const Enrollments = () => {
   const { data: courses, isPending } = useFetchEnrolledCourses();

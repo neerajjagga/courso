@@ -2,8 +2,8 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import toast from 'react-hot-toast'
-import { useCreateCourse } from '../../../hooks/useCreateCourse';
 import { Loader } from 'lucide-react'
+import { useCreateCourse } from '../../../hooks/course/useCreateCourse';
 
 const NewCourseBoarding = () => {
     const location = useLocation();

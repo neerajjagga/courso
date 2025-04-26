@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useAuthUser } from "../../hooks/useAuthUser";
 import { Loader, Pencil } from "lucide-react";
 import { convertImageToBase64 } from "../../utils/imageToBase64";
-import { useEditUser } from "../../hooks/useEditUser";
 import toast from "react-hot-toast";
-import InstructorProfileForm from '../../components/dashboard/InstructorProfileForm';
+import InstructorProfileForm from '../../components/dashboard/settings/InstructorProfileForm';
+import { useEditUser } from '../../hooks/user/useEditUser';
+import { useAuthUser } from "../../hooks/user/useAuthUser";
 
 const Settings = () => {
   const user = useAuthUser();

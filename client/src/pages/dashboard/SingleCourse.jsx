@@ -1,11 +1,11 @@
-import { useFetchSingleCourse } from '../../hooks/useFetchSingleCourse';
 import { useParams } from 'react-router-dom';
-import CustomLoader from '../../components/CustomLoader';
-import SingleCourseCard from '../../components/dashboard/single-course/SingleCourseCard';
 import DOMPurify from 'dompurify';
-import { Globe, BarChart, Twitter, Linkedin, Facebook, Github, Instagram } from 'lucide-react';
-import SingleCourseModules from '../../components/dashboard/single-course/SingleCourseModules';
-import InstructorCard from '../../components/dashboard/single-course/InstructorCard';
+import { Globe, BarChart } from 'lucide-react';
+import SingleCourseModules from '../../components/dashboard/common/SingleCourseModules';
+import CustomLoader from '../../components/common/CustomLoader';
+import { useFetchSingleCourse } from '../../hooks/course/useFetchSingleCourse';
+import SingleCourseCard from '../../components/dashboard/SingleCourse/SingleCourseCard';
+import InstructorCard from '../../components/dashboard/SingleCourse/InstructorCard';
 
 const SingleCourse = () => {
     const { titleSlug } = useParams();

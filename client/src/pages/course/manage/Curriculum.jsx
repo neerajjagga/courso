@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import { Loader, Plus } from "lucide-react";
-import { NewSection } from '../../../components/NewSection';
+import { NewSection } from '../../../components/course/manage/NewSection';
 import { useState } from "react";
-import SectionCard from "../../../components/SectionCard";
-import { useFetchModules } from '../../../hooks/useFetchModules';
+import SectionCard from "../../../components/course/manage/SectionCard";
 import { useOutletContext } from "react-router-dom";
+import { useFetchModules } from '../../../hooks/module/useFetchModules';
 
 const Curriculum = () => {
   const { courseId } = useOutletContext();

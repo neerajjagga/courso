@@ -1,6 +1,6 @@
 import Layout from "./components/Layout"
 import { Routes, Route, Navigate } from 'react-router-dom'
-import CustomLoader from "./components/CustomLoader";
+import CustomLoader from "./components/common/CustomLoader";
 
 import Index from "./pages/Index"
 import Login from './pages/auth/Login';
