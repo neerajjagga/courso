@@ -115,7 +115,7 @@ const Settings = () => {
   }
 
   return (
-    <div className="px-3 pt-2 md:pt-4 sm:px-12 xl:px-28">
+    <div className="px-3 pt-2 md:pt-2 sm:px-10">
       <div className="flex flex-col gap-2 md:gap-6">
         <div className="flex items-center justify-between px-2 pb-2 border-b border-opacity-30 border-b-gray-500">
           <h1 className="text-[1.30rem] font-bold xs:text-2xl sm:text-3xl">Account Settings</h1>

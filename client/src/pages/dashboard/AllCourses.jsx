@@ -33,8 +33,8 @@ const AllCourses = () => {
   }, []);
 
   return (
-    <div className="relative w-full min-h-screen px-3 sm:px-12 xl:px-28">
-      <div className="flex flex-col gap-6 ">
+    <div className="relative w-full min-h-screen px-3 sm:px-10">
+      <div className="flex flex-col gap-2">
         <div className='sticky top-0 z-10 flex flex-col items-center justify-between w-full'>
           <div className='flex w-full gap-2'>
             <input
@@ -51,7 +51,7 @@ const AllCourses = () => {
               <Search size={20} />
             </button>
           </div>
-          <div className="flex self-start gap-8 px-6 py-3 ml-4 bg-gray-700 sm:px-10 sm:py-4 rounded-b-xl bg-opacity-40 sm:self-auto sm:ml-0">
+          <div className="flex self-start gap-8 px-6 py-3 ml-4 bg-gray-700 sm:px-8 sm:py-3 rounded-b-xl bg-opacity-40 sm:self-auto sm:ml-0">
             <div ref={categoriesRef} className="relative">
               <button
                 onClick={() => setIsCategoriesDropDownOpened(!isCategoriesDropDownOpened)}
@@ -92,7 +92,7 @@ const AllCourses = () => {
           )}
         </div>
 
-        <div className='flex flex-wrap justify-center gap-10 sm:pt-4 sm:justify-start'>
+        <div className='flex flex-wrap justify-center gap-8 sm:pt-4 sm:justify-start'>
           {!isPending ? (
             (courses ?? []).length > 0 ? (
               courses.map((course, index) => (

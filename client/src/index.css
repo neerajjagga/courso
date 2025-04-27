@@ -91,7 +91,7 @@
     }
 
     .input-search-primary {
-        @apply bg-transparent border border-[#3e75f3] rounded-md px-4 py-[0.4rem] md:text-lg outline-none
+        @apply bg-transparent border border-[#3e75f3] rounded-md px-4 md:py-[0.4rem] py-[0.3rem] md:text-lg outline-none
     }
 
     .btn-safe {
@@ -144,7 +144,8 @@
 }
 
 ::-webkit-scrollbar {
-    width: 4px; /* Set the width of the scrollbar */
+    width: 4px;
+    /* Set the width of the scrollbar */
 }
 
 ::-webkit-scrollbar-thumb {
@@ -156,8 +157,8 @@
 ::-webkit-scrollbar-thumb:hover {
     background-color: var(--theme-btn-bg-primary-hover);
 }
---theme-btn-bg-primary
-::-webkit-scrollbar-track {
+
+--theme-btn-bg-primary::-webkit-scrollbar-track {
     background-color: var(--theme-background-primary);
     border-radius: 5px;
 }

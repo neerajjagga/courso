@@ -1,16 +1,15 @@
 import { useFetchUserPaymentHistory } from "../../hooks/payment/useFetchUserPaymentHistory";
-import CustomLoader from '../../components/common/CustomLoader';
 
 const PaymentHistory = () => {
     const { data: paymentHistory, isPending } = useFetchUserPaymentHistory();
 
     return (
-        <div className="px-3 pt-2 md:pt-4 sm:px-12 xl:px-28">
+        <div className="px-3 pt-2 md:pt-2 sm:px-10">
             <div className="flex flex-col gap-2 md:gap-6">
                 <div className="flex items-center justify-between px-2 pb-2 border-b border-opacity-30 border-b-gray-500">
                     <h1 className="text-[1.30rem] font-bold xs:text-2xl sm:text-3xl">Payment History</h1>
                 </div>
-                <div className="overflow-x-auto rounded-lg shadow-md">
+                <div className="w-full overflow-x-auto rounded-lg shadow-md">
                     <table className="min-w-full text-sm text-left">
                         <thead className="text-gray-100 bg-gray-800">
                             <tr>
@@ -22,8 +21,8 @@ const PaymentHistory = () => {
                             </tr>
                         </thead>
                         {isPending ? (
-                            <div className="flex items-center justify-center w-full h-full">
-                                <CustomLoader />
+                            <div className="w-full mt-6 text-gray-300">
+                                <h2 className="text-xl">Loading...</h2>
                             </div>
                         ) : (
                             paymentHistory.length !== 0 ? (
@@ -48,8 +47,8 @@ const PaymentHistory = () => {
                                     ))}
                                 </tbody>
                             ) : (
-                                <div>
-                                    <h2>No Payment History Found</h2>
+                                <div className="w-full mt-6 text-gray-300">
+                                    <h2 className="text-xl">No Payment History Found!</h2>
                                 </div>
                             )
                         )}

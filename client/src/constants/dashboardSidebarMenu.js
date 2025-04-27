@@ -1,10 +1,12 @@
 import {
     Home,
     LibraryBig,
+    FileCog,
     BookOpenCheck,
     Settings,
     History,
-    ListChecks
+    ListChecks,
+    ChartNoAxesColumn
 } from "lucide-react";
 
 export const dashboardSidebarMenuUser = [
@@ -48,7 +50,12 @@ export const dashboardSidebarMenuInstructor = [
     },
     {
         name: "Manage Courses",
-        icon: LibraryBig,
+        icon: FileCog,
+        path: "/dashboard/instructor/courses",
+    },
+    {
+        name: "Performance",
+        icon: ChartNoAxesColumn,
         path: "/dashboard/instructor/courses",
     },
     {

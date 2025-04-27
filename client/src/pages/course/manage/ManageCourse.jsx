@@ -1,9 +1,12 @@
-import { Outlet, useNavigate, useParams } from "react-router-dom"
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom"
 import { ChevronLeft, Circle, Menu, X } from 'lucide-react'
 import { useState } from "react";
 import { useFetchSingleCourse } from '../../../hooks/course/useFetchSingleCourse';
 
 const ManageCourse = () => {
+    const location = useLocation();
+    const lastRoute = location.pathname.split('/').pop();
+
     const navigate = useNavigate();
     const { titleSlug } = useParams();
     const { data: course, isPending } = useFetchSingleCourse(titleSlug);
@@ -51,7 +54,10 @@ const ManageCourse = () => {
                                 <div className="px-4 text-gray-200">
                                     <button
                                         onClick={() => navigate(`/instructor/course/${course.titleSlug}/manage/curriculum`)}
-                                        className="flex items-center w-full gap-1 px-4 py-2 transition-all duration-200 ease-in rounded-md hover:bg-gray-800"><Circle size={18} /> Curriculum</button>
+                                        className={`flex items-center w-full gap-1 px-4 py-2 transition-all duration-200 ease-in rounded-md hover:bg-gray-800 ${lastRoute === "curriculum" && "text-blue-500"}`}>
+                                        <Circle className={`${lastRoute === "curriculum" && "bg-blue-900 rounded-full"}`} size={18} />
+                                        Curriculum
+                                    </button>
                                 </div>
                             </div>
 
@@ -60,7 +66,10 @@ const ManageCourse = () => {
                                 <div className="flex flex-col gap-4 px-4 text-gray-200">
                                     <button
                                         onClick={() => navigate(`/instructor/course/${course.titleSlug}/manage/basics`)}
-                                        className="flex items-center gap-1 px-4 py-2 transition-all duration-200 ease-in rounded-md hover:bg-gray-800"><Circle size={18} /> Course landing page</button>
+                                        className={`flex items-center gap-1 px-4 py-2 transition-all duration-200 ease-in rounded-md hover:bg-gray-800 ${lastRoute === "basics" && "text-blue-500"}`}>
+                                        <Circle className={`${lastRoute === "basics" && "bg-blue-900 rounded-full"}`} size={18} />
+                                        Course landing page
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +85,7 @@ const ManageCourse = () => {
                                         <div className="text-gray-200">
                                             <button
                                                 onClick={() => navigate(`/instructor/course/${course.titleSlug}/manage/curriculum`)}
-                                                className="flex items-center w-full gap-1 transition-all duration-200 ease-in rounded-md hover:bg-gray-800"><Circle size={18} /> Curriculum</button>
+                                                className="flex items-center w-full gap-1 transition-all duration-200 ease-in rounded-md hover:bg-gray-800"><Circle className={`${lastRoute === "curriculum" && "bg-blue-900 rounded-full"}`} size={18} /> Curriculum</button>
                                         </div>
                                     </div>
 
@@ -85,7 +94,7 @@ const ManageCourse = () => {
                                         <div className="text-gray-200">
                                             <button
                                                 onClick={() => navigate(`/instructor/course/${course.titleSlug}/manage/basics`)}
-                                                className="flex items-center w-full gap-1 transition-all duration-200 ease-in rounded-md hover:bg-gray-800"><Circle size={18} /> Course landing page</button>
+                                                className="flex items-center w-full gap-1 transition-all duration-200 ease-in rounded-md hover:bg-gray-800"><Circle className={`${lastRoute === "basics" && "bg-blue-900 rounded-full"}`} size={18} /> Course landing page</button>
                                         </div>
                                     </div>
                                 </div>

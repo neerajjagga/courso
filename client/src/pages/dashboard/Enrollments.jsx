@@ -9,8 +9,8 @@ const Enrollments = () => {
   if (isPending) return <CustomLoader />
 
   return (
-    <div className='w-full px-3 pt-2 md:pt-4 sm:px-12 xl:px-28'>
-      <div className="flex flex-col gap-8">
+    <div className='w-full px-3 pt-2 md:pt-2 sm:px-10'>
+      <div className="flex flex-col gap-6">
         <div className='text-[1.2rem] font-bold xs:text-[1.3rem] sm:text-3xl px-2 pb-2 border-b border-opacity-30 border-b-gray-500 flex justify-between items-center'>
           <h2>My Enrollments</h2>
         </div>
@@ -61,12 +61,13 @@ const Enrollments = () => {
                 </div>
 
                 <div className='w-full'>
-                  <div className="w-full h-2 bg-gray-600 rounded-xl">
-                    <div className='h-full bg-green-600 rounded-xl'
+                  <div className="w-full h-[0.38rem] bg-gray-600">
+                    <div className='h-full bg-blue-600 rounded-tr-3xl rounded-br-3xl'
                       style={{ width: `${item.progressSummary.percentage || 0}%` }}
                     >
                     </div>
                   </div>
+                  <p className='px-2 py-2 text-sm text-gray-100'>{item.progressSummary.percentage}% Completed</p>
                 </div>
               </div>
             ))}

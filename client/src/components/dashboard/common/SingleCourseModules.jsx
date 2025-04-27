@@ -38,7 +38,10 @@ const SingleCourseModules = ({ modules, type, activeLecture, setActiveLecture, p
                                         <span className="text-xl text-gray-300">Section:</span>
                                         <span className="flex items-center gap-2 text-lg">
                                             {type !== "learn" && <FileText className="text-gray-300" />}
-                                            {module.title}
+                                            {module.title + ' '}
+                                            {type && (
+                                                <span className="text-base text-gray-300">( {progressSummary[index]?.percentage}% Completed )</span>
+                                            )}
                                         </span>
                                     </h3>
 
@@ -51,8 +54,8 @@ const SingleCourseModules = ({ modules, type, activeLecture, setActiveLecture, p
 
                                 {/* progress */}
                                 {type && (
-                                    <div className="w-full h-2 bg-gray-600 rounded-xl">
-                                        <div className='h-full bg-green-600 rounded-xl'
+                                    <div className="w-full h-[0.38rem] bg-gray-600">
+                                        <div className='h-full bg-blue-600 rounded-tr-3xl rounded-br-3xl'
                                             style={{ width: `${progressSummary[index]?.percentage || 0}%` }}
                                         >
                                         </div>

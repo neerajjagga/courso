@@ -9,8 +9,8 @@ const InstructorCourses = () => {
     const { data: courses, isLoading } = useFetchInstructorCreatedCourses();
 
     return (
-        <div className="w-full px-3 pt-2 md:pt-4 sm:px-12 xl:px-28">
-            <div className="flex flex-col gap-8">
+        <div className="w-full px-2 md:pt-2 sm:px-10">
+            <div className="flex flex-col gap-4 md:gap-8">
                 <div className='text-[1.2rem] font-bold xs:text-[1.3rem] sm:text-3xl px-2 pb-2 border-b border-opacity-30 border-b-gray-500 flex justify-between items-center'>
                     <h2>Manage Your Courses</h2>
 
@@ -19,7 +19,7 @@ const InstructorCourses = () => {
                     </div>
                 </div>
 
-                <main className='flex flex-col gap-20'>
+                <main className='flex flex-col gap-8'>
                     <div className='flex items-center justify-between'>
                         <div className='flex gap-2'>
                             <input
@@ -37,7 +37,7 @@ const InstructorCourses = () => {
                         </div>
                     </div>
 
-                    <div className='flex flex-wrap gap-10'>
+                    <div className='flex flex-wrap justify-center gap-5 md:gap-10 md:justify-normal'>
                         {!isLoading ? (courses ?? []).map((course, index) => (
                             <CourseCard key={index} course={course}>
                                 <button

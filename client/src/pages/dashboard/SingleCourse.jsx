@@ -22,7 +22,7 @@ const SingleCourse = () => {
                             <h1 className='text-2xl sm:text-3xl'>{course.title}</h1>
                         </div>
 
-                        <div className='absolute z-30 hidden xl:right-20 right-5 lg:block'>
+                        <div className='absolute z-20 hidden xl:right-20 right-5 lg:block'>
                             <SingleCourseCard
                                 course={course}
                             />
