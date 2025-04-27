@@ -180,6 +180,38 @@ export const verifyPayment = async (req, res) => {
     }
 }
 
+export const getPaymentHistory = async (req, res) => {
+    const user = req.user;
+    try {
+        const paymentHistory = await Payment.find({
+            userId: user._id
+        })
+            .sort({ createdAt: -1 })
+            .select('createdAt orderId courseId amountPaid status')
+            .populate('courseId', 'title');
+
+        const formattedHistory = paymentHistory.map(payment => ({
+            createdAt: payment.createdAt,
+            orderId: payment.orderId,
+            amountPaid: payment.amountPaid,
+            status: payment.status,
+            courseTitle: payment.courseId.title
+        }));
+
+        return res.status(200).json({
+            success: true,
+            paymentHistory: formattedHistory
+        });
+
+    } catch (error) {
+        console.error("Error in getting payment history", error.message);
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+}
+
 // we can do manual capturing also
 // const handleAuthorizedPayments = async (paymentDetails) => {
 //     const capturedResponse = await razorpayInst.payments.capture(paymentDetails.id, paymentDetails.amount);

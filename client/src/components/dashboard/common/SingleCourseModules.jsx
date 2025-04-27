@@ -61,7 +61,7 @@ const SingleCourseModules = ({ modules, type, activeLecture, setActiveLecture, p
                             </div>
 
                             {openModuleIndexes[index] && (
-                                <div className={`flex flex-col ${type !== "learn" ? "gap-6" : "gap-2"}`}>
+                                <div className={`flex flex-col ${type !== "learn" ? "gap-6" : "gap-1"}`}>
                                     {module.lectures.length > 0 && (
                                         module.lectures.map((lecture, index) => (
                                             <div
@@ -69,15 +69,15 @@ const SingleCourseModules = ({ modules, type, activeLecture, setActiveLecture, p
                                                 onClick={() => {
                                                     type === "learn" && setActiveLecture(lecture);
                                                 }}
-                                                className={`transition-all ease-in duration-150 flex justify-between gap-6 px-2 py-6 pb-6 rounded-md  bg-opacity-15 ${type !== "learn" ? "bg-gray-500 sm:px-6 shadow-xl " : "hover:bg-gray-500 hover:shadow-xl hover:bg-opacity-15 sm:px-4 cursor-pointer"}`}>
-                                                <div className="flex items-center justify-between w-full gap-6">
+                                                className={`transition-all ease-in duration-150 flex justify-between gap-6 px-2 md:py-6 md:pb-6 py-4 pb-4 rounded-md  bg-opacity-15 ${type !== "learn" ? "bg-gray-500 sm:px-6 shadow-xl " : "hover:bg-gray-500 hover:shadow-xl hover:bg-opacity-15 sm:px-4 cursor-pointer"}`}>
+                                                <div className="flex items-center justify-between w-full gap-2 md:gap-4">
                                                     <div className={`flex items-center gap-4 ${activeLecture?.id === lecture.id && "text-blue-500"}`}>
                                                         <span>
                                                             {lecture.videoUrl && (
                                                                 <Video size={22} />
                                                             )}
                                                         </span>
-                                                        <h2>{lecture.title}</h2>
+                                                        <h2 className="text-[0.90rem] md:text-base">{lecture.title}</h2>
                                                     </div>
                                                     {type === "learn" && (
                                                         <button

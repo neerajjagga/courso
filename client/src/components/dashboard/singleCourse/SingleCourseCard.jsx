@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { useCreateRzpOrder } from '../../../hooks/payment/useCreateRzpOrder';
-import { useVerifyPayment } from '../../../hooks/payment/payment.hooks';
 import { useAuthUser } from '../../../hooks/user/useAuthUser';
+import { useCreateRzpOrder } from '../../../hooks/payment/useCreateRzpOrder';
+import { useVerifyPayment } from '../../../hooks/payment/useVerifyPayment';
 
 const SingleCourseCard = ({ course }) => {
     const user = useAuthUser();

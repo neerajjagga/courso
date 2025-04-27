@@ -11,7 +11,7 @@ const Enrollments = () => {
   return (
     <div className='w-full px-3 pt-2 md:pt-4 sm:px-12 xl:px-28'>
       <div className="flex flex-col gap-8">
-        <div className='text-[1.2rem] font-bold xs:text-[1.3rem] sm:text-3xl lg:text-4xl px-2 pb-2 border-b border-opacity-30 border-b-gray-500 flex justify-between items-center'>
+        <div className='text-[1.2rem] font-bold xs:text-[1.3rem] sm:text-3xl px-2 pb-2 border-b border-opacity-30 border-b-gray-500 flex justify-between items-center'>
           <h2>My Enrollments</h2>
         </div>
 
@@ -56,6 +56,15 @@ const Enrollments = () => {
                         />
                       )}
                       <h4 className='text-sm text-gray-300 line-clamp-1'>{item.course.instructor.fullname}</h4>
+                    </div>
+                  </div>
+                </div>
+
+                <div className='w-full'>
+                  <div className="w-full h-2 bg-gray-600 rounded-xl">
+                    <div className='h-full bg-green-600 rounded-xl'
+                      style={{ width: `${item.progressSummary.percentage || 0}%` }}
+                    >
                     </div>
                   </div>
                 </div>

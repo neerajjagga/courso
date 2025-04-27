@@ -7,11 +7,11 @@ import { useFetchInstructorCreatedCourses } from '../../hooks/course/useFetchIns
 const InstructorCourses = () => {
     const navigate = useNavigate();
     const { data: courses, isLoading } = useFetchInstructorCreatedCourses();
-    
+
     return (
         <div className="w-full px-3 pt-2 md:pt-4 sm:px-12 xl:px-28">
             <div className="flex flex-col gap-8">
-                <div className='text-[1.2rem] font-bold xs:text-[1.3rem] sm:text-3xl lg:text-4xl px-2 pb-2 border-b border-opacity-30 border-b-gray-500 flex justify-between items-center'>
+                <div className='text-[1.2rem] font-bold xs:text-[1.3rem] sm:text-3xl px-2 pb-2 border-b border-opacity-30 border-b-gray-500 flex justify-between items-center'>
                     <h2>Manage Your Courses</h2>
 
                     <div className='md:hidden'>

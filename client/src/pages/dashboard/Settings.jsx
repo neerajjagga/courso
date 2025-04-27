@@ -118,7 +118,7 @@ const Settings = () => {
     <div className="px-3 pt-2 md:pt-4 sm:px-12 xl:px-28">
       <div className="flex flex-col gap-2 md:gap-6">
         <div className="flex items-center justify-between px-2 pb-2 border-b border-opacity-30 border-b-gray-500">
-          <h1 className="text-[1.30rem] font-bold xs:text-2xl sm:text-3xl lg:text-4xl">Account Settings</h1>
+          <h1 className="text-[1.30rem] font-bold xs:text-2xl sm:text-3xl">Account Settings</h1>
           <button onClick={() => setIsEditView(prev => !prev)} className="flex items-center justify-center gap-2 px-3 py-1 text-sm bg-gray-700 rounded-md xs:text-base md:text-xl"><Pencil size={16} /> {isEditView ? "Edit" : "View"}</button>
         </div>
 

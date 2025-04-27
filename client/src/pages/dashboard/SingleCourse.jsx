@@ -4,8 +4,8 @@ import { Globe, BarChart } from 'lucide-react';
 import SingleCourseModules from '../../components/dashboard/common/SingleCourseModules';
 import CustomLoader from '../../components/common/CustomLoader';
 import { useFetchSingleCourse } from '../../hooks/course/useFetchSingleCourse';
-import SingleCourseCard from '../../components/dashboard/SingleCourse/SingleCourseCard';
-import InstructorCard from '../../components/dashboard/SingleCourse/InstructorCard';
+import SingleCourseCard from '../../components/dashboard/singleCourse/SingleCourseCard';
+import InstructorCard from '../../components/dashboard/singleCourse/InstructorCard';
 
 const SingleCourse = () => {
     const { titleSlug } = useParams();

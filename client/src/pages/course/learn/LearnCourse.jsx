@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { Menu } from 'lucide-react'
 import SingleCourseModules from '../../../components/dashboard/common/SingleCourseModules';
 import VideoPlayer from '../../../components/course/learn/VideoPlayer';
+import DOMPurify from 'dompurify';
 
 import { useFetchSingleEnrolledCourse } from '../../../hooks/enrolledCourse/useFetchSingleEnrolledCourse';
 import { useUpdateCourseProgress } from '../../../hooks/courseProgress/courseProgress.hooks';
@@ -14,6 +15,7 @@ const LearnCourse = () => {
 
     const [activeLecture, setActiveLecture] = useState(null);
     const [isSidebarActive, setIsSidebarActive] = useState(true);
+    const [isShowMoreDescActive, setIsShowMoreDescActive] = useState(false);
 
     const { data: { course, progressSummary } = {}, isPending } = useFetchSingleEnrolledCourse(titleSlug);
 
@@ -88,12 +90,12 @@ const LearnCourse = () => {
                         ${isSidebarActive ? "xl:pl-[33rem]" : ""}`}
                         >
                             {activeLecture?.videoUrl ? (
-                                <div className='flex flex-col w-full h-full gap-5 md:gap-10'>
+                                <div className='flex flex-col w-full min-h-full gap-5 md:gap-5'>
                                     {activeLecture.videoUrl.includes("youtube") ? (
-                                        <div className='w-full md:h-[80%] sm:h-[50%] h-[30%] bg-gray-900 rounded-xl overflow-hidden'>
+                                        <div className='w-full overflow-hidden bg-gray-900 rounded-xl'>
                                             <iframe
                                                 src={activeLecture.videoUrl}
-                                                className="w-full h-full shadow-lg rounded-xl"
+                                                className="w-full shadow-lg aspect-video rounded-xl"
                                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
                                                 allowFullScreen
                                                 loading="lazy"
@@ -107,15 +109,31 @@ const LearnCourse = () => {
                                     )}
 
                                     {/* information */}
-                                    <div className='flex flex-col gap-12 md:px-4'>
+                                    <div className='flex flex-col gap-6 md:gap-12 md:px-4'>
                                         <div>
-                                            <h2 className='text-xl font-semibold text-gray-200 md:text-2xl lg:md:text-3xl'>{activeLecture.title}</h2>
+                                            <h2 className='text-lg font-semibold text-gray-200 md:text-2xl lg:md:text-3xl'>{activeLecture.title}</h2>
+                                        </div>
+
+                                        <div className='flex flex-col gap-3 sm:gap-4'>
+                                            <div className="pb-1 text-lg text-gray-500 border-b border-gray-400 sm:pb-2 md:text-2xl border-opacity-20">
+                                                Description
+                                            </div>
+                                            <div className={`md:text-[1.20rem] text-[0.90rem] text-gray-400 break-all md:break-words md:line-clamp-none ${isShowMoreDescActive ? "line-clamp-none" : "line-clamp-4"}`}
+                                                dangerouslySetInnerHTML={{
+                                                    __html: DOMPurify.sanitize(course.description)
+                                                }}
+                                            />
+                                            <button
+                                                onClick={() => setIsShowMoreDescActive(!isShowMoreDescActive)}
+                                                className='text-blue-600 underline w-fit md:hidden'>
+                                                {isShowMoreDescActive ? "Show less" : "Show more"}
+                                            </button>
                                         </div>
 
                                         {/* reviews */}
-                                        <div>
-                                            <div className="pb-3 text-lg text-gray-500 border-b border-gray-400 md:text-2xl border-opacity-20">
-                                                Reviews (Upcoming)
+                                        <div className='space-y-4'>
+                                            <div className="pb-1 text-lg text-gray-500 border-b border-gray-400 sm:pb-2 md:text-2xl border-opacity-20">
+                                                Comments
                                             </div>
                                         </div>
                                     </div>

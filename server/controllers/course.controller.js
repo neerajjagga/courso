@@ -7,7 +7,8 @@ import Review from "../models/review.model.js";
 import slugify from "slugify";
 import { v4 as uuidv4 } from 'uuid';
 import { uploadImageOnCloudinary, deleteImageOnCloudinary } from "../utils/cloudinary.utils.js";
-import { getUserCourseProgressSummary } from "../utils/course.utils.js";
+import { getUserCourseModuleWiseProgressSummary } from "../utils/course.utils.js";
+import { getUserCourseOverallProgressSummary } from "../utils/course.utils.js";
 
 // instructor
 export const createCourse = async (req, res) => {
@@ -218,6 +219,10 @@ export const getMyEnrolledCourses = async (req, res) => {
             courseId: undefined
         }));
 
+        for (const enrolledCourse of cleanedEnrolledCourses) {
+            enrolledCourse.progressSummary = await getUserCourseOverallProgressSummary(enrolledCourse.course._id, user._id);
+        }
+
         return res.status(200).json({
             success: true,
             message: "Courses fetched successfully",
@@ -364,7 +369,7 @@ export const getSingleEnrolledCourse = async (req, res) => {
                 },
             });
 
-        const progressSummary = await getUserCourseProgressSummary(course._id, user._id);
+        const progressSummary = await getUserCourseModuleWiseProgressSummary(course._id, user._id);
 
         return res.status(200).json({ success: true, course, progressSummary });
 

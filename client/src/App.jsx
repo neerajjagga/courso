@@ -31,6 +31,7 @@ import { axiosInst } from "./lib/axios";
 import SingleCourse from "./pages/dashboard/SingleCourse";
 
 import LearnCourse from "./pages/course/learn/LearnCourse";
+import PaymentHistory from "./pages/dashboard/PaymentHistory";
 
 const App = () => {
 
@@ -71,6 +72,7 @@ const App = () => {
           <Route path="settings" element={user ? <Settings /> : <Navigate to='/' />} />
           <Route path="history" element={user ? <History /> : <Navigate to='/' />} />
           <Route path="course/:titleSlug" element={user ? <SingleCourse /> : <Navigate to='/' />} />
+          <Route path="payment-history" element={user ? <PaymentHistory /> : <Navigate to='/' />} />
         </Route>
 
         <Route path="/instructor/course/create" element={(user && user.role === "instructor") ? <NewCourseBoarding /> : <Navigate to='/' />}>

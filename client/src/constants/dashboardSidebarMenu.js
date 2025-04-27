@@ -29,9 +29,9 @@ export const dashboardSidebarMenuUser = [
         path: "/dashboard/settings",
     },
     {
-        name: "History",
+        name: "Payment History",
         icon: History,
-        path: "/dashboard/history",
+        path: "/dashboard/payment-history",
     },
 ];
 
@@ -43,7 +43,7 @@ export const dashboardSidebarMenuInstructor = [
     },
     {
         name: "All Courses",
-        icon: ListChecks,
+        icon: LibraryBig,
         path: "/dashboard/courses",
     },
     {
@@ -60,5 +60,10 @@ export const dashboardSidebarMenuInstructor = [
         name: "Settings",
         icon: Settings,
         path: "/dashboard/settings",
+    },
+    {
+        name: "Payment History",
+        icon: History,
+        path: "/dashboard/payment-history",
     },
 ];
