@@ -11,7 +11,7 @@ const Sidebar = ({ isSidebarActive }) => {
     const user = useAuthUser();
 
     return (
-        <div className={`md:z-50 z-30 fixed top-0 left-0 md:translate-x-0 h-screen bg-bg-primary ${isSidebarActive ? "w-[12rem] md:w-[13rem] lg:w-[16rem]" : "-translate-x-full w-[5rem] md:w-[6rem] lg:w-[6rem]"} container border-r border-gray-400 border-opacity-50 transition-all ease-in-out duration-300`}>
+        <div className={`md:z-50 z-30 fixed top-0 left-0 md:translate-x-0 min-h-dvh bg-bg-primary ${isSidebarActive ? "w-[12rem] md:w-[13rem] lg:w-[16rem]" : "-translate-x-full w-[5rem] md:w-[6rem] lg:w-[6rem]"} container border-r border-gray-400 border-opacity-50 transition-all ease-in-out duration-300`}>
             <div className="flex flex-col justify-between h-screen py-6">
                 <div className="flex flex-col items-center gap-20">
                     <div>
