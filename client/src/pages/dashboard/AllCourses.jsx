@@ -81,13 +81,13 @@ const AllCourses = () => {
 
         <div className="flex">
           {selectedCategory && (
-            <div className="flex items-center justify-center gap-2 btn-primary">
+            <div className="flex items-center justify-center gap-2 text-sm md:text-base btn-primary">
               {selectedCategory.name}
               <button
                 onClick={() => {
                   setSelectedCategory(null);
                 }}
-                className=""><X /></button>
+                className=""><X size={22}/></button>
             </div>
           )}
         </div>

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useUserStore } from '../store/useUserStore';
 
 const axiosInst = axios.create({
     baseURL:
@@ -12,17 +13,20 @@ const axiosInst = axios.create({
 axiosInst.interceptors.response.use(
     (response) => response,
     (error) => {
+        const { setUser } = useUserStore.getState();
         if (error.response) {
             if (error.response.status === 429) {
                 toast.error("Too many requests, please try again later.");
+                return Promise.resolve(error.response);
             } else if (error.response.status === 401) {
-                toast.error("Session expired, please log in again.");
+                setUser(null);
+                // toast.error("Session expired. Please log in again.");
+                return Promise.reject(error.response);
             } else if (error.response.status === 403) {
                 toast.error(error.response.data.error || error.response.data.message || "Access Forbidden");
+                return Promise.resolve(error.response);
             }
         }
-
-        return Promise.resolve(error.response);
     }
 )
 

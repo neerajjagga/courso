@@ -6,7 +6,7 @@ export const useVerifyPayment = () => {
     const navigate = useNavigate();
 
     return useMutation({
-        mutationFn: () => verifyRazorpayPayment(paymentDetails),
+        mutationFn: (paymentDetails) => verifyRazorpayPayment(paymentDetails),
         onSuccess: () => {
             setTimeout(() => navigate('/dashboard/enrollments'), 1500);
         },

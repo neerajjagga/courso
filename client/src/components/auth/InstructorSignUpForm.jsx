@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { Eye, EyeClosed, Loader } from "lucide-react";
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { axiosInst } from '../../lib/axios';
-import toast from 'react-hot-toast';
 import { Link } from "react-router-dom";
+import { useUserStore } from "../../store/useUserStore";
 
 const InstructorSignUpForm = () => {
-    const queryClient = useQueryClient();
     const [formData, setFormData] = useState({
         fullname: "",
         email: "",
@@ -15,30 +12,11 @@ const InstructorSignUpForm = () => {
     });
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-    const { mutate: signUpMutation, isPending } = useMutation({
-        mutationFn: async (data) => {
-            const res = await axiosInst.post('/auth/signup', { ...data });
-            console.log(res);
-            return res.data;
-        },
-        onSuccess: (data) => {
-            toast.success(data?.message || "Account created successfully");
-            setFormData({
-                fullname: "",
-                email: "",
-                password: ""
-            });
-            queryClient.setQueryData(['user'], data.user);
-        },
-        onError: (err) => {
-            const message = err.response?.data?.message || "Something went wrong!";
-            toast.error(message);
-        }
-    });
+    const { signUp, isLoading } = useUserStore();
 
     const handleSignUp = (e) => {
         e.preventDefault();
-        signUpMutation(formData);
+        signUp(formData);
     }
 
     return (
@@ -99,8 +77,8 @@ const InstructorSignUpForm = () => {
 
                 <div className="mt-3">
                     <button
-                        disabled={isPending}
-                        className="flex items-center justify-center w-full gap-2 btn-secondary">Join now {isPending && <span className="animate-spin"><Loader size={20} /></span>}</button>
+                        disabled={isLoading}
+                        className="flex items-center justify-center w-full gap-2 btn-secondary">Join now {isLoading && <span className="animate-spin"><Loader size={20} /></span>}</button>
                 </div>
             </form>
         </div>

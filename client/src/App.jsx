@@ -1,7 +1,7 @@
+import { useEffect } from "react";
 import Layout from "./components/Layout"
 import { Routes, Route, Navigate } from 'react-router-dom'
 import CustomLoader from "./components/common/CustomLoader";
-import { useFetchAuthUser } from "./hooks/user/useFetchAuthUser";
 
 import Index from "./pages/Index"
 import Login from './pages/auth/Login';
@@ -34,11 +34,16 @@ import LearnCourse from "./pages/course/learn/LearnCourse";
 import PaymentHistory from "./pages/dashboard/PaymentHistory";
 
 import ProtectedRoute from './components/routes/ProtectedRoute';
+import { useUserStore } from "./store/useUserStore";
 
 const App = () => {
-  const { data: user, isLoading } = useFetchAuthUser();
+  const { user, checkAuth, isCheckingAuth } = useUserStore();
 
-  if (isLoading) return <CustomLoader />
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  if (isCheckingAuth) return <CustomLoader />
 
   return (
     <Layout>

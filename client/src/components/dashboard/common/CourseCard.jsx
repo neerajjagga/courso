@@ -43,9 +43,11 @@ const CourseCard = ({ course, children }) => {
                                 alt={`${course.instructor.fullname} Profile Image`}
                             />
                         ) : (
-                            <span className='flex items-center justify-center w-6 h-6 font-bold text-white bg-red-600 rounded-full text-md'>
-                                {course.instructor.fullname?.charAt(0).toUpperCase()}
-                            </span>
+                            course?.instructor?.fullname && (
+                                <span className='flex items-center justify-center w-6 h-6 font-bold text-white bg-red-600 rounded-full text-md'>
+                                    {course.instructor.fullname?.charAt(0).toUpperCase()}
+                                </span>
+                            )
                         )}
                         <h4 className='text-sm text-gray-300 line-clamp-1'>{course.instructor.fullname}</h4>
                     </div>

@@ -1,14 +1,12 @@
 import { Link } from 'react-router-dom'
 import { Moon, Sun, Menu, X, ChevronDown, LogOut, Rocket } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { useAuthUser } from '../hooks/user/useAuthUser';
-import { useLogoutUser } from '../hooks/user/useLogoutUser';
+import { useState } from 'react'
+import { useUserStore } from '../store/useUserStore';
 
 const Navbar = () => {
   const [isHamburgerOpened, setIsHamburgerOpened] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-  const user = useAuthUser();
-  const { mutate: logout, isPending } = useLogoutUser();
+  const { user, logout, isLoading } = useUserStore();
 
   return (
     <div className="relative border-b border-gray-400 border-opacity-50">
@@ -43,7 +41,7 @@ const Navbar = () => {
             <div className="hidden md:block">
               <div className="flex items-center gap-4">
                 <Link to='/dashboard/courses'>
-                  <button disabled={isPending} className='text-lg px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100 hover:bg-[#1949b8] border border-[#2a5acb] hover:border-[#8cafff] flex justify-center items-center gap-2'>
+                  <button disabled={isLoading} className='text-lg px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100 hover:bg-[#1949b8] border border-[#2a5acb] hover:border-[#8cafff] flex justify-center items-center gap-2'>
                     <Rocket size={23} />
                     <span className='hidden sm:block'>Dashboard</span>
                   </button>
@@ -67,7 +65,7 @@ const Navbar = () => {
 
                   {isProfileDropdownOpen && (
                     <button
-                      disabled={isPending}
+                      disabled={isLoading}
                       onClick={() => {
                         logout();
                         setIsProfileDropdownOpen(false);
@@ -122,11 +120,11 @@ const Navbar = () => {
                 </div>
 
                 <Link to='/dashboard/courses'>
-                  <button disabled={isPending} className='text-lg px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100 hover:bg-[#1949b8] border border-[#2a5acb] hover:border-[#8cafff]'>Dashboard</button>
+                  <button disabled={isLoading} className='text-lg px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100 hover:bg-[#1949b8] border border-[#2a5acb] hover:border-[#8cafff]'>Dashboard</button>
                 </Link>
 
                 {/* profile Icon */}
-                <button disabled={isPending} onClick={() => logout()} className='flex items-center justify-center gap-2 px-4 py-2 text-lg text-white transition-all duration-200 ease-in bg-red-600 rounded-md -left-4 -bottom-16 hover:bg-red-500'><LogOut size={20} /> Logout</button>
+                <button disabled={isLoading} onClick={() => logout()} className='flex items-center justify-center gap-2 px-4 py-2 text-lg text-white transition-all duration-200 ease-in bg-red-600 rounded-md -left-4 -bottom-16 hover:bg-red-500'><LogOut size={20} /> Logout</button>
               </div>
             </div>
         )}

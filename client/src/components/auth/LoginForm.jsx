@@ -1,41 +1,20 @@
 import { useState } from "react";
 import { Eye, EyeClosed, Loader } from "lucide-react";
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { axiosInst } from '../../lib/axios';
-import toast from 'react-hot-toast';
 import { Link } from "react-router-dom";
+import { useUserStore } from "../../store/useUserStore";
 
 const LoginForm = () => {
-    const queryClient = useQueryClient();
     const [formData, setFormData] = useState({
         email: "",
         password: ""
     });
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-    const { mutate: loginMutation, isPending } = useMutation({
-        mutationFn: async (data) => {
-            const res = await axiosInst.post('/auth/login', { ...data });
-            console.log(res);
-            return res.data;
-        },
-        onSuccess: (data) => {
-            toast.success(data?.message || "Logged in successfully");
-            setFormData({
-                email: "",
-                password: ""
-            });
-            queryClient.setQueryData(['user'], data.user);
-        },
-        onError: (err) => {
-            const message = err.response?.data?.message || "Something went wrong!";
-            toast.error(message);
-        }
-    });
+    const { login, isLoading } = useUserStore();
 
     const handleLogin = (e) => {
         e.preventDefault();
-        loginMutation(formData);
+        login(formData);
     }
 
     return (
@@ -82,9 +61,9 @@ const LoginForm = () => {
 
                 <div className="mt-3">
                     <button
-                        disabled={isPending}
+                        disabled={isLoading}
                         className="flex items-center justify-center w-full gap-2 btn-secondary">
-                        Login {isPending && <span className="animate-spin"><Loader size={20} /></span>}
+                        Login {isLoading && <span className="animate-spin"><Loader size={20} /></span>}
                     </button>
                 </div>
             </form>

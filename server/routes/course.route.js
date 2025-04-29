@@ -22,7 +22,7 @@ const courseRouter = express.Router();
 
 courseRouter.post('/', checkAuth, checkInstructor, validateCourseData, createCourse);
 
-courseRouter.get('/', getAllCourses);
+courseRouter.get('/', checkAuth, getAllCourses);
 
 courseRouter.get('/me/enrolled', checkAuth, getMyEnrolledCourses);
 courseRouter.get('/me/enrolled/:titleSlug', checkAuth, getSingleEnrolledCourse);

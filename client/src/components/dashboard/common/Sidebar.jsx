@@ -2,14 +2,12 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"
 import { dashboardSidebarMenuInstructor, dashboardSidebarMenuUser } from "../../../constants/dashboardSidebarMenu"
 import { ChevronsUpDown, LogOut } from "lucide-react";
-import { useLogoutUser } from '../../../hooks/user/useLogoutUser';
-import { useAuthUser } from "../../../hooks/user/useAuthUser";
+import { useUserStore } from "../../../store/useUserStore";
 
 const Sidebar = ({ isSidebarActive, setIsSidebarActive }) => {
     const navigate = useNavigate();
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-    const { mutate: logout, isPending } = useLogoutUser();
-    const user = useAuthUser();
+    const { user, logout, isLoading } = useUserStore();
 
     return (
         <div className={`md:z-50 z-30 fixed top-0 left-0 md:translate-x-0 min-h-dvh bg-bg-primary ${isSidebarActive ? "w-[12rem] md:w-[13rem] lg:w-[16rem]" : "-translate-x-full w-[5rem] md:w-[6rem] lg:w-[6rem]"} container border-r border-gray-400 border-opacity-50 transition-all ease-in-out duration-300`}>
@@ -41,7 +39,7 @@ const Sidebar = ({ isSidebarActive, setIsSidebarActive }) => {
                     <div onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)} className='flex items-center justify-center gap-2 px-2 py-2 overflow-hidden text-lg transition-all duration-300 ease-in-out bg-gray-900 rounded-md cursor-pointer'>
                         {user.profileImageUrl ? (
                             <img
-                                className="object-cover h-10 rounded-full min-w-10"
+                                className="object-cover w-10 h-10 rounded-full"
                                 src={user.profileImageUrl}
                                 alt="User Profile Image"
                             />
@@ -61,7 +59,7 @@ const Sidebar = ({ isSidebarActive, setIsSidebarActive }) => {
                             </button>
                         )}
                     </div>
-                    <button disabled={isPending} onClick={() => logout()} className='flex items-center justify-center w-full gap-2 px-4 py-2 text-sm text-white transition-all duration-300 ease-in bg-red-700 md:text-lg rounded-bl-md rounded-br-md lex i -bottom-16 hover:bg-red-500 md:hidden'><LogOut size={18} /> Logout</button>
+                    <button disabled={isLoading} onClick={() => logout()} className='flex items-center justify-center w-full gap-2 px-4 py-2 text-sm text-white transition-all duration-300 ease-in bg-red-700 md:text-lg rounded-bl-md rounded-br-md lex i -bottom-16 hover:bg-red-500 md:hidden'><LogOut size={18} /> Logout</button>
                 </div>
 
                 {isProfileDropdownOpen && (
@@ -83,7 +81,7 @@ const Sidebar = ({ isSidebarActive, setIsSidebarActive }) => {
                             </div>
                         </div>
 
-                        <button disabled={isPending} onClick={() => logout()} className='flex items-center justify-center w-full gap-2 px-4 py-2 text-lg text-white transition-all duration-200 ease-in bg-red-700 rounded-bl-md rounded-br-md lex i -bottom-16 hover:bg-red-500'><LogOut size={20} /> Logout</button>
+                        <button disabled={isLoading} onClick={() => logout()} className='flex items-center justify-center w-full gap-2 px-4 py-2 text-lg text-white transition-all duration-200 ease-in bg-red-700 rounded-bl-md rounded-br-md lex i -bottom-16 hover:bg-red-500'><LogOut size={20} /> Logout</button>
                     </div>
                 )}
             </div>
