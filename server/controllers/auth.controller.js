@@ -175,38 +175,27 @@ export const logoutUser = async (req, res) => {
     }
 }
 
-export const refreshTokens = async (req, res) => {
+export const refreshTokens = async (refresh_token, res) => {
     try {
-        const { refresh_token } = req.cookies;
-
-        if (!refresh_token) {
-            return res.status(401).json({
-                message: "Your session has expired. Please log in again.",
-                tokenExpired: true,
-            });
-        }
-
+        console.log(refresh_token);
         const decodedObj = jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET);
-        console.log(decodedObj);
-
         const userId = decodedObj.userId;
 
         const storedRefreshToken = await Redis.get(`refresh_token:${userId}`);
+        console.log(storedRefreshToken);
 
         if (!storedRefreshToken || refresh_token !== storedRefreshToken) {
-            return res.status(403).json({
-                message: "Your session has expired. Please log in again."
-            });
+            throw {
+                name: "TokenExpiredError"
+            }
         }
 
-        // Generate both access token and refresh token to rotate refresh token
         const { accessToken, refreshToken } = generateTokens(userId);
-        await storeRefreshToken(refreshToken, userId);
         setCookies(accessToken, refreshToken, res);
+        await storeRefreshToken(refreshToken, userId);
 
-        res.status(200).json({ success: true, message: "Your session has been refreshed successfully." });
+        return accessToken;
     } catch (error) {
-        console.error("Error occurred while refreshing tokens:", error.message);
-        res.status(500).json({ success: false, message: "Internal server error. Please try again later." });
+        throw error;
     }
-};
+}

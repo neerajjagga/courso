@@ -10,20 +10,6 @@ const Navbar = () => {
   const user = useAuthUser();
   const { mutate: logout, isPending } = useLogoutUser();
 
-  const [isLightTheme, setIsLightTheme] = useState(() => {
-    return localStorage.getItem("theme") === "light";
-  });
-
-  useEffect(() => {
-    if (isLightTheme) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    }
-  }, [isLightTheme]);
-
   return (
     <div className="relative border-b border-gray-400 border-opacity-50">
       <div className="container flex items-center justify-between py-[0.8rem]">
@@ -32,12 +18,12 @@ const Navbar = () => {
         </Link>
 
         <div className='flex items-center gap-5 md:gap-8'>
-          <div className="text-black cursor-pointer dark:text-white">
+          {/* <div className="text-black cursor-pointer dark:text-white">
             {isLightTheme ?
               <Moon onClick={() => setIsLightTheme(false)} size={26} /> :
               <Sun onClick={() => setIsLightTheme(true)} size={26} />
             }
-          </div>
+          </div> */}
           {!user ? (
             <div className="hidden md:block">
               <div className="space-x-4">
@@ -56,7 +42,7 @@ const Navbar = () => {
           ) : (
             <div className="hidden md:block">
               <div className="flex items-center gap-4">
-                <Link to='/dashboard'>
+                <Link to='/dashboard/courses'>
                   <button disabled={isPending} className='text-lg px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100 hover:bg-[#1949b8] border border-[#2a5acb] hover:border-[#8cafff] flex justify-center items-center gap-2'>
                     <Rocket size={23} />
                     <span className='hidden sm:block'>Dashboard</span>
@@ -80,7 +66,13 @@ const Navbar = () => {
                   </button>
 
                   {isProfileDropdownOpen && (
-                    <button disabled={isPending} onClick={() => logout()} className='absolute right-0 z-30 flex items-center justify-center gap-2 px-4 py-2 text-lg text-white transition-all duration-200 ease-in bg-gray-800 rounded-md -bottom-16 hover:text-red-500'><LogOut size={20} /> Logout</button>
+                    <button
+                      disabled={isPending}
+                      onClick={() => {
+                        logout();
+                        setIsProfileDropdownOpen(false);
+                      }}
+                      className='absolute right-0 z-30 flex items-center justify-center gap-2 px-4 py-2 text-lg text-white transition-all duration-200 ease-in bg-gray-800 rounded-md -bottom-16 hover:text-red-500'><LogOut size={20} /> Logout</button>
                   )}
                 </div>
               </div>
@@ -129,7 +121,7 @@ const Navbar = () => {
                   {user.email.split('@')[0]}
                 </div>
 
-                <Link to='/dashboard'>
+                <Link to='/dashboard/courses'>
                   <button disabled={isPending} className='text-lg px-5 py-[0.40rem] rounded-md transition-all ease-in duration-100 hover:bg-[#1949b8] border border-[#2a5acb] hover:border-[#8cafff]'>Dashboard</button>
                 </Link>
 

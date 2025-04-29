@@ -2,16 +2,28 @@ import User from "../models/user.model.js";
 import jwt from 'jsonwebtoken';
 import { signupValidationSchema, userProfileUpdateSchema } from '../validators/user.validator.js';
 import dotenv from "dotenv";
+import { refreshTokens } from "../controllers/auth.controller.js";
 dotenv.config();
 
 export const checkAuth = async (req, res, next) => {
     try {
-        const { access_token } = req.cookies;
+        let { access_token, refresh_token } = req.cookies;
 
         if (!access_token) {
-            return res.status(401).json({
-                message: "Unauthorized - No access token provided"
-            })
+            if (!refresh_token) {
+                return res.status(401).json({
+                    message: "Unauthorized - Token expired 11",
+                });
+            }
+            const newAccessToken = await refreshTokens(refresh_token, res);
+            
+            if (!newAccessToken) {
+                return res.status(401).json({
+                    message: "Unauthorized - Could not refresh token",
+                });
+            }
+
+            access_token = newAccessToken;
         }
 
         try {
@@ -28,30 +40,30 @@ export const checkAuth = async (req, res, next) => {
             req.user = user;
             next();
         } catch (error) {
-            if (error.name === "TokenExpiredError") {
-                return res.status(401).json({
-                    message: "Unauthorized - Token expired",
-                })
-            }
             return res.status(401).json({
                 message: "Unauthorized - Invalid token",
             });
         }
     } catch (error) {
-        console.error("Error in checkAuth middleware:", error.stack);
-        return res.status(401).json({
-            message: "Unauthorized - An error occurred",
-        });
+        if (error.name === "TokenExpiredError") {
+            return res.status(401).json({
+                message: "Unauthorized - Token expired 22",
+            })
+        } else {
+            return res.status(500).json({
+                message: "Unauthorized - An error occurred",
+            });
+        }
     }
 }
 
-export const checkInstructor = async(req, res, next) => {
+export const checkInstructor = async (req, res, next) => {
     try {
         const user = req.user;
-        if(user.role !== "instructor") {
+        if (user.role !== "instructor") {
             return res.status(403).json({
-                success : false,
-                message : "Forbidden. You are not allowed to perform this action."
+                success: false,
+                message: "Forbidden. You are not allowed to perform this action."
             });
         }
 

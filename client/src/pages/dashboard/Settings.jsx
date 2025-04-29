@@ -29,7 +29,6 @@ const Settings = () => {
   const handleImageChange = async (e) => {
     try {
       const base64 = await convertImageToBase64(e);
-      console.log(base64);
       setProfileImage(base64);
     } catch (error) {
       console.log("Image upload error:", error);

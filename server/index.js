@@ -28,7 +28,7 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(helmet());
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', process.env.FRONTEND_DEPLOYED_URL],
     credentials: true
 }));
 app.use(express.urlencoded({ extended: true }));
@@ -56,4 +56,4 @@ connectDB().then(() => {
 }).catch((err) => {
     console.log(`Error connecting to DB`, err.message);
     process.exit(1);
-})
+});

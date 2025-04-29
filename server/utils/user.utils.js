@@ -19,14 +19,14 @@ export const setCookies = (accessToken, refreshToken, res) => {
     res.cookie("access_token", accessToken, {
         secure: process.env.NODE_ENV === "production",
         httpOnly: true,
-        sameSite: "strict",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         maxAge: 15 * 60 * 1000,
     })
 
     res.cookie("refresh_token", refreshToken, {
         secure: process.env.NODE_ENV === "production",
         httpOnly: true,
-        sameSite: "strict",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         maxAge: 7 * 24 * 60 * 60 * 1000,
     })
 }

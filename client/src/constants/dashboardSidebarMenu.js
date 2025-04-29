@@ -10,11 +10,11 @@ import {
 } from "lucide-react";
 
 export const dashboardSidebarMenuUser = [
-    {
-        name: "Home",
-        icon: Home,
-        path: "/dashboard/home",
-    },
+    // {
+    //     name: "Home",
+    //     icon: Home,
+    //     path: "/dashboard/home",
+    // },
     {
         name: "All Courses",
         icon: LibraryBig,
@@ -39,11 +39,6 @@ export const dashboardSidebarMenuUser = [
 
 export const dashboardSidebarMenuInstructor = [
     {
-        name: "Home",
-        icon: Home,
-        path: "/dashboard/home",
-    },
-    {
         name: "All Courses",
         icon: LibraryBig,
         path: "/dashboard/courses",
@@ -56,7 +51,7 @@ export const dashboardSidebarMenuInstructor = [
     {
         name: "Performance",
         icon: ChartNoAxesColumn,
-        path: "/dashboard/instructor/courses",
+        path: "/dashboard/performance",
     },
     {
         name: "Enrollments",

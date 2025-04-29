@@ -12,7 +12,6 @@ export const useCreateModule = () => {
             queryClient.invalidateQueries(['modules']);
         },
         onError: (err) => {
-            console.log(err);
             const message = err.response?.data?.error || "Something went wrong!";
             toast.error(message);
         }

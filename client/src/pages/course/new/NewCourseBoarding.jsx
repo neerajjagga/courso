@@ -65,7 +65,6 @@ const NewCourseBoarding = () => {
             toast.error("Price is required");
             return;
         }
-        console.log(courseFormData);
         createCourse(courseFormData);
     }
 

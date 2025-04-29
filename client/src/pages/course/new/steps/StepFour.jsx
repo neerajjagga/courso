@@ -12,7 +12,6 @@ const StepFour = () => {
     const handleImageChange = async (e) => {
         try {
             const base64 = await convertImageToBase64(e);
-            console.log(base64);
             setCourseFormData((prev) => ({ ...prev, courseImageUrl: base64 }));
         } catch (error) {
             console.log("Image upload error:", error);

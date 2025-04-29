@@ -1,17 +1,22 @@
 import codingLinesLeft from '../assets/codingLinesLeft.webp';
 import codingLinesRight from '../assets/codingLinesRight.webp';
-import akshayLandingPageLogo from '../assets/akshayLandingPage_hd.webp';
-import { ChevronsDown } from 'lucide-react';
+import { ChevronsUp } from 'lucide-react';
 import { indexCategories } from '../constants/indexCategories';
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
+  const navigate = useNavigate();
+
   return (
     <div className='w-full min-h-full'>
 
       {/* content */}
       <div className='flex flex-col items-center justify-center gap-10 xl:gap-20'>
         <div className='z-10 flex flex-col items-center gap-4 pt-12 md:gap-6'>
-          <img className='object-cover h-28 w-28 md:h-32 md:w-32' src={akshayLandingPageLogo} alt="" />
+          {/* <img className='object-cover h-28 w-28 md:h-32 md:w-32' src={akshayLandingPageLogo} alt="" /> */}
+          <div className='h-28 w-28 md:h-32 md:w-32 bg-[linear-gradient(180deg,#ffffff_0%,#a6a6a6_80%)] flex items-center justify-center rounded-full border-2 border-[#0b3db2]'>
+            <h2 className='text-[#0b3db2] font-extrabold text-2xl md:text-3xl'>Courso</h2>
+          </div>
 
           <div className='relative flex flex-col items-center gap-4'>
 
@@ -24,7 +29,7 @@ const Index = () => {
 
             <p className='text-sm text-center text-gray-400 xs:text-md md:text-lg xl:px-12'>Discover top-quality courses designed to help you master new skills and elevate your career. Learn from expert instructors across a wide range of topics—from business and marketing to design, language learning, and more. Wherever you want to grow, we’re here to support you ❤️</p>
 
-            <button className='mt-2 md:mt-4 btn-secondary'>Explore Courses</button>
+            <button onClick={() => navigate('/dashboard/courses')} className='mt-2 md:mt-4 btn-secondary'>Explore Courses</button>
 
             <div className='hidden gap-2 mt-6 xl:flex'>
               {indexCategories.map((category, index) => (
@@ -41,8 +46,8 @@ const Index = () => {
         </div>
 
         <div className='flex flex-col items-center justify-center gap-4'>
-          <ChevronsDown size={40} />
-          <h3 className='text-xl text-gray-300 md:text-2xl'>Explore Best Courses</h3>
+          <ChevronsUp size={30} />
+          <h3 className='text-lg text-gray-300 md:text-2xl'>Explore Best Courses</h3>
         </div>
       </div>
 
