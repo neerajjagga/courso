@@ -1,4 +1,4 @@
-import razorpayInst from './../lib/Razorpay.js';
+import razorpayInst from '../lib/razorpay.js';
 import Payment from '../models/payment.model.js';
 import Course from '../models/course.model.js';
 import User from '../models/user.model.js';

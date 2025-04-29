@@ -12,6 +12,8 @@
   "author": "neerajjagga",
   "license": "ISC",
   "dependencies": {
+    "@arcjet/inspect": "^1.0.0-beta.6",
+    "@arcjet/node": "^1.0.0-beta.6",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.41.3",
     "cookie-parser": "^1.4.7",

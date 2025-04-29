@@ -27,8 +27,6 @@ export const getUserCourseModuleWiseProgressSummary = async (courseId, userId) =
             });
         }
 
-        console.log(progressSummary);
-
         return progressSummary;
 
     } catch (error) {

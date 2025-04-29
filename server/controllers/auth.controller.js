@@ -177,12 +177,10 @@ export const logoutUser = async (req, res) => {
 
 export const refreshTokens = async (refresh_token, res) => {
     try {
-        console.log(refresh_token);
         const decodedObj = jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET);
         const userId = decodedObj.userId;
 
         const storedRefreshToken = await Redis.get(`refresh_token:${userId}`);
-        console.log(storedRefreshToken);
 
         if (!storedRefreshToken || refresh_token !== storedRefreshToken) {
             throw {

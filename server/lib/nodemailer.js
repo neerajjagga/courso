@@ -96,7 +96,6 @@ export const sendVerificationEmail = async (recipientEmail, verificationCode) =>
         };
 
         const info = await transporter.sendMail(mailOptions);
-        console.log(`Email sent: ${info.messageId}`);
     } catch (error) {
         console.error("Error sending email:", error);
     }
@@ -203,7 +202,6 @@ export const sendCourseReceipt = async (recipientEmail, courseName, purchaseDate
         };
 
         const info = await transporter.sendMail(mailOptions);
-        console.log(`Receipt email sent: ${info.messageId}`);
     } catch (error) {
         console.error("Error sending course receipt email:", error);
     }
@@ -295,7 +293,6 @@ export const sendPaymentFailedEmail = async (recipientEmail, courseName, purchas
         };
 
         const info = await transporter.sendMail(mailOptions);
-        console.log(`Payment failure email sent: ${info.messageId}`);
     } catch (error) {
         console.error("Error sending payment failure email:", error);
     }
