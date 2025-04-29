@@ -1,18 +1,19 @@
 import { useState } from "react";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { dashboardSidebarMenuInstructor, dashboardSidebarMenuUser } from "../../../constants/dashboardSidebarMenu"
 import { ChevronsUpDown, LogOut } from "lucide-react";
 import { useLogoutUser } from '../../../hooks/user/useLogoutUser';
 import { useAuthUser } from "../../../hooks/user/useAuthUser";
 
-const Sidebar = ({ isSidebarActive }) => {
+const Sidebar = ({ isSidebarActive, setIsSidebarActive }) => {
+    const navigate = useNavigate();
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const { mutate: logout, isPending } = useLogoutUser();
     const user = useAuthUser();
 
     return (
         <div className={`md:z-50 z-30 fixed top-0 left-0 md:translate-x-0 min-h-dvh bg-bg-primary ${isSidebarActive ? "w-[12rem] md:w-[13rem] lg:w-[16rem]" : "-translate-x-full w-[5rem] md:w-[6rem] lg:w-[6rem]"} container border-r border-gray-400 border-opacity-50 transition-all ease-in-out duration-300`}>
-            <div className="flex flex-col justify-between h-screen py-6">
+            <div className="flex flex-col justify-between py-6 min-h-dvh">
                 <div className="flex flex-col items-center gap-20">
                     <div>
                         <Link to='/' className="hidden cursor-pointer md:block">
@@ -21,12 +22,17 @@ const Sidebar = ({ isSidebarActive }) => {
                     </div>
 
                     {/* menu */}
-                    <div className="flex flex-col gap-16">
+                    <div className="flex flex-col gap-12 md:gap-16">
                         {(user.role === "user" ? dashboardSidebarMenuUser : dashboardSidebarMenuInstructor).map((menu, index) => (
-                            <Link to={menu.path} key={index} className="flex items-center justify-start gap-3 transition-all duration-300 ease-in-out">
-                                <menu.icon />
-                                {isSidebarActive && <span>{menu.name}</span>}
-                            </Link>
+                            <button
+                                onClick={() => {
+                                    setIsSidebarActive(false);
+                                    navigate(menu.path);
+                                }}
+                                key={index} className="flex items-center justify-start gap-3 transition-all duration-300 ease-in-out">
+                                <span><menu.icon size={18} /></span>
+                                <span className="text-sm md:text-base">{isSidebarActive && <span>{menu.name}</span>}</span>
+                            </button>
                         ))}
                     </div>
                 </div>
@@ -40,7 +46,7 @@ const Sidebar = ({ isSidebarActive }) => {
                                 alt="User Profile Image"
                             />
                         ) : (
-                            <span className='flex items-center justify-center w-10 h-10 text-2xl font-bold text-white bg-red-600 rounded-full'>
+                            <span className='flex items-center justify-center w-8 h-8 text-xl font-bold text-white bg-red-600 rounded-full md:w-10 md:h-10 md:text-2xl'>
                                 {user.fullname?.charAt(0).toUpperCase()}
                             </span>)}
                         {isSidebarActive && (
@@ -55,7 +61,7 @@ const Sidebar = ({ isSidebarActive }) => {
                             </button>
                         )}
                     </div>
-                    <button disabled={isPending} onClick={() => logout()} className='flex items-center justify-center w-full gap-2 px-4 py-2 text-lg text-white transition-all duration-300 ease-in bg-red-700 rounded-bl-md rounded-br-md lex i -bottom-16 hover:bg-red-500 md:hidden'><LogOut size={20} /> Logout</button>
+                    <button disabled={isPending} onClick={() => logout()} className='flex items-center justify-center w-full gap-2 px-4 py-2 text-sm text-white transition-all duration-300 ease-in bg-red-700 md:text-lg rounded-bl-md rounded-br-md lex i -bottom-16 hover:bg-red-500 md:hidden'><LogOut size={18} /> Logout</button>
                 </div>
 
                 {isProfileDropdownOpen && (

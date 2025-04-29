@@ -9,14 +9,14 @@ const Enrollments = () => {
   if (isPending) return <CustomLoader />
 
   return (
-    <div className='w-full px-3 pt-2 md:pt-2 sm:px-10'>
-      <div className="flex flex-col gap-6">
+    <div className='w-full px-3 md:pt-2 sm:px-10'>
+      <div className="flex flex-col gap-2 md:gap-6">
         <div className='text-[1.2rem] font-bold xs:text-[1.3rem] sm:text-3xl px-2 pb-2 border-b border-opacity-30 border-b-gray-500 flex justify-between items-center'>
           <h2>My Enrollments</h2>
         </div>
 
         {(courses ?? []).length === 0 ? (
-          <div className="flex flex-col items-center justify-center w-full h-[300px] gap-4 text-white">
+          <div className="flex flex-col items-center justify-center w-full h-[300px] gap-4 text-white text-center">
             <p className="text-lg text-gray-300 sm:text-3xl">You haven't enrolled in any courses yet.</p>
             <button
               onClick={() => navigate('/dashboard/courses')}
@@ -44,9 +44,9 @@ const Enrollments = () => {
                   />
                 </div>
 
-                <div className="flex flex-col justify-between flex-grow gap-2 p-4">
+                <div className="flex flex-col justify-between flex-grow gap-2 p-2 md:p-4">
                   <div className='flex flex-col flex-grow gap-2 text-white'>
-                    <h3 className="text-xl font-bold lg:text-xl">{item.course.title}</h3>
+                    <h3 className="text-lg font-bold lg:text-xl">{item.course.title}</h3>
                     <div className='flex items-center gap-2 mt-2 overflow-hidden'>
                       {item.course.instructor.profileImageUrl && (
                         <img

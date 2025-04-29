@@ -6,20 +6,22 @@ import CustomLoader from '../../components/common/CustomLoader';
 import { useFetchSingleCourse } from '../../hooks/course/useFetchSingleCourse';
 import SingleCourseCard from '../../components/dashboard/singleCourse/SingleCourseCard';
 import InstructorCard from '../../components/dashboard/singleCourse/InstructorCard';
+import { useState } from 'react';
 
 const SingleCourse = () => {
     const { titleSlug } = useParams();
     const { data: course, isPending } = useFetchSingleCourse(titleSlug);
+    const [isShowMoreDescActive, setIsShowMoreDescActive] = useState(false);
 
     if (isPending) return <CustomLoader />
 
     return (
-        <div className='min-h-screen'>
-            <div className='flex flex-col gap-4 md:gap-10'>
+        <div className='min-h-dvh'>
+            <div className='flex flex-col gap-2 md:gap-10'>
                 <div className='bg-[linear-gradient(180deg,_#3e75f3_0%,_#0b3db2_70%)]'>
-                    <div className='relative flex gap-10 px-2 py-6 sm:py-12 sm:px-10 xl:pl-12'>
+                    <div className='relative flex gap-10 px-2 py-2 sm:py-12 sm:px-10 xl:pl-12'>
                         <div className='lg:w-[50%] text-center'>
-                            <h1 className='text-2xl sm:text-3xl'>{course.title}</h1>
+                            <h1 className='text-xl sm:text-3xl'>{course.title}</h1>
                         </div>
 
                         <div className='absolute z-20 hidden xl:right-20 right-5 lg:block'>
@@ -43,23 +45,33 @@ const SingleCourse = () => {
                     {/* description */}
                     <div className='flex flex-col gap-10'>
                         {/* extra info */}
-                        <div className='flex flex-col gap-6'>
+                        <div className='flex flex-col gap-4 md:gap-6'>
                             <div className='flex gap-6'>
                                 <div className='flex items-center gap-2'>
                                     <Globe className='text-[#3e75f3]' size={20} />
-                                    <span>{course.language}</span>
+                                    <span className='text-sm md:text-base'>{course.language}</span>
                                 </div>
 
                                 <div className='flex items-center gap-2'>
                                     <BarChart className='text-[#3e75f3]' size={20} />
-                                    <span>{course.level.split('')[0].toUpperCase()}{course.level.split('').slice(1)}</span>
+                                    <span className='text-sm md:text-base'>{course.level.split('')[0].toUpperCase()}{course.level.split('').slice(1)}</span>
                                 </div>
                             </div>
-                            <div className='text-[1.3rem] text-gray-300 lg:w-[50%]'
-                                dangerouslySetInnerHTML={{
-                                    __html: DOMPurify.sanitize(course.description)
-                                }}
-                            />
+                            <div className='flex flex-col gap-1 sm:gap-4'>
+                                <div className="text-lg text-gray-500 border-b border-gray-400 md:pb-1 sm:pb-2 md:text-2xl border-opacity-20">
+                                    Description
+                                </div>
+                                <div className={`md:text-[1.20rem] text-[0.90rem] text-gray-400 break-all md:break-words md:line-clamp-none ${isShowMoreDescActive ? "line-clamp-none" : "line-clamp-4"}`}
+                                    dangerouslySetInnerHTML={{
+                                        __html: DOMPurify.sanitize(course.description)
+                                    }}
+                                />
+                                <button
+                                    onClick={() => setIsShowMoreDescActive(!isShowMoreDescActive)}
+                                    className='text-blue-600 underline w-fit md:hidden'>
+                                    {isShowMoreDescActive ? "Show less" : "Show more"}
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -75,10 +87,9 @@ const SingleCourse = () => {
 
                         {/* instructor */}
                         <div className="flex flex-col w-full gap-4">
-                            <div className="pb-3 text-2xl border-b border-gray-400 border-opacity-20 md:text-3xl ">
+                            <div className="text-lg text-gray-500 border-b border-gray-400 md:pb-1 sm:pb-2 md:text-2xl border-opacity-20">
                                 Instructor
                             </div>
-
                             <div>
                                 <InstructorCard
                                     instructor={course.instructor}

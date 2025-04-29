@@ -2,21 +2,21 @@ import { useNavigate } from 'react-router-dom'
 import { Star } from 'lucide-react'
 
 const CourseCard = ({ course, children }) => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const cleanDescription = course?.description && course?.description?.replace(/<[^>]*>?/gm, '')?.slice(0, 120) + '...'
 
     return (
         <div
-            className="rounded-xl overflow-hidden bg-[#1e1e1e] hover:shadow-xl transition-all duration-200 w-[320px] max-h-[500px] flex flex-col"
+            className="rounded-xl overflow-hidden bg-[#1e1e1e] hover:shadow-xl transition-all duration-200 w-full max-w-[320px] max-h-[500px] flex flex-col"
         >
-            <div className="w-full h-[180px] pointer-events-none">
+            <div className="w-full max-h-[180px] pointer-events-none">
                 <img
                     src={
                         course.courseImageUrl ||
                         'https://res.cloudinary.com/dabywmj68/image/upload/t_placeholder/v1738051049/placeholder_pg74id.webp'
                     }
                     alt={course.title}
-                    className="object-cover w-full h-full pointer-events-none"
+                    className="object-contain w-full h-full pointer-events-none"
                 />
             </div>
 
@@ -36,12 +36,16 @@ const CourseCard = ({ course, children }) => {
                     </p>
 
                     <div className='flex items-center gap-2 mt-2 overflow-hidden'>
-                        {course.instructor.profileImageUrl && (
+                        {course.instructor.profileImageUrl ? (
                             <img
                                 src={course.instructor?.profileImageUrl}
                                 className='object-cover rounded-full w-7 h-7'
                                 alt={`${course.instructor.fullname} Profile Image`}
                             />
+                        ) : (
+                            <span className='flex items-center justify-center w-6 h-6 font-bold text-white bg-red-600 rounded-full text-md'>
+                                {course.instructor.fullname?.charAt(0).toUpperCase()}
+                            </span>
                         )}
                         <h4 className='text-sm text-gray-300 line-clamp-1'>{course.instructor.fullname}</h4>
                     </div>

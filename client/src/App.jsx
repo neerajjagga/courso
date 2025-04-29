@@ -87,6 +87,7 @@ const App = () => {
           borderRadius: '10px',
           background: '#333',
           color: '#fff',
+          fontSize: "16px"
         },
       }}
       />

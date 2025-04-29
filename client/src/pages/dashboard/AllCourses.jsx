@@ -33,7 +33,7 @@ const AllCourses = () => {
   }, []);
 
   return (
-    <div className="relative w-full min-h-screen px-3 sm:px-10">
+    <div className="relative w-full px-3 min-h-dvh sm:px-10">
       <div className="flex flex-col gap-2">
         <div className='sticky top-0 z-10 flex flex-col items-center justify-between w-full'>
           <div className='flex w-full gap-2'>
@@ -41,7 +41,7 @@ const AllCourses = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               type="text"
-              className="w-full px-10 py-2 rounded-2xl input-primary"
+              className="w-full px-5 md:py-2 py-[0.4rem] md:px-10 rounded-2xl input-primary"
               placeholder="Search for anything"
             />
             <button
@@ -51,7 +51,7 @@ const AllCourses = () => {
               <Search size={20} />
             </button>
           </div>
-          <div className="flex self-start gap-8 px-6 py-3 ml-4 bg-gray-700 sm:px-8 sm:py-3 rounded-b-xl bg-opacity-40 sm:self-auto sm:ml-0">
+          <div className="flex self-start gap-8 px-6 py-2 ml-4 bg-gray-700 sm:px-8 sm:py-3 rounded-b-xl bg-opacity-40 sm:self-auto sm:ml-0">
             <div ref={categoriesRef} className="relative">
               <button
                 onClick={() => setIsCategoriesDropDownOpened(!isCategoriesDropDownOpened)}

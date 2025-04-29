@@ -8,12 +8,10 @@ const Index = () => {
   const navigate = useNavigate();
 
   return (
-    <div className='w-full min-h-full'>
-
+    <div className='w-full min-h-dvh'>
       {/* content */}
-      <div className='flex flex-col items-center justify-center gap-10 xl:gap-20'>
-        <div className='z-10 flex flex-col items-center gap-4 pt-12 md:gap-6'>
-          {/* <img className='object-cover h-28 w-28 md:h-32 md:w-32' src={akshayLandingPageLogo} alt="" /> */}
+      <div className='flex flex-col items-center justify-center gap-5 md:gap-10 xl:gap-20'>
+        <div className='z-10 flex flex-col items-center gap-4 pt-4 md:pt-12 md:gap-6'>
           <div className='h-28 w-28 md:h-32 md:w-32 bg-[linear-gradient(180deg,#ffffff_0%,#a6a6a6_80%)] flex items-center justify-center rounded-full border-2 border-[#0b3db2]'>
             <h2 className='text-[#0b3db2] font-extrabold text-2xl md:text-3xl'>Courso</h2>
           </div>
@@ -45,7 +43,7 @@ const Index = () => {
           </div>
         </div>
 
-        <div className='flex flex-col items-center justify-center gap-4'>
+        <div className='flex flex-col items-center justify-center gap-1 md:gap-4'>
           <ChevronsUp size={30} />
           <h3 className='text-lg text-gray-300 md:text-2xl'>Explore Best Courses</h3>
         </div>

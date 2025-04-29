@@ -74,17 +74,19 @@ const SingleCourseCard = ({ course }) => {
     };
 
     return (
-        <div className="flex flex-col max-w-md gap-4 mx-auto overflow-hidden border border-gray-200 shadow-xl bg-blue-50 rounded-2xl">
-            <img
-                src={course.courseImageUrl || "https://res.cloudinary.com/dabywmj68/image/upload/t_placeholder/v1738051049/placeholder_pg74id.webp"}
-                alt={`${course.title} Course thumbnail`}
-                className="object-cover w-full"
-            />
+        <div className="flex flex-col max-w-md gap-4 mx-auto border border-gray-800 overflow-hidden shadow-xl bg-[#1e1e1e] rounded-2xl">
+            <div className="w-full aspect-[16/9] min-w-[300px] overflow-hidden rounded-t-2xl">
+                <img
+                    src={course.courseImageUrl || "https://res.cloudinary.com/dabywmj68/image/upload/t_placeholder/v1738051049/placeholder_pg74id.webp"}
+                    alt={`${course.title} Course thumbnail`}
+                    className="object-contain w-full h-full"
+                />
+            </div>
 
             <div className="flex flex-col gap-4 px-2 py-2">
                 <div className="mb-2">
-                    <p className="text-sm text-gray-700">PRICE</p>
-                    <div className="text-2xl font-bold text-gray-900">₹{course.price}</div>
+                    <p className="text-sm text-gray-300">PRICE</p>
+                    <div className="text-2xl font-bold text-gray-200">₹{course.price}</div>
                 </div>
 
                 <button

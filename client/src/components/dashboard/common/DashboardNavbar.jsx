@@ -19,7 +19,8 @@ const DashboardNavbar = ({ isSidebarActive, setIsSidebarActive }) => {
                 <div className="flex gap-2 md:gap-4">
                     {locationArray.map((location, index) => (
                         <div key={index} className="flex items-center gap-1 text-sm text-gray-300 truncate md:gap-4 md:text-lg">
-                            <span>{location.toUpperCase()}</span>
+                            <span>{location.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+                            }</span>
                             {index !== locationArray.length - 1 && <span>|</span>}
                         </div>
                     ))}

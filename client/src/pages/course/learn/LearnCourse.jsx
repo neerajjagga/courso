@@ -53,8 +53,7 @@ const LearnCourse = () => {
                                 >
                                     <Menu />
                                 </button>
-                                <span className='sm:hidden'>{course?.title.split('').slice(0, 24).join('')}...</span>
-                                <span className='hidden sm:block'>{course?.title}</span>
+                                <span className='line-clamp-1'>{course?.title}</span>
                             </div>
                         </div>
 
@@ -72,7 +71,7 @@ const LearnCourse = () => {
                 {course?.modules?.length > 0 ? (
                     <div className='flex gap-2 pt-12 md:pt-16'>
                         {/* sidebar */}
-                        <div className={`w-[20rem] md:w-[22rem] lg:w-[32rem] bg-gray-950 md:z-50 z-30 fixed left-0 md:top-16 top-10 min-h-screen ${!isSidebarActive && "-translate-x-full"} transition-all ease-in-out duration-300 overflow-y-auto bottom-0 pb-16 border-r border-gray-500 border-opacity-40`}>
+                        <div className={`w-[18rem] xs:w-[20rem] md:w-[22rem] lg:w-[32rem] bg-gray-950 md:z-50 z-30 fixed left-0 md:top-16 top-10 min-h-dvh ${!isSidebarActive && "-translate-x-full"} transition-all ease-in-out duration-300 overflow-y-auto bottom-0 pb-16 border-r border-gray-500 border-opacity-40`}>
                             <SingleCourseModules
                                 modules={course?.modules}
                                 type="learn"
@@ -81,6 +80,7 @@ const LearnCourse = () => {
                                 progressSummary={progressSummary}
                                 updateProgress={updateProgress}
                                 isUpdatingProgress={isUpdatingProgress}
+                                setIsSidebarActive={setIsSidebarActive}
                             />
                         </div>
 

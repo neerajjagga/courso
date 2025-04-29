@@ -3,18 +3,22 @@ import { Twitter, Linkedin, Facebook, Github, Instagram } from 'lucide-react';
 const InstructorCard = ({ instructor }) => {
     return (
         <div className='flex flex-col items-center justify-center gap-4'>
-            <div className='p-1 border-2 border-blue-500 rounded-full w-fit'>
-                {instructor.profileImageUrl && (
+            <div className='p-1 border border-blue-500 rounded-full w-fit'>
+                {instructor.profileImageUrl ? (
                     <img
                         src={instructor.profileImageUrl}
                         alt={`${instructor.fullname} Profile Image`}
                         className='md:w-[200px] md:h-[200px] w-[100px] h-[100px] rounded-full object-cover'
                     />
+                ) : (
+                    <span className='flex items-center justify-center w-16 h-16 text-3xl font-bold text-white bg-red-600 rounded-full'>
+                        {instructor.fullname?.charAt(0).toUpperCase()}
+                    </span>
                 )}
             </div>
 
             <div className='text-center'>
-                <h3 className='text-2xl font-bold md:text-4xl'>{instructor.fullname}</h3>
+                <h3 className='text-lg font-bold md:text-4xl'>{instructor.fullname}</h3>
                 <h4 className='text-base text-gray-300 md:text-lg'>{instructor.bio}</h4>
 
                 {instructor.socialLinks?.some(link => link.username) && (
