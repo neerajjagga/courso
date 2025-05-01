@@ -57,7 +57,7 @@ const LoginForm = () => {
                     </div>
                 </div>
 
-                <p>Don't have an account, <Link className="text-blue-500" to='/signup'>Create now</Link></p>
+                <p className="text-sm md:text-base">Don't have an account, <Link className="text-blue-500" to='/signup'>Create now</Link></p>
 
                 <div className="mt-3">
                     <button

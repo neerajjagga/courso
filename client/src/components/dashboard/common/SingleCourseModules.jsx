@@ -1,7 +1,7 @@
 import { ChevronDown, CircleCheckBig, FileText, Lock, Square, Video } from "lucide-react"
 import { useState } from "react";
 
-const SingleCourseModules = ({ modules, type, activeLecture, setActiveLecture, progressSummary, updateProgress, isUpdatingProgress, setIsSidebarActive }) => {
+const SingleCourseModules = ({ modules, type, activeLecture, setActiveLecture, progressSummary, updateProgress, isUpdatingProgress }) => {
     const [openModuleIndexes, setOpenModuleIndexes] = useState({
         0: true
     });
@@ -71,7 +71,6 @@ const SingleCourseModules = ({ modules, type, activeLecture, setActiveLecture, p
                                                 key={index}
                                                 onClick={() => {
                                                     type === "learn" && setActiveLecture(lecture);
-                                                    setIsSidebarActive(false);
                                                 }}
                                                 className={`transition-all ease-in duration-150 items-center flex justify-between gap-6 px-2 md:py-6 md:pb-6 py-4 pb-4 rounded-md  bg-opacity-15 ${type !== "learn" ? "bg-gray-500 sm:px-6 shadow-xl " : "hover:bg-gray-500 hover:shadow-xl hover:bg-opacity-15 sm:px-4 cursor-pointer"}`}>
                                                 <div className="flex items-center justify-between w-full gap-2 md:gap-4">

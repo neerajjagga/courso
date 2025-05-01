@@ -1,4 +1,4 @@
-import { Search, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, X } from "lucide-react";
 import CourseCard from "../../components/dashboard/common/CourseCard";
 import CourseCardSkeleton from "../../components/skeletons/InstructorCourseCardSkeleton";
 import { useNavigate } from "react-router-dom";
@@ -12,12 +12,19 @@ const AllCourses = () => {
   const [isCategoriesDropDownOpened, setIsCategoriesDropDownOpened] = useState(false);
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [page, setPage] = useState(1);
 
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const { data: courses, isPending } = useFetchCourses({
+  const { data, isPending } = useFetchCourses({
     ...(selectedCategory && { category: selectedCategory.for }),
     ...(debouncedSearch && { search: debouncedSearch }),
+    page,
+    limit: 10,
   });
+
+  const courses = data?.courses || [];
+  const currentPage = data?.currentPage || 1;
+  const totalPages = data?.totalPages || 1;
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -87,36 +94,69 @@ const AllCourses = () => {
                 onClick={() => {
                   setSelectedCategory(null);
                 }}
-                className=""><X size={22}/></button>
+                className=""><X size={22} /></button>
             </div>
           )}
         </div>
 
-        <div className='flex flex-wrap justify-center gap-8 sm:pt-4 sm:justify-start'>
-          {!isPending ? (
-            (courses ?? []).length > 0 ? (
-              courses.map((course, index) => (
-                <CourseCard key={index} course={course}>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/dashboard/course/${course.titleSlug}`);
-                    }}
-                    className="btn-secondary"
-                  >
-                    View Details
-                  </button>
-                </CourseCard>
-              ))
+        <div>
+          <div className='flex flex-wrap justify-center gap-8 sm:pt-4 sm:justify-start'>
+            {!isPending ? (
+              (courses ?? []).length > 0 ? (
+                courses.map((course, index) => (
+                  <CourseCard key={index} course={course}>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/dashboard/course/${course.titleSlug}`);
+                      }}
+                      className="btn-secondary"
+                    >
+                      View Details
+                    </button>
+                  </CourseCard>
+                ))
+              ) : (
+                <div className="w-full py-10 text-2xl text-center text-gray-300 md:text-3xl">
+                  No courses found.
+                </div>
+              )
             ) : (
-              <div className="w-full py-10 text-2xl text-center text-gray-300 md:text-3xl">
-                No courses found.
+              new Array(4).fill(0).map((_, index) => (
+                <CourseCardSkeleton key={index} />
+              ))
+            )}
+          </div>
+
+          {/* pagination */}
+          {courses.length > 0 && (
+            <div className="flex items-center justify-center w-full gap-6 mt-8 text-xs md:mt-12 md:text-base">
+              <button
+                disabled={currentPage == 1}
+                className={`${currentPage == 1 && "text-gray-400"}`}
+                onClick={() => setPage(page - 1)}
+              >
+                <ChevronLeft size={22} />
+              </button>
+
+              <div className="flex items-center gap-3">
+                <div className="px-3 py-1 bg-gray-600 rounded-sm">
+                  {currentPage}
+                </div>
+                <span className="font-extrabold text-gray-300">Of</span>
+                <div className="font-extrabold text-gray-300">
+                  {totalPages}
+                </div>
               </div>
-            )
-          ) : (
-            new Array(4).fill(0).map((_, index) => (
-              <CourseCardSkeleton key={index} />
-            ))
+
+              <button
+                disabled={currentPage === totalPages}
+                className={`${currentPage === totalPages && "text-gray-400"}`}
+                onClick={() => setPage(page + 1)}
+              >
+                <ChevronRight size={22} />
+              </button>
+            </div>
           )}
         </div>
       </div>

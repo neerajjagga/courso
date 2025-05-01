@@ -72,7 +72,7 @@ const SignUpForm = () => {
                     </div>
                 </div>
 
-                <p>Already have an account, <Link className="text-blue-500" to='/login'>Login now</Link></p>
+                <p className="text-sm md:text-base">Already have an account, <Link className="text-blue-500" to='/login'>Login now</Link></p>
 
                 <div className="mt-3">
                     <button

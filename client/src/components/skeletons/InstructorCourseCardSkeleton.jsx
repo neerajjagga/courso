@@ -13,7 +13,6 @@ const CourseCardSkeleton = () => {
                     <div className="w-3/4 h-5 bg-gray-600 rounded" />
 
                     <div className="w-full h-3 bg-gray-700 rounded" />
-                    <div className="w-[90%] h-3 bg-gray-700 rounded" />
                     <div className="w-[80%] h-3 bg-gray-700 rounded" />
                 </div>
 

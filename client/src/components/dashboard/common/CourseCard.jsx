@@ -31,7 +31,7 @@ const CourseCard = ({ course, children }) => {
 
                     <h3 className="text-xl font-bold lg:text-xl">{course.title}</h3>
 
-                    <p className="text-sm text-gray-300">
+                    <p className="text-sm text-gray-300 line-clamp-2">
                         {cleanDescription}
                     </p>
 

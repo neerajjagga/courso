@@ -4,6 +4,7 @@ import toast from 'react-hot-toast'
 
 export const useUserStore = create((set, get) => ({
     isLoading: false,
+    isUpdatingProfile: false,
     isCheckingAuth: false,
     user: null,
 
@@ -20,7 +21,7 @@ export const useUserStore = create((set, get) => ({
             toast.success(res.data?.message || "Account created successfully");
         } catch (error) {
             set({ isLoading: false });
-            toast.error(error.response?.data?.message || "Something went wrong!");
+            toast.error(error.response.data?.message || "Something went wrong!");
         }
     },
 
@@ -34,8 +35,9 @@ export const useUserStore = create((set, get) => ({
             }));
             toast.success("Logged in successfully");
         } catch (error) {
+            console.log(error);
+            toast.error(error.response.data?.message || "An error occurred while signin");
             set({ isLoading: false });
-            toast.error(error.response?.data?.message || "An error occurred while signin")
         }
     },
 
@@ -64,6 +66,20 @@ export const useUserStore = create((set, get) => ({
         } catch (error) {
             set({ isLoading: false });
             toast.error(error.response?.data?.message || "An error occurred while logging out");
+        }
+    },
+
+    updateProfile: async (data) => {
+        set({ isUpdatingProfile: true });
+        try {
+            const res = await axiosInst.patch('/user/profile', { ...data });
+            useUserStore.getState().setUser(res.data.user);
+            toast.success("Profile Updated Successfully!");
+        } catch (error) {
+            toast.error(error.response.data.message);
+            return false;
+        } finally {
+            set({ isUpdatingProfile: false });
         }
     },
 }));

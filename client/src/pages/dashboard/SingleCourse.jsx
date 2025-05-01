@@ -57,21 +57,34 @@ const SingleCourse = () => {
                                     <span className='text-sm md:text-base'>{course.level.split('')[0].toUpperCase()}{course.level.split('').slice(1)}</span>
                                 </div>
                             </div>
-                            <div className='flex flex-col gap-1 sm:gap-4'>
-                                <div className="text-lg text-gray-500 border-b border-gray-400 md:pb-1 sm:pb-2 md:text-2xl border-opacity-20">
-                                    Description
+                            
+                            {course.description && (
+                                <div className='flex flex-col gap-1 sm:gap-4'>
+                                    <div className="text-lg text-gray-500 border-b border-gray-400 md:pb-1 sm:pb-2 md:text-2xl border-opacity-20">
+                                        Description
+                                    </div>
+
+                                    <div className={`md:text-[1.20rem] text-[0.90rem] text-gray-400 break-all md:break-words lg:w-[50%]`}>
+                                        <span
+                                            dangerouslySetInnerHTML={{
+                                                __html: isShowMoreDescActive
+                                                    ? DOMPurify.sanitize(course.description)
+                                                    : DOMPurify.sanitize(course.description)
+                                                        .replace(/<[^>]*>/g, "")
+                                                        .slice(0, 200) + '...',
+                                            }}
+                                        />
+                                    </div>
+
+                                    {DOMPurify.sanitize(course.description).replace(/<[^>]*>/g, "").length > 200 && (
+                                        <button
+                                            onClick={() => setIsShowMoreDescActive(!isShowMoreDescActive)}
+                                            className='text-blue-600 underline w-fit'>
+                                            {isShowMoreDescActive ? "Show less" : "Show more"}
+                                        </button>
+                                    )}
                                 </div>
-                                <div className={`md:text-[1.20rem] text-[0.90rem] text-gray-400 break-all md:break-words md:line-clamp-none ${isShowMoreDescActive ? "line-clamp-none" : "line-clamp-4"}`}
-                                    dangerouslySetInnerHTML={{
-                                        __html: DOMPurify.sanitize(course.description)
-                                    }}
-                                />
-                                <button
-                                    onClick={() => setIsShowMoreDescActive(!isShowMoreDescActive)}
-                                    className='text-blue-600 underline w-fit md:hidden'>
-                                    {isShowMoreDescActive ? "Show less" : "Show more"}
-                                </button>
-                            </div>
+                            )}
                         </div>
                     </div>
 

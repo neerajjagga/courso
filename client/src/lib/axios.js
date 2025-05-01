@@ -20,14 +20,15 @@ axiosInst.interceptors.response.use(
                 return Promise.resolve(error.response);
             } else if (error.response.status === 401) {
                 setUser(null);
-                // toast.error("Session expired. Please log in again.");
                 return Promise.reject(error.response);
             } else if (error.response.status === 403) {
                 toast.error(error.response.data.error || error.response.data.message || "Access Forbidden");
                 return Promise.resolve(error.response);
             }
+            return Promise.reject(error);
         }
+        return Promise.reject(error);
     }
-)
+);
 
 export { axiosInst }

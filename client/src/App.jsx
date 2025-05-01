@@ -48,7 +48,6 @@ const App = () => {
   return (
     <Layout>
       <Routes>
-
         <Route path="/" element={<Index />} />
         <Route path="/login" element={!user ? <Login /> : <Navigate to='/' />} />
         <Route path="/signup" element={!user ? <SignUp /> : <Navigate to='/' />} />

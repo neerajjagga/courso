@@ -57,7 +57,7 @@ const AddContent = ({ setIsAddContentDialogOpened, lectureId }) => {
     if (isSuccess || isLectureEdited) setIsAddContentDialogOpened(false);
 
     return (
-        <div className="px-2 py-6 pb-6 bg-gray-500 rounded-md sm:px-6 bg-opacity-15">
+        <div className="px-2 py-6 pb-6 bg-gray-400 rounded-md sm:px-6 bg-opacity-15">
             {!isContentTypeSelected ? (
                 <div className="flex flex-col gap-4">
                     <div>
@@ -89,12 +89,12 @@ const AddContent = ({ setIsAddContentDialogOpened, lectureId }) => {
             ) : (
                 <>
                     {contentType === "video" && (
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-2 md:gap-4">
                             <div>
                                 <h2 className="text-xl font-semibold">Upload Video</h2>
                             </div>
 
-                            <div className="flex items-center justify-between gap-4">
+                            <div className="flex flex-col justify-between gap-4 sm:items-center sm:flex-row">
                                 <input
                                     type="file"
                                     ref={inputRef}

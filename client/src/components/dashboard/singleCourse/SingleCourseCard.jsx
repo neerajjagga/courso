@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { useAuthUser } from '../../../hooks/user/useAuthUser';
 import { useCreateRzpOrder } from '../../../hooks/payment/useCreateRzpOrder';
 import { useVerifyPayment } from '../../../hooks/payment/useVerifyPayment';
+import { useUserStore } from '../../../store/useUserStore';
 
 const SingleCourseCard = ({ course }) => {
-    const user = useAuthUser();
+    const { user } = useUserStore();
     const [order, setOrder] = useState(null);
 
     const { mutate: createOrder, isPending } = useCreateRzpOrder(course.id, setOrder);

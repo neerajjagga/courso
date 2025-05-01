@@ -27,15 +27,15 @@ const LectureCard = ({ lecture }) => {
 
   return (
     <div className="flex flex-col gap-6 px-2 py-6 pb-6 bg-gray-500 rounded-md shadow-xl sm:px-6 bg-opacity-15">
-      <div className="flex flex-col justify-between w-full gap-4 xl:items-center xl:flex-row xl:gap-0">
+      <div className="flex flex-col justify-between w-full gap-2 md:gap-4 xl:items-center xl:flex-row xl:gap-0">
         <div className="flex gap-4 group">
-          <h3 className="relative flex items-start gap-5">
-            <span className="text-xl text-gray-300 shrink-0">Lecture:</span>
+          <h3 className="relative flex items-center gap-5">
+            <span className="text-lg text-gray-300 sm:text-xl shrink-0">Lecture:</span>
             <span className="flex items-center gap-2 text-lg truncate overflow-hidden whitespace-nowrap max-w-[150px] sm:max-w-[300px] xl:max-w-[400px] 2xl:w-full text-ellipsis">
               <span>
                 {lecture.videoUrl ? <Video size={20} /> : <FileText size={20} />}
               </span>
-              <span>{lecture.title}</span>
+              <span className="text-sm sm:text-base">{lecture.title}</span>
             </span>
           </h3>
           <button

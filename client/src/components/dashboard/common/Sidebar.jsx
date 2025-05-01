@@ -4,7 +4,7 @@ import { dashboardSidebarMenuInstructor, dashboardSidebarMenuUser } from "../../
 import { ChevronsUpDown, LogOut } from "lucide-react";
 import { useUserStore } from "../../../store/useUserStore";
 
-const Sidebar = ({ isSidebarActive, setIsSidebarActive }) => {
+const Sidebar = ({ isSidebarActive }) => {
     const navigate = useNavigate();
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const { user, logout, isLoading } = useUserStore();
@@ -24,7 +24,6 @@ const Sidebar = ({ isSidebarActive, setIsSidebarActive }) => {
                         {(user.role === "user" ? dashboardSidebarMenuUser : dashboardSidebarMenuInstructor).map((menu, index) => (
                             <button
                                 onClick={() => {
-                                    setIsSidebarActive(false);
                                     navigate(menu.path);
                                 }}
                                 key={index} className="flex items-center justify-start gap-3 transition-all duration-300 ease-in-out">

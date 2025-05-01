@@ -3,11 +3,10 @@ import { Loader, Pencil } from "lucide-react";
 import { convertImageToBase64 } from "../../utils/imageToBase64";
 import toast from "react-hot-toast";
 import InstructorProfileForm from '../../components/dashboard/settings/InstructorProfileForm';
-import { useEditUser } from '../../hooks/user/useEditUser';
-import { useAuthUser } from "../../hooks/user/useAuthUser";
+import { useUserStore } from "../../store/useUserStore";
 
 const Settings = () => {
-  const user = useAuthUser();
+  const { user } = useUserStore();
   const [isEditView, setIsEditView] = useState(false);
 
   const [fullname, setFullname] = useState(user.fullname);
@@ -24,7 +23,7 @@ const Settings = () => {
     githubUsername: user?.socialLinks?.find(obj => obj.name === "github")?.username || "",
   });
 
-  const { mutate: editUser, isPending } = useEditUser(setProfileImage, setIsEditView);
+  const { updateProfile: editUser, isUpdatingProfile: isPending } = useUserStore();
 
   const handleImageChange = async (e) => {
     try {
@@ -143,7 +142,7 @@ const Settings = () => {
             )}
 
             {isEditView && (
-              <div className="relative flex items-center gap-2">
+              <div className="relative flex flex-col gap-2 sm:items-center sm:flex-row">
                 <input
                   type="file"
                   accept="image/*"
@@ -154,7 +153,7 @@ const Settings = () => {
                 />
                 <label
                   htmlFor="upload"
-                  className={`px-4 py-2 text-white transition bg-blue-600 ${profileImage ? "bg-gray-800" : "bg-blue-600 cursor-pointer  hover:bg-blue-700"} rounded`}
+                  className={`md:px-5 px-4 md:py-[0.40rem] py-[0.30rem] text-white transition bg-blue-600 ${profileImage ? "bg-gray-800" : "bg-blue-600 cursor-pointer  hover:bg-blue-700"} rounded`}
                 >
                   Select File
                 </label>
@@ -162,7 +161,7 @@ const Settings = () => {
                 {profileImage && <button
                   disabled={isPending}
                   onClick={() => setProfileImage(null)}
-                  className="px-4 py-2 text-white transition-all duration-300 ease-in bg-red-700 rounded hover:bg-red-500">Remove</button>}
+                  className="md:px-5 px-4 md:py-[0.40rem] py-[0.30rem] text-white transition-all duration-300 ease-in bg-red-700 rounded hover:bg-red-500">Remove</button>}
               </div>
             )}
           </div>

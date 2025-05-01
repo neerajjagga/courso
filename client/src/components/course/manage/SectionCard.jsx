@@ -22,7 +22,7 @@ const SectionCard = ({ module }) => {
         <div className="flex flex-col gap-6 px-2 py-6 pb-6 bg-gray-500 rounded-md sm:px-6 bg-opacity-20">
             <div className="relative flex flex-col gap-10">
                 <h3 className="flex gap-5 group">
-                    <span className="text-xl text-gray-300">Section:</span>
+                    <span className="text-lg text-gray-300 md:text-xl">Section:</span>
                     <span className="flex items-center gap-2 text-lg"><FileText size={20} /> {module.title}
                         <button
                             onClick={() => setIsDeleteClicked(true)}
@@ -30,7 +30,7 @@ const SectionCard = ({ module }) => {
                     </span>
                 </h3>
 
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-2 md:gap-6">
                     {module.lectures.length > 0 && (
                         module.lectures.map((lecture, index) => (
                             <LectureCard
