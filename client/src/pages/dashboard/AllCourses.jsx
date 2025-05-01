@@ -19,7 +19,7 @@ const AllCourses = () => {
     ...(selectedCategory && { category: selectedCategory.for }),
     ...(debouncedSearch && { search: debouncedSearch }),
     page,
-    limit: 10,
+    limit: 4,
   });
 
   const courses = data?.courses || [];
@@ -100,7 +100,7 @@ const AllCourses = () => {
         </div>
 
         <div>
-          <div className='flex flex-wrap justify-center gap-8 sm:pt-4 sm:justify-start'>
+          <div className='flex flex-wrap justify-center gap-8 sm:pt-4'>
             {!isPending ? (
               (courses ?? []).length > 0 ? (
                 courses.map((course, index) => (

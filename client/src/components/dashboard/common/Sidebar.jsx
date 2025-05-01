@@ -43,7 +43,7 @@ const Sidebar = ({ isSidebarActive }) => {
                                 alt="User Profile Image"
                             />
                         ) : (
-                            <span className='flex items-center justify-center w-8 h-8 text-xl font-bold text-white bg-red-600 rounded-full md:w-10 md:h-10 md:text-2xl'>
+                            <span className='flex items-center justify-center w-10 h-10 text-2xl font-bold text-white bg-red-600 rounded-full'>
                                 {user.fullname?.charAt(0).toUpperCase()}
                             </span>)}
                         {isSidebarActive && (

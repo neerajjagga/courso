@@ -64,7 +64,7 @@ const SingleCourse = () => {
                                         Description
                                     </div>
 
-                                    <div className={`md:text-[1.20rem] text-[0.90rem] text-gray-400 break-all md:break-words lg:w-[50%]`}>
+                                    <div className={`md:text-[1.20rem] text-[0.90rem] text-gray-400 break-all sm:break-words lg:w-[50%]`}>
                                         <span
                                             dangerouslySetInnerHTML={{
                                                 __html: isShowMoreDescActive

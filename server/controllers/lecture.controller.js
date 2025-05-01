@@ -163,12 +163,32 @@ export const updateLecture = async (req, res) => {
         }
 
         let updatedLink = null;
-        if (videoUrl && videoUrl.includes("youtu.be")) {
-            updatedLink = videoUrl.replace("youtu.be/", "www.youtube.com/embed/");
+        if (videoUrl?.includes("youtu.be") || videoUrl?.includes("youtube.com")) {
+            let videoId = null;
+            try {
+                const url = new URL(videoUrl);
+                if (url.hostname === "youtu.be") {
+                    videoId = url.pathname.slice(1);
+                } else if (url.hostname.includes("youtube.com")) {
+                    videoId = url.searchParams.get("v") || url.pathname.split("/").pop();
+                }
+
+                if (videoId) {
+                    updatedLink = `https://www.youtube.com/embed/${videoId}`;
+                }
+            } catch (e) {
+                console.error("Invalid URL");
+            }
         }
 
+        if (videoUrl) {
+            if (videoUrl.includes("youtu.be") || videoUrl.includes("youtube.com")) {
+                lecture.videoUrl = updatedLink;
+            } else {
+                lecture.videoUrl = videoUrl;
+            }
+        }
         lecture.description = description ?? lecture.description;
-        lecture.videoUrl = videoUrl && videoUrl.includes("youtu.be") ? updatedLink : videoUrl;
         lecture.isFreePreview = isFreePreview ?? lecture.isFreePreview;
 
         const updatedLecture = await lecture.save();

@@ -4,7 +4,7 @@ import AddCurriculum from "./AddCurriculum";
 import LectureCard from "./LectureCard";
 import DeleteConfirmDialog from "./DeleteConfirmDialog";
 
-const SectionCard = ({ module }) => {
+const SectionCard = ({ module, courseId }) => {
     const [showAddCurriculum, setShowAddCurriculum] = useState(false);
     const [isDeleteClicked, setIsDeleteClicked] = useState(false);
 
@@ -36,6 +36,7 @@ const SectionCard = ({ module }) => {
                             <LectureCard
                                 key={index}
                                 lecture={lecture}
+                                courseId={courseId}
                             />
                         ))
                     )}

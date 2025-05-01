@@ -34,7 +34,7 @@ const Settings = () => {
     }
   };
 
-  const handleUserUpdateSettings = () => {
+  const handleUserUpdateSettings = async () => {
     const updatedData = {};
     const trimmedFullname = fullname.trim();
 
@@ -50,10 +50,12 @@ const Settings = () => {
       return toast.error("Please edit something to update.");
     }
 
-    editUser(updatedData);
+    await editUser(updatedData);
+    setProfileImage(null);
+    setIsEditView(false);
   }
 
-  const handleInstructorUpdateSettings = () => {
+  const handleInstructorUpdateSettings = async () => {
 
     const updatedSocialLinks = [
       {
@@ -109,8 +111,11 @@ const Settings = () => {
       updateData.profileImageUrl = profileImage;
     }
 
-    editUser(updateData);
+    await editUser(updateData);
+    setProfileImage(null);
+    setIsEditView(false);
   }
+
 
   return (
     <div className="px-3 pt-2 md:pt-2 sm:px-10">

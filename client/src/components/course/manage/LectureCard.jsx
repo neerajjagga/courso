@@ -6,7 +6,7 @@ import DeleteConfirmDialog from "./DeleteConfirmDialog";
 import DescriptionTextEditor from '../../DescriptionTextEditor';
 import { useEditLecture } from "../../../hooks/lecture/useEditLecture";
 
-const LectureCard = ({ lecture }) => {
+const LectureCard = ({ lecture, courseId }) => {
   const [isDropDownEnabled, setIsDropDownEnabled] = useState(false);
   const [isDescriptionDialogOpened, setIsDescriptionDialogOpened] = useState(false);
   const [isAddContentDialogOpened, setIsAddContentDialogOpened] = useState(false);
@@ -14,7 +14,7 @@ const LectureCard = ({ lecture }) => {
 
   const [description, setDescription] = useState('');
 
-  const { mutate: editLecture, isPending } = useEditLecture(setIsDescriptionDialogOpened);
+  const { mutate: editLecture, isPending, isSuccess } = useEditLecture(courseId);
 
   useEffect(() => {
     if (isDeleteClicked) {
@@ -24,6 +24,12 @@ const LectureCard = ({ lecture }) => {
       document.body.style.overflow = "auto"
     }
   }, [isDeleteClicked]);
+
+  useEffect(() => {
+    if (isSuccess && isDescriptionDialogOpened) {
+      setIsDescriptionDialogOpened(false);
+    }
+  }, [isSuccess]);
 
   return (
     <div className="flex flex-col gap-6 px-2 py-6 pb-6 bg-gray-500 rounded-md shadow-xl sm:px-6 bg-opacity-15">

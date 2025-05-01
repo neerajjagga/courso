@@ -37,6 +37,7 @@ const Curriculum = () => {
               <SectionCard
                 key={index}
                 module={module}
+                courseId={courseId}
               />
             ))
           ) : (
