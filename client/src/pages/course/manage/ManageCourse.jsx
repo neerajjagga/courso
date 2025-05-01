@@ -81,7 +81,7 @@ const ManageCourse = () => {
                             {isHamburgerOpened && (
                                 <div className="flex justify-between px-2 py-4 bg-gray-900 rounded-md sm:justify-normal sm:gap-10 xs:px-4">
                                     <div className="flex flex-col gap-2">
-                                        <h3 className="text-sm font-bold xs:text-base">Create your content</h3>
+                                        <h3 className="hidden font-bold md:text-base">Create your content</h3>
                                         <div className="text-gray-200">
                                             <button
                                                 onClick={() => navigate(`/instructor/course/${course.titleSlug}/manage/curriculum`)}
@@ -90,7 +90,7 @@ const ManageCourse = () => {
                                     </div>
 
                                     <div className="flex flex-col gap-2">
-                                        <h3 className="text-sm font-bold xs:text-base">Standout your course</h3>
+                                        <h3 className="hidden text-base font-bold">Standout your course</h3>
                                         <div className="text-gray-200">
                                             <button
                                                 onClick={() => navigate(`/instructor/course/${course.titleSlug}/manage/basics`)}

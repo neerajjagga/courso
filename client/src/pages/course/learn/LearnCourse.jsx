@@ -114,8 +114,8 @@ const LearnCourse = () => {
                                             <h2 className='text-lg font-semibold text-gray-200 md:text-2xl lg:md:text-3xl'>{activeLecture.title}</h2>
                                         </div>
 
-                                        {course.description && (
-                                            <div className='flex flex-col gap-1 sm:gap-4'>
+                                        {activeLecture.description && (
+                                            <div className='flex flex-col gap-1 sm:gap-2'>
                                                 <div className="text-lg text-gray-500 border-b border-gray-400 md:pb-1 sm:pb-2 md:text-2xl border-opacity-20">
                                                     Description
                                                 </div>
@@ -143,11 +143,11 @@ const LearnCourse = () => {
                                         )}
 
                                         {/* reviews */}
-                                        <div className='space-y-4'>
+                                        {/* <div className='space-y-4'>
                                             <div className="pb-1 text-lg text-gray-500 border-b border-gray-400 sm:pb-2 md:text-2xl border-opacity-20">
                                                 Comments
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                             ) : (
