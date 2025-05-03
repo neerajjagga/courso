@@ -16,21 +16,25 @@ export const generateTokens = (userId) => {
 }
 
 export const setCookies = (accessToken, refreshToken, res) => {
-    res.cookie("access_token", accessToken, {
-        secure: process.env.NODE_ENV === "production",
+    const isProd = process.env.NODE_ENV === "production";
+
+    const cookieOptions = {
+        secure: isProd,
         httpOnly: true,
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        sameSite: isProd ? "None" : "Lax",
+    };
+
+    res.cookie("access_token", accessToken, {
+        ...cookieOptions,
         maxAge: 15 * 60 * 1000,
-    })
+    });
 
     res.cookie("refresh_token", refreshToken, {
-        secure: process.env.NODE_ENV === "production",
-        httpOnly: true,
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        ...cookieOptions,
         maxAge: 7 * 24 * 60 * 60 * 1000,
-    })
-}
+    });
+};
 
-export const storeRefreshToken = async (refreshToken, userId) =>{
+export const storeRefreshToken = async (refreshToken, userId) => {
     await Redis.set(`refresh_token:${userId}`, refreshToken, "EX", 7 * 24 * 60 * 60);
 }
