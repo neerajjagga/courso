@@ -5,7 +5,7 @@ export const handleError = (error: unknown) => {
   let message = "Something went wrong!";
 
   if (error instanceof AxiosError) {
-    message = error.response?.data?.error || error.message;
+    message = error.response?.data?.message || error.response?.data?.error || error.message;
   } else if (error instanceof Error) {
     message = error.message;
   }

@@ -15,14 +15,14 @@ const DeleteConfirmDialog = ({ type, contentId, setIsDeleteClicked }: PropType) 
         isPending: isModulePending,
         isSuccess: isModuleSuccess,
         isError: isModuleError,
-    } = useDeleteModule(contentId);
+    } = useDeleteModule();
 
     const {
         mutate: deleteLecture,
         isPending: isLecturePending,
         isSuccess: isLectureSuccess,
         isError: isLectureError,
-    } = useDeleteLecture(contentId);
+    } = useDeleteLecture();
 
     const handleDelete = () => {
         if (type === "module") {
