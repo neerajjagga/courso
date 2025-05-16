@@ -11,4 +11,4 @@ export interface Lecture {
     updatedAt?: Date;
 }
 
-export interface ILectureDocument extends Lecture, Document {}
+export interface ILectureDocument extends Lecture, Document { }

@@ -4,7 +4,6 @@ import { Lecture as LectureType } from 'types/lecture';
 import { UseMutateFunction } from "@tanstack/react-query";
 import { LearningModule } from "types/module";
 import { SingleEnrolledCourseProgressSummary } from '../../../types/progressSummary';
-import { EditCourseFormData } from "types/course";
 
 interface PropType {
     modules: [];

@@ -1,4 +1,5 @@
 import { Document, Types } from "mongoose"
+import { ILectureDocument } from "./lecture.types";
 
 export interface Module {
     title: string;
@@ -8,4 +9,6 @@ export interface Module {
     updatedAt?: Date;
 }
 
-export interface IModuleDocument extends Module, Document {}
+export interface IModuleDocument extends Module, Document {
+    lectures?: ILectureDocument[]
+}

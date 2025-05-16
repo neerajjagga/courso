@@ -20,7 +20,7 @@ const LectureCard = ({ lecture, courseId }: PropType) => {
 
   const [description, setDescription] = useState<string>('');
 
-  const { mutate: editLecture, isPending, isSuccess } = useEditLecture(courseId);
+  const { mutate: editLecture, isPending, isSuccess } = useEditLecture();
 
   useEffect(() => {
     if (isDeleteClicked) {
