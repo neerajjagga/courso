@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import CourseCard from '../../components/dashboard/common/CourseCard';
 import CourseCardSkeleton from '../../components/skeletons/InstructorCourseCardSkeleton';
 import { useFetchInstructorCreatedCourses } from '../../hooks/course/useFetchInstructorCreatedCourses';
-import { CreateCoursesCourse } from 'types/course';
+import { Course } from 'types/course';
 
 const InstructorCourses = () => {
     const navigate = useNavigate();
@@ -29,7 +29,7 @@ const InstructorCourses = () => {
                     ) : (
                         <div className='flex flex-wrap justify-center gap-5 md:gap-10 md:justify-normal'>
                             {!isLoading ? (
-                                (courses ?? []).map((course: CreateCoursesCourse, index: number) => (
+                                (courses ?? []).map((course: Course, index: number) => (
                                     <CourseCard key={index} course={course}>
                                         <button
                                             onClick={(e) => {

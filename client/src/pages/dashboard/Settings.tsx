@@ -7,6 +7,7 @@ import { useUserStore } from "../../store/useUserStore";
 import { User } from "types/user";
 import CustomLoader from '../../components/common/CustomLoader';
 import { InstructorSocialLink } from "types/course";
+import { InstructorSettingsProfileForm } from "types/user";
 
 const Settings = () => {
   const { user } = useUserStore();
@@ -20,15 +21,15 @@ const Settings = () => {
   const [fullname, setFullname] = useState<string>(user.fullname);
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
-  const [instructorFormData, setInstructorFormData] = useState({
+  const [instructorFormData, setInstructorFormData] = useState<InstructorSettingsProfileForm>({
     fullname: user.fullname || "",
-    bio: user?.bio || "",
+    bio: user?.bio || null,
     profileImageUrl: user.profileImageUrl || profileImage,
-    twitterUsername: user?.socialLinks?.find(obj => obj.name === "twitter")?.username || "",
-    facebookUsername: user?.socialLinks?.find(obj => obj.name === "facebook")?.username || "",
-    instagramUsername: user?.socialLinks?.find(obj => obj.name === "instagram")?.username || "",
-    linkedInUsername: user?.socialLinks?.find(obj => obj.name === "linkedin")?.username || "",
-    githubUsername: user?.socialLinks?.find(obj => obj.name === "github")?.username || "",
+    twitterUsername: user?.socialLinks?.find(obj => obj.name === "twitter")?.username || null,
+    facebookUsername: user?.socialLinks?.find(obj => obj.name === "facebook")?.username || null,
+    instagramUsername: user?.socialLinks?.find(obj => obj.name === "instagram")?.username || null,
+    linkedInUsername: user?.socialLinks?.find(obj => obj.name === "linkedin")?.username || null,
+    githubUsername: user?.socialLinks?.find(obj => obj.name === "github")?.username || null,
   });
 
   const { updateProfile: editUser, isUpdatingProfile: isPending } = useUserStore();

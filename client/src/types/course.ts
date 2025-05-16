@@ -28,6 +28,23 @@ export interface NewCourseStepsOutletContextType {
   isNextBtnEnabled: boolean;
 }
 
+export interface Course {
+  category: string;
+  courseImageUrl: string | null;
+  createdAt: string;
+  description: string | null;
+  id: string;
+  language: string;
+  level: string;
+  price: number;
+  reviews: [];
+  instructor: AllCoursesCourseInstructor | string;
+  subtitle: string | null;
+  title: string;
+  titleSlug: string;
+  updatedAt: string;
+}
+
 export interface InstructorSocialLink {
   name: string;
   url: string;
@@ -41,24 +58,11 @@ export interface AllCoursesCourseInstructor {
   socialLinks: InstructorSocialLink[];
 }
 
-export interface AllCoursesCourse {
-  category: string;
-  courseImageUrl: string | null;
-  createdAt: string;
-  description: string | null;
-  id: string;
+interface AllCoursesCourse extends Course {
   instructor: AllCoursesCourseInstructor;
-  language: string;
-  level: string;
-  price: number;
-  reviews: [];
-  subtitle: string | null;
-  title: string;
-  titleSlug: string;
-  updatedAt: string;
 }
 
-export type CreateCoursesCourse = Omit<AllCoursesCourse, "instructor"> & {
+interface CreateCoursesCourse extends Course {
   instructor: string;
 }
 
@@ -80,4 +84,11 @@ export interface EnrolledCoursesCourse {
 export interface Category {
   for: string;
   name: string;
+}
+
+export interface FetchCoursesFilter {
+  category?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
 }

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadVideo } from "../../api/lecture/uploadVideo";
 import toast from "react-hot-toast";
+import { handleError } from '../../utils/handleError';
 
 export const useUploadLectureVideo = () => {
     const queryClient = useQueryClient();
@@ -11,10 +12,6 @@ export const useUploadLectureVideo = () => {
             toast.success("Video uploaded successfully");
             queryClient.invalidateQueries({ queryKey: ['modules'] });
         },
-        onError: (err: any) => {
-            console.log(err);
-            const message = err.response?.data?.error || "Error uploading video!";
-            toast.error(message);
-        }
+        onError: handleError
     });
 }

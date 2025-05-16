@@ -2,16 +2,11 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useUserStore } from '../store/useUserStore';
 
-// const axiosInst = axios.create({
-//     baseURL:
-//         import.meta.env.MODE === "development"
-//             ? "http://localhost:3000/api"
-//             : import.meta.env.VITE_BACKEND_DEPLOYED_URL,
-//     withCredentials: true,
-// });
-
 const axiosInst = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_DEPLOYED_URL,
+    baseURL:
+        import.meta.env.MODE === "development"
+            ? "http://localhost:3000/api"
+            : import.meta.env.VITE_BACKEND_DEPLOYED_URL,
     withCredentials: true,
 });
 

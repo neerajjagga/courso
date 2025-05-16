@@ -10,7 +10,7 @@ import { useState } from 'react';
 
 const SingleCourse = () => {
     const { titleSlug } = useParams<{ titleSlug: string }>();
-    const { data: course, isPending } = useFetchSingleCourse(titleSlug);
+    const { data: course, isPending } = useFetchSingleCourse(titleSlug ?? '');
     const [isShowMoreDescActive, setIsShowMoreDescActive] = useState<boolean>(false);
 
     if (isPending) return <CustomLoader />

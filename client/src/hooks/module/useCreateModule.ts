@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createModule } from "../../api/module/createModule";
 import toast from "react-hot-toast";
-import { AxiosError } from "axios";
+import { handleError } from '../../utils/handleError';
 
 export const useCreateModule = () => {
     const queryClient = useQueryClient();
@@ -12,9 +12,6 @@ export const useCreateModule = () => {
             toast.success("Section created successfully");
             queryClient.invalidateQueries({ queryKey: ['modules'] });
         },
-        onError: (err: AxiosError<{ error?: string }>) => {
-            const message = err.response?.data?.error || "Something went wrong!";
-            toast.error(message);
-        }
+        onError: handleError
     });
 }

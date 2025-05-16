@@ -3,10 +3,17 @@ import toast from 'react-hot-toast';
 import { useCreateRzpOrder } from '../../../hooks/payment/useCreateRzpOrder';
 import { useVerifyPayment } from '../../../hooks/payment/useVerifyPayment';
 import { useUserStore } from '../../../store/useUserStore';
+import { Course } from 'types/course';
+import { PaymentDetailsSingleCourseCard, RazorpayOptions } from 'types/payment';
+import { RazorpayCreatedOrder } from 'types/payment';
 
-const SingleCourseCard = ({ course }) => {
+interface PropType {
+    course: Course
+}
+
+const SingleCourseCard = ({ course }: PropType) => {
     const { user } = useUserStore();
-    const [order, setOrder] = useState(null);
+    const [order, setOrder] = useState<RazorpayCreatedOrder | null>(null);
 
     const { mutate: createOrder, isPending } = useCreateRzpOrder(course.id, setOrder);
     const { mutate: verifyPayment, isPending: isVerifyingPayment } = useVerifyPayment();
@@ -22,7 +29,7 @@ const SingleCourseCard = ({ course }) => {
         };
     }, []);
 
-    const notifyAndVerifyPayment = (paymentDetails) => {
+    const notifyAndVerifyPayment = (paymentDetails: PaymentDetailsSingleCourseCard) => {
         const toastId = toast.loading("Verifying your payment...");
 
         verifyPayment(paymentDetails, {
@@ -37,7 +44,7 @@ const SingleCourseCard = ({ course }) => {
 
     useEffect(() => {
         if (order) {
-            const options = {
+            const options: RazorpayOptions = {
                 key: order.keyId,
                 amount: order.amount,
                 currency: 'INR',
@@ -45,18 +52,15 @@ const SingleCourseCard = ({ course }) => {
                 description: 'Master new skills with Courso',
                 order_id: order.orderId,
                 prefill: {
-                    name: user.fullname,
-                    email: user.email,
+                    name: user ? user.fullname : "",
+                    email: user ? user.email : "",
                 },
                 handler: async function (response) {
-                    console.log(response);
                     const paymentDetails = {
                         orderId: response.razorpay_order_id,
                         paymentId: response.razorpay_payment_id,
                         signature: response.razorpay_signature,
                     }
-                    console.log("---------------------------paymentDetails in handler");
-                    console.log(paymentDetails);
                     notifyAndVerifyPayment(paymentDetails);
                 },
                 theme: {

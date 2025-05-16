@@ -1,11 +1,13 @@
+import React from 'react';
 import Navbar from './Navbar'
 import { useLocation } from 'react-router-dom';
 
-const Layout = ({ children }) => {
+interface PropType {
+  children: React.ReactNode
+}
+
+const Layout = ({ children }: PropType) => {
   const location = useLocation();
-  console.log(location);
-
-
   const hideNavbarRoutes = ['/dashboard', '/instructor/course', '/learn'];
   const shouldHideNavbar = hideNavbarRoutes.some(route => location.pathname.startsWith(route));
 

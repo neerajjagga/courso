@@ -9,7 +9,7 @@ const ManageCourse = () => {
 
     const navigate = useNavigate();
     const { titleSlug } = useParams<{ titleSlug: string }>();
-    const { data: course, isPending } = useFetchSingleCourse(titleSlug);
+    const { data: course, isPending } = useFetchSingleCourse(titleSlug ?? '');
     const [isHamburgerOpened, setIsHamburgerOpened] = useState<boolean>(false);
 
     return (

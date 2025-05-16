@@ -20,7 +20,7 @@ const LearnCourse = () => {
     const [isSidebarActive, setIsSidebarActive] = useState<boolean>(true);
     const [isShowMoreDescActive, setIsShowMoreDescActive] = useState<boolean>(false);
 
-    const { data: { course, progressSummary } = { course: undefined, progressSummary: undefined }, isPending } = useFetchSingleEnrolledCourse(titleSlug);
+    const { data: { course, progressSummary } = { course: undefined, progressSummary: undefined }, isPending } = useFetchSingleEnrolledCourse(titleSlug ?? '');
 
     const { mutate: updateProgress, isPending: isUpdatingProgress } = useUpdateCourseProgress(course?.id, course?.titleSlug);
 

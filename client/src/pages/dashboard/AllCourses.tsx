@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { categories } from "../../constants/categories";
 import { useEffect, useRef, useState } from "react";
 import { useFetchCourses } from '../../hooks/course/useFetchCourses';
-import { Category } from "types/course";
-import { AllCoursesCourse } from '../../types/course';
+import { Category, Course } from "types/course";
 
 const AllCourses = () => {
   const navigate = useNavigate();
@@ -105,7 +104,7 @@ const AllCourses = () => {
           <div className='flex flex-wrap justify-center gap-8 sm:pt-4'>
             {!isPending ? (
               (courses ?? []).length > 0 ? (
-                courses.map((course: AllCoursesCourse, index: number) => (
+                courses.map((course: Course, index: number) => (
                   <CourseCard key={index} course={course}>
                     <button
                       onClick={(e) => {

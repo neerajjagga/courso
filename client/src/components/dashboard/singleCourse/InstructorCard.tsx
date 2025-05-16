@@ -1,6 +1,14 @@
 import { Twitter, Linkedin, Facebook, Github, Instagram } from 'lucide-react';
+import { JSX } from 'react';
+import { InstructorProfileCard } from 'types/user';
 
-const InstructorCard = ({ instructor }) => {
+interface PropType {
+    instructor: InstructorProfileCard
+}
+
+type SocialLinkName = "twitter" | "linkedin" | "facebook" | "instagram" | "github";
+
+const InstructorCard = ({ instructor }: PropType) => {
     return (
         <div className='flex flex-col items-center justify-center gap-4'>
             <div className='p-1 border border-blue-500 rounded-full w-fit'>
@@ -24,16 +32,18 @@ const InstructorCard = ({ instructor }) => {
                 {instructor.socialLinks?.some(link => link.username) && (
                     <div className="flex items-center justify-center gap-8 p-3 px-6 mt-4 bg-gray-900 border border-gray-700 rounded-full">
                         {instructor.socialLinks.map((item, index) => {
-                            const { url, username } = item;
+                            const { url, username, name } = item;
                             if (!username) return null;
 
-                            const icons = {
+                            const icons: Record<SocialLinkName, JSX.Element> = {
                                 twitter: <Twitter size={20} className="hover:text-blue-500" />,
                                 linkedin: <Linkedin size={20} className="hover:text-blue-500" />,
                                 facebook: <Facebook size={20} className="hover:text-blue-500" />,
                                 instagram: <Instagram size={20} className="hover:text-blue-500" />,
                                 github: <Github size={20} className="hover:text-blue-500" />,
                             };
+
+                            const icon = icons[name as SocialLinkName];
 
                             return (
                                 <a
@@ -43,7 +53,7 @@ const InstructorCard = ({ instructor }) => {
                                     rel="noopener noreferrer"
                                     className="text-gray-500 transition-transform duration-300 ease-in-out hover:scale-110"
                                 >
-                                    {icons[item.name]}
+                                    {icon}
                                 </a>
                             );
                         })}

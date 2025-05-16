@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import { Star } from 'lucide-react'
-import { AllCoursesCourse } from 'types/course';
+import { Course } from 'types/course';
 
 interface PropType {
-    course: AllCoursesCourse;
+    course: Course;
     children: React.ReactNode;
 }
 
@@ -41,22 +41,24 @@ const CourseCard = ({ course, children }: PropType) => {
                         {cleanDescription}
                     </p>
 
-                    <div className='flex items-center gap-2 mt-2 overflow-hidden'>
-                        {course.instructor.profileImageUrl ? (
-                            <img
-                                src={course.instructor?.profileImageUrl}
-                                className='object-cover rounded-full w-7 h-7'
-                                alt={`${course.instructor.fullname} Profile Image`}
-                            />
-                        ) : (
-                            course?.instructor?.fullname && (
-                                <span className='flex items-center justify-center w-6 h-6 font-bold text-white bg-red-600 rounded-full text-md'>
-                                    {course.instructor.fullname?.charAt(0).toUpperCase()}
-                                </span>
-                            )
-                        )}
-                        <h4 className='text-sm text-gray-300 line-clamp-1'>{course.instructor.fullname}</h4>
-                    </div>
+                    {typeof course.instructor === "object" && (
+                        <div className='flex items-center gap-2 mt-2 overflow-hidden'>
+                            {course.instructor.profileImageUrl ? (
+                                <img
+                                    src={course.instructor?.profileImageUrl}
+                                    className='object-cover rounded-full w-7 h-7'
+                                    alt={`${course.instructor.fullname} Profile Image`}
+                                />
+                            ) : (
+                                course?.instructor?.fullname && (
+                                    <span className='flex items-center justify-center w-6 h-6 font-bold text-white bg-red-600 rounded-full text-md'>
+                                        {course.instructor.fullname?.charAt(0).toUpperCase()}
+                                    </span>
+                                )
+                            )}
+                            <h4 className='text-sm text-gray-300 line-clamp-1'>{course.instructor.fullname}</h4>
+                        </div>
+                    )}
                 </div>
 
                 {children}

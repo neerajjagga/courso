@@ -4,8 +4,8 @@ import { useState } from 'react'
 import { useUserStore } from '../store/useUserStore';
 
 const Navbar = () => {
-  const [isHamburgerOpened, setIsHamburgerOpened] = useState(false);
-  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [isHamburgerOpened, setIsHamburgerOpened] = useState<boolean>(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState<boolean>(false);
   const { user, logout, isLoading } = useUserStore();
 
   return (

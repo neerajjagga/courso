@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { editLecture } from "../../api/lecture/editLecture";
+import { handleError } from '../../utils/handleError';
 
 export const useEditLecture = (courseId?: string) => {
     const queryClient = useQueryClient();
@@ -11,10 +12,6 @@ export const useEditLecture = (courseId?: string) => {
             toast.success("Lecture updated successfully");
             queryClient.invalidateQueries({ queryKey: ['modules', courseId] });
         },
-        onError: (err: any) => {
-            console.log(err);
-            const message = err.response?.data?.message || "Something went wrong!";
-            toast.error(message);
-        }
+        onError: handleError
     });
 }

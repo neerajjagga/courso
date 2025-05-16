@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { Loader, Plus } from "lucide-react";
-import { NewSection } from '../../../components/course/manage/NewSection.tsx';
+import { NewSection } from '../../../components/course/manage/NewSection';
 import { useState } from "react";
 import SectionCard from "../../../components/course/manage/SectionCard";
 import { useOutletContext } from "react-router-dom";
